@@ -33,6 +33,7 @@ String[] Property SecondWindNotifications Auto
 
 FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto
 FV_VoreHudScript Property FV_VoreHud Auto
+FV_LevelUpManagerScript Property FV_LevelUpManager Auto
 
 Actor ActorPred
 Actor PlayerRef
@@ -353,7 +354,7 @@ Function CalculateXP(Float afXPGain = 0.0, Float afDifficultyMult = 1.0)
 		XPGain = 1.0
 	EndIf
 	
-	FV_ConsumptionRegistry.CheckLevelUp(XPGain, PlayerRef, VoreLevel)
+	FV_LevelUpManager.CheckLevelUp(XPGain, PlayerRef, VoreLevel)
 EndFunction
 
 Function PlayerDead()

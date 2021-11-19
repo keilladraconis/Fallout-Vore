@@ -8,6 +8,7 @@ ActorValue Property FV_PreyLevel Auto
 ActorValue property Health Auto
 ActorValue Property FV_VoreFrenzied Auto
 FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto
+FV_LevelUpManagerScript Property FV_LevelUpManager Auto
 
 EVENT OnEffectStart(Actor akTarget, Actor akCaster)
 
@@ -29,7 +30,7 @@ EVENT OnEffectStart(Actor akTarget, Actor akCaster)
 	EndIf
 	akTarget.SetValue(FV_VoreFrenzied, 1)	
 	
-	FV_ConsumptionRegistry.LevelUpNPC(akTarget)
+	FV_LevelUpManager.LevelUpNPC(akTarget)
 	
 	;allow the frenzy to run 121 seconds
 	;Utility.wait(121)

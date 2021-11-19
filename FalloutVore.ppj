@@ -15,6 +15,7 @@
         <Import>C:\Program Files (x86)\Steam\steamapps\common\Fallout 4\Data\Scripts\Source\Base</Import>
         <Import>C:\Program Files (x86)\Steam\steamapps\common\Fallout 4\Data\Scripts\Source\User</Import>
         <Import>C:\Projects\Fallout Vore\src\vendor\hudframework\SCRIPTS</Import>
+        <Import>C:\Projects\Fallout Vore\src\vendor\f4se\Data\Scripts\Source\User</Import>
     </Imports>
     <Folders>
         <Folder>src\Data\Scripts\Source\User</Folder>

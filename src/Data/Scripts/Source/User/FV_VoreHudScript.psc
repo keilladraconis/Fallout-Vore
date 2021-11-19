@@ -194,7 +194,7 @@ EndFunction
 Function UpdateHealthBar(Int aiIndex, Actor akPrey)
 	
 	GetEditLock()
-	
+
 	String PreyName = akPrey.GetLeveledActorBase().GetName()
 	Float healthPercentage = akPrey.GetValue(Game.GetHealthAV())/akPrey.GetBaseValue(Game.GetHealthAV())
 	String SendMessage = aiIndex + "?" + PreyName + "?" + healthPercentage

@@ -13,7 +13,7 @@ EndFunction
 Function Fragment_Entry_01(ObjectReference akTargetRef, Actor akActor)
 ;BEGIN CODE
 Quest _temp = VM_ContextDialogue as Quest
-VM_ContextVoreQuestScript kmyQuest = _temp as VM_ContextVoreQuestScript
+FV_ContextVoreQuestScript kmyQuest = _temp as FV_ContextVoreQuestScript
 
 kmyQuest.StartDialogue(akTargetRef as Actor)
 ;END CODE
@@ -24,7 +24,7 @@ EndFunction
 Function Fragment_Entry_02(ObjectReference akTargetRef, Actor akActor)
 ;BEGIN CODE
 Quest _temp = VM_ContextDialogue as Quest
-VM_ContextVoreQuestScript kmyQuest = _temp as VM_ContextVoreQuestScript
+FV_ContextVoreQuestScript kmyQuest = _temp as FV_ContextVoreQuestScript
 
 kmyQuest.PokeFriendlyPred(akTargetRef as Actor)
 ;END CODE
@@ -35,7 +35,7 @@ EndFunction
 Function Fragment_Entry_03(ObjectReference akTargetRef, Actor akActor)
 ;BEGIN CODE
 Quest _temp = VM_ContextDialogue as Quest
-VM_ContextVoreQuestScript kmyQuest = _temp as VM_ContextVoreQuestScript
+FV_ContextVoreQuestScript kmyQuest = _temp as FV_ContextVoreQuestScript
 
 kmyQuest.StartDialogue(akTargetRef as Actor)
 ;END CODE
@@ -46,7 +46,7 @@ EndFunction
 Function Fragment_Entry_04(ObjectReference akTargetRef, Actor akActor)
 ;BEGIN CODE
 Quest _temp = VM_ContextDialogue as Quest
-VM_ContextVoreQuestScript kmyQuest = _temp as VM_ContextVoreQuestScript
+FV_ContextVoreQuestScript kmyQuest = _temp as FV_ContextVoreQuestScript
 
 kmyQuest.PokeHostilePred(akTargetRef as Actor)
 ;END CODE

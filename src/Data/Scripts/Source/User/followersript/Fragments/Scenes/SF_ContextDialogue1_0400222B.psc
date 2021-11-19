@@ -3,8 +3,8 @@ Scriptname followersript:Fragments:Scenes:SF_ContextDialogue1_0400222B Extends S
 
 ;BEGIN FRAGMENT Fragment_Phase_03_End
 Function Fragment_Phase_03_End()
-;BEGIN AUTOCAST TYPE VM_ContextVoreQuestScript
-VM_ContextVoreQuestScript kmyQuest = GetOwningQuest() as VM_ContextVoreQuestScript
+;BEGIN AUTOCAST TYPE FV_ContextVoreQuestScript
+FV_ContextVoreQuestScript kmyQuest = GetOwningQuest() as FV_ContextVoreQuestScript
 ;END AUTOCAST
 ;BEGIN CODE
 kmyQuest.EndDialogue()

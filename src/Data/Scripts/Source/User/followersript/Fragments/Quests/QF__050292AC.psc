@@ -35,7 +35,7 @@ Actor Raider3 = VoreRaiderRandom.GetActorReference()
 
 ;disable player movement in CSR
 Quest _temp = ConsumptionRegistry as Quest
-ConsumptionRegistryScript kmyQuestA = _temp as ConsumptionRegistryScript
+FV_ConsumptionRegistryScript kmyQuestA = _temp as FV_ConsumptionRegistryScript
 
 kmyQuestA.DisablePlayerMovement()
 

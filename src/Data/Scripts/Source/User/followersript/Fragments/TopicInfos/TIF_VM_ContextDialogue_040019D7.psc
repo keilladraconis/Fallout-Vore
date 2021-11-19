@@ -4,8 +4,8 @@ Scriptname followersript:Fragments:TopicInfos:TIF_VM_ContextDialogue_040019D7 Ex
 ;BEGIN FRAGMENT Fragment_End
 Function Fragment_End(ObjectReference akSpeakerRef)
 Actor akSpeaker = akSpeakerRef as Actor
-;BEGIN AUTOCAST TYPE VM_ContextVoreQuestScript
-VM_ContextVoreQuestScript kmyQuest = GetOwningQuest() as VM_ContextVoreQuestScript
+;BEGIN AUTOCAST TYPE FV_ContextVoreQuestScript
+FV_ContextVoreQuestScript kmyQuest = GetOwningQuest() as FV_ContextVoreQuestScript
 ;END AUTOCAST
 ;BEGIN CODE
 kmyQuest.SetTypeOfVore(2)

@@ -11,7 +11,7 @@ pCaravanLouiseCurrentStatus.SetValue(1)
 pCaravanLouiseCurrentDestination.SetValue(2)
 
 Quest __temp = pVM_CaravanBase as Quest
-VM_CaravanBaseScript kmyQuest = __temp as VM_CaravanBaseScript
+FV_CaravanBaseScript kmyQuest = __temp as FV_CaravanBaseScript
 
 Debug.Trace("Finished " + self)
 kmyQuest.CaravanWaits(3)

@@ -31,7 +31,7 @@ FVS01_QuestScript kmyQuest = __temp as FVS01_QuestScript
 ;BEGIN CODE
 VMS01_Enable10.EnableNoWait()
 SetObjectiveDisplayed(10,1)
-;Remove Bria as companion and begin timer in VMS01_QuestScript
+;Remove Bria as companion and begin timer in FVS01_QuestScript
 Actor BriaREF = BriaAlias.GetActorRef()
 BriaREF.DisallowCompanion(SuppressDismissMessage=True)
 

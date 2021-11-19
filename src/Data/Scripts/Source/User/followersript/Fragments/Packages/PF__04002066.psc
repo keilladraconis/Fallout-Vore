@@ -25,5 +25,3 @@ Quest Property pVM_CaravanBase Auto Const
 
 GlobalVariable Property pCaravanLouiseCurrentDestination Auto Const
 GlobalVariable Property pCaravanLouiseCurrentStatus Auto Const
-
-Quest Property pVM_CaravanBase Auto Const

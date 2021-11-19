@@ -6,9 +6,31 @@
             "type": "pyro",
             "projectFile": "FalloutVore.ppj",
             "gamePath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Fallout 4\\",
-            "problemMatcher": [
-                "$PapyrusCompiler"
-            ],
+            "problemMatcher": [{
+                "source": "Papyrus",
+                "owner": "papyrus",
+                "fileLocation": "absolute",
+                "pattern": {
+                    "regexp": "^(.*)\\[INFO]\\s(.*)\\((\\d+),(\\d+)\\):(.*)$",
+                    "file": 2,
+                    "line": 3,
+                    "column": 4,
+                    "message": 5
+                },
+                "severity":"info"
+            },{
+                "source": "Papyrus",
+                "owner": "papyrus",
+                "fileLocation": "absolute",
+                "pattern": {
+                    "regexp": "^(.*)\\[WARN]\\s(.*)\\((\\d+),(\\d+)\\):(.*)$",
+                    "file": 2,
+                    "line": 3,
+                    "column": 4,
+                    "message": 5
+                },
+                "severity":"warning"
+            }],
             "label": "pyro: Compile Project (FalloutVore.ppj)",
             "group": {
                 "kind": "build",

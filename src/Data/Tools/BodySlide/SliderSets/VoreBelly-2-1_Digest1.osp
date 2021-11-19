@@ -1,0 +1,213 @@
+<SliderSetInfo version="1">
+    <SliderSet name="VoreBelly-2-1_Digest1">
+        <DataFolder>VoreBelly-2-1_Digest1</DataFolder>
+        <SourceFile>VoreBelly-2-1_Digest1.nif</SourceFile>
+        <OutputPath>meshes\Gat</OutputPath>
+        <OutputFile GenWeights="false">VoreBelly-2-1_Digest1</OutputFile>
+        <Shape target="clothbelly1" DataFolder="Xclothbelly20">clothbelly1</Shape>
+        <Slider name="Breasts" invert="false" default="0">
+            <Data name="clothbelly1Breasts" target="clothbelly1">Xclothbelly20.osd\clothbelly1Breasts</Data>
+        </Slider>
+        <Slider name="BreastsCleavage" invert="false" default="0">
+            <Data name="clothbelly1BreastsCleavage" target="clothbelly1">Xclothbelly20.osd\clothbelly1BreastsCleavage</Data>
+        </Slider>
+        <Slider name="BreastsGone" invert="false" default="0">
+            <Data name="clothbelly1BreastsGone" target="clothbelly1">Xclothbelly20.osd\clothbelly1BreastsGone</Data>
+        </Slider>
+        <Slider name="BreastsNewSH" invert="false" default="0">
+            <Data name="clothbelly1BreastsNewSH" target="clothbelly1">Xclothbelly20.osd\clothbelly1BreastsNewSH</Data>
+        </Slider>
+        <Slider name="BreastsSmall" invert="false" default="0">
+            <Data name="clothbelly1BreastsSmall" target="clothbelly1">Xclothbelly20.osd\clothbelly1BreastsSmall</Data>
+        </Slider>
+        <Slider name="BreastsSmall2" invert="false" default="0">
+            <Data name="clothbelly1BreastsSmall2" target="clothbelly1">Xclothbelly20.osd\clothbelly1BreastsSmall2</Data>
+        </Slider>
+        <Slider name="BreastsTogether" invert="false" default="0">
+            <Data name="clothbelly1BreastsTogether" target="clothbelly1">Xclothbelly20.osd\clothbelly1BreastsTogether</Data>
+        </Slider>
+        <Slider name="BreastTopSlope" invert="false" default="0">
+            <Data name="clothbelly1BreastTopSlope" target="clothbelly1">Xclothbelly20.osd\clothbelly1BreastTopSlope</Data>
+        </Slider>
+        <Slider name="BreastWidth" invert="false" default="0">
+            <Data name="clothbelly1BreastWidth" target="clothbelly1">Xclothbelly20.osd\clothbelly1BreastWidth</Data>
+        </Slider>
+        <Slider name="Butt" invert="false" default="0">
+            <Data name="clothbelly1Butt" target="clothbelly1">Xclothbelly20.osd\clothbelly1Butt</Data>
+        </Slider>
+        <Slider name="ButtCrack" invert="false" default="0">
+            <Data name="clothbelly1ButtCrack" target="clothbelly1">Xclothbelly20.osd\clothbelly1ButtCrack</Data>
+        </Slider>
+        <Slider name="ButtNew" invert="false" default="0">
+            <Data name="clothbelly1ButtNew" target="clothbelly1">Xclothbelly20.osd\clothbelly1ButtNew</Data>
+        </Slider>
+        <Slider name="ButtShape2" invert="false" default="0">
+            <Data name="clothbelly1ButtShape2" target="clothbelly1">Xclothbelly20.osd\clothbelly1ButtShape2</Data>
+        </Slider>
+        <Slider name="ButtSmall" invert="false" default="0">
+            <Data name="clothbelly1ButtSmall" target="clothbelly1">Xclothbelly20.osd\clothbelly1ButtSmall</Data>
+        </Slider>
+        <Slider name="ChestDepth" invert="false" default="0">
+            <Data name="clothbelly1ChestDepth" target="clothbelly1">Xclothbelly20.osd\clothbelly1ChestDepth</Data>
+        </Slider>
+        <Slider name="ChestWidth" invert="false" default="0">
+            <Data name="clothbelly1ChestWidth" target="clothbelly1">Xclothbelly20.osd\clothbelly1ChestWidth</Data>
+        </Slider>
+        <Slider name="ChubbyArms" invert="false" default="0">
+            <Data name="clothbelly1ChubbyArms" target="clothbelly1">Xclothbelly20.osd\clothbelly1ChubbyArms</Data>
+        </Slider>
+        <Slider name="ChubbyButt" invert="false" default="0">
+            <Data name="clothbelly1ChubbyButt" target="clothbelly1">Xclothbelly20.osd\clothbelly1ChubbyButt</Data>
+        </Slider>
+        <Slider name="ChubbyLegs" invert="false" default="0">
+            <Data name="clothbelly1ChubbyLegs" target="clothbelly1">Xclothbelly20.osd\clothbelly1ChubbyLegs</Data>
+        </Slider>
+        <Slider name="ChubbyWaist" invert="false" default="0">
+            <Data name="clothbelly1ChubbyWaist" target="clothbelly1">Xclothbelly20.osd\clothbelly1ChubbyWaist</Data>
+        </Slider>
+        <Slider name="CrotchBack" invert="false" default="0">
+            <Data name="clothbelly1CrotchBack" target="clothbelly1">Xclothbelly20.osd\clothbelly1CrotchBack</Data>
+        </Slider>
+        <Slider name="DoubleMelon" invert="false" default="0">
+            <Data name="clothbelly1DoubleMelon" target="clothbelly1">Xclothbelly20.osd\clothbelly1DoubleMelon</Data>
+        </Slider>
+        <Slider name="Groin" invert="false" default="0">
+            <Data name="clothbelly1Groin" target="clothbelly1">Xclothbelly20.osd\clothbelly1Groin</Data>
+        </Slider>
+        <Slider name="HipBack" invert="false" default="0">
+            <Data name="clothbelly1HipBack" target="clothbelly1">Xclothbelly20.osd\clothbelly1HipBack</Data>
+        </Slider>
+        <Slider name="HipBone" invert="false" default="0">
+            <Data name="clothbelly1HipBone" target="clothbelly1">Xclothbelly20.osd\clothbelly1HipBone</Data>
+        </Slider>
+        <Slider name="Hips" invert="false" default="0">
+            <Data name="clothbelly1Hips" target="clothbelly1">Xclothbelly20.osd\clothbelly1Hips</Data>
+        </Slider>
+        <Slider name="HipUpperWidth" invert="false" default="0">
+            <Data name="clothbelly1HipUpperWidth" target="clothbelly1">Xclothbelly20.osd\clothbelly1HipUpperWidth</Data>
+        </Slider>
+        <Slider name="KneeHeight" invert="false" default="0">
+            <Data name="clothbelly1KneeHeight" target="clothbelly1">Xclothbelly20.osd\clothbelly1KneeHeight</Data>
+        </Slider>
+        <Slider name="LegShape" invert="false" default="0">
+            <Data name="clothbelly1LegShape" target="clothbelly1">Xclothbelly20.osd\clothbelly1LegShape</Data>
+        </Slider>
+        <Slider name="LegsThin" invert="false" default="0">
+            <Data name="clothbelly1LegsThin" target="clothbelly1">Xclothbelly20.osd\clothbelly1LegsThin</Data>
+        </Slider>
+        <Slider name="NippleAreola" invert="false" default="0">
+            <Data name="clothbelly1NippleAreola" target="clothbelly1">Xclothbelly20.osd\clothbelly1NippleAreola</Data>
+        </Slider>
+        <Slider name="NippleDistance" invert="false" default="0">
+            <Data name="clothbelly1NippleDistance" target="clothbelly1">Xclothbelly20.osd\clothbelly1NippleDistance</Data>
+        </Slider>
+        <Slider name="NippleDown" invert="false" default="0">
+            <Data name="clothbelly1NippleDown" target="clothbelly1">Xclothbelly20.osd\clothbelly1NippleDown</Data>
+        </Slider>
+        <Slider name="NipplePerkiness" invert="false" default="0">
+            <Data name="clothbelly1NipplePerkiness" target="clothbelly1">Xclothbelly20.osd\clothbelly1NipplePerkiness</Data>
+        </Slider>
+        <Slider name="NippleUp" invert="false" default="0">
+            <Data name="clothbelly1NippleUp" target="clothbelly1">Xclothbelly20.osd\clothbelly1NippleUp</Data>
+        </Slider>
+        <Slider name="PregnancyBelly" invert="false" default="0">
+            <Data name="clothbelly1PregnancyBelly" target="clothbelly1">Xclothbelly20.osd\clothbelly1PregnancyBelly</Data>
+        </Slider>
+        <Slider name="PushUp" invert="false" default="0">
+            <Data name="clothbelly1PushUp" target="clothbelly1">Xclothbelly20.osd\clothbelly1PushUp</Data>
+        </Slider>
+        <Slider name="RoundAss" invert="false" default="0">
+            <Data name="clothbelly1RoundAss" target="clothbelly1">Xclothbelly20.osd\clothbelly1RoundAss</Data>
+        </Slider>
+        <Slider name="ShoulderWidth" invert="false" default="0">
+            <Data name="clothbelly1ShoulderWidth" target="clothbelly1">Xclothbelly20.osd\clothbelly1ShoulderWidth</Data>
+        </Slider>
+        <Slider name="SlimThighs" invert="false" default="0">
+            <Data name="clothbelly1SlimThighs" target="clothbelly1">Xclothbelly20.osd\clothbelly1SlimThighs</Data>
+        </Slider>
+        <Slider name="SternumDepth" invert="false" default="0">
+            <Data name="clothbelly1SternumDepth" target="clothbelly1">Xclothbelly20.osd\clothbelly1SternumDepth</Data>
+        </Slider>
+        <Slider name="SternumHeight" invert="false" default="0">
+            <Data name="clothbelly1SternumHeight" target="clothbelly1">Xclothbelly20.osd\clothbelly1SternumHeight</Data>
+        </Slider>
+        <Slider name="Thighs" invert="false" default="0">
+            <Data name="clothbelly1Thighs" target="clothbelly1">Xclothbelly20.osd\clothbelly1Thighs</Data>
+        </Slider>
+        <Slider name="TummyTuck" invert="false" default="0">
+            <Data name="clothbelly1TummyTuck" target="clothbelly1">Xclothbelly20.osd\clothbelly1TummyTuck</Data>
+        </Slider>
+        <Slider name="VanillaFo4" invert="false" default="0">
+            <Data name="clothbelly1VanillaFo4" target="clothbelly1">Xclothbelly20.osd\clothbelly1VanillaFo4</Data>
+        </Slider>
+        <Slider name="Waist" invert="false" default="0">
+            <Data name="clothbelly1Waist" target="clothbelly1">Xclothbelly20.osd\clothbelly1Waist</Data>
+        </Slider>
+        <Slider name="WaistHeight" invert="false" default="0">
+            <Data name="clothbelly1WaistHeight" target="clothbelly1">Xclothbelly20.osd\clothbelly1WaistHeight</Data>
+        </Slider>
+        <Slider name="WideWaistLine" invert="false" default="0">
+            <Data name="clothbelly1WideWaistLine" target="clothbelly1">Xclothbelly20.osd\clothbelly1WideWaistLine</Data>
+        </Slider>
+        <Slider name="AppleCheeks" invert="false" default="0">
+            <Data name="clothbelly1AppleCheeks" target="clothbelly1">Xclothbelly20.osd\clothbelly1AppleCheeks</Data>
+        </Slider>
+        <Slider name="Arms" invert="false" default="0">
+            <Data name="clothbelly1Arms" target="clothbelly1">Xclothbelly20.osd\clothbelly1Arms</Data>
+        </Slider>
+        <Slider name="Back" invert="false" default="0">
+            <Data name="clothbelly1Back" target="clothbelly1">Xclothbelly20.osd\clothbelly1Back</Data>
+        </Slider>
+        <Slider name="BackArch" invert="false" default="0">
+            <Data name="clothbelly1BackArch" target="clothbelly1">Xclothbelly20.osd\clothbelly1BackArch</Data>
+        </Slider>
+        <Slider name="Belly" invert="false" default="0">
+            <Data name="clothbelly1Belly" target="clothbelly1">Xclothbelly20.osd\clothbelly1Belly</Data>
+        </Slider>
+        <Slider name="BigBelly" invert="false" default="0">
+            <Data name="clothbelly1BigBelly" target="clothbelly1">Xclothbelly20.osd\clothbelly1BigBelly</Data>
+        </Slider>
+        <Slider name="BigButt" invert="false" default="0">
+            <Data name="clothbelly1BigButt" target="clothbelly1">Xclothbelly20.osd\clothbelly1BigButt</Data>
+        </Slider>
+        <Slider name="BigTorso" invert="false" default="0">
+            <Data name="clothbelly1BigTorso" target="clothbelly1">Xclothbelly20.osd\clothbelly1BigTorso</Data>
+        </Slider>
+        <Slider name="BreastCenter" invert="false" default="0">
+            <Data name="clothbelly1BreastCenter" target="clothbelly1">Xclothbelly20.osd\clothbelly1BreastCenter</Data>
+        </Slider>
+        <Slider name="BreastCenterBig" invert="false" default="0">
+            <Data name="clothbelly1BreastCenterBig" target="clothbelly1">Xclothbelly20.osd\clothbelly1BreastCenterBig</Data>
+        </Slider>
+        <Slider name="BreastFantasy" invert="false" default="0">
+            <Data name="clothbelly1BreastFantasy" target="clothbelly1">Xclothbelly20.osd\clothbelly1BreastFantasy</Data>
+        </Slider>
+        <Slider name="BreastFlatness2" invert="false" default="0">
+            <Data name="clothbelly1BreastFlatness2" target="clothbelly1">Xclothbelly20.osd\clothbelly1BreastFlatness2</Data>
+        </Slider>
+        <Slider name="BreastGravity2" invert="false" default="0">
+            <Data name="clothbelly1BreastGravity2" target="clothbelly1">Xclothbelly20.osd\clothbelly1BreastGravity2</Data>
+        </Slider>
+        <Slider name="BreastHeight" invert="false" default="0">
+            <Data name="clothbelly1BreastHeight" target="clothbelly1">Xclothbelly20.osd\clothbelly1BreastHeight</Data>
+        </Slider>
+        <Slider name="BreastPerkiness" invert="false" default="0">
+            <Data name="clothbelly1BreastPerkiness" target="clothbelly1">Xclothbelly20.osd\clothbelly1BreastPerkiness</Data>
+        </Slider>
+        <Slider name="ArmpitHeight" invert="false" default="0">
+            <Data name="clothbelly1ArmpitHeight" target="clothbelly1">Xclothbelly20.osd\clothbelly1ArmpitHeight</Data>
+        </Slider>
+        <Slider name="ForearmSize" invert="false" default="0">
+            <Data name="clothbelly1ForearmSize" target="clothbelly1">Xclothbelly20.osd\clothbelly1ForearmSize</Data>
+        </Slider>
+        <Slider name="VoreBelly" invert="false" default="66">
+            <Data name="clothbelly1VoreBelly" target="clothbelly1" local="true">VoreBelly-2-1_Digest1.osd\clothbelly1VoreBelly</Data>
+        </Slider>
+        <Slider name="VoreMegaBelly" invert="false" default="0">
+            <Data name="clothbelly1VoreMegaBelly" target="clothbelly1" local="true">VoreBelly-2-1_Digest1.osd\clothbelly1VoreMegaBelly</Data>
+        </Slider>
+        <Slider name="VoreBellySmall" invert="false" default="0">
+            <Data name="clothbelly1VoreBellySmall" target="clothbelly1" local="true">VoreBelly-2-1_Digest1.osd\clothbelly1VoreBellySmall</Data>
+        </Slider>
+    </SliderSet>
+</SliderSetInfo>

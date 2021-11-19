@@ -1,0 +1,29 @@
+<?xml version='1.0'?>
+<!-- Created by vscode papyrus-lang papyrus.fallout4.generateProject -->
+<PapyrusProject xmlns="PapyrusProject.xsd" 
+    Flags="Institute_Papyrus_Flags.flg" 
+    Output="@modpath" 
+    Game="fo4" 
+    Asm="Discard" 
+    Optimize="false" Anonymize="true" Release="false" Final="false">
+    <Variables>
+        <Variable Name="modname" Value="Fallout Vore" />
+        <Variable Name="devpath" Value="C:\Projects\@modname\src\Data" />
+        <Variable Name="modpath" Value="C:\Projects\@modname\build" />
+    </Variables>
+    <Imports>
+        <Import>C:\Program Files (x86)\Steam\steamapps\common\Fallout 4\Data\Scripts\Source\Base</Import>
+        <Import>C:\Program Files (x86)\Steam\steamapps\common\Fallout 4\Data\Scripts\Source\User</Import>
+    </Imports>
+    <Folders>
+        <Folder>src\Data\Scripts\Source\User</Folder>
+    </Folders>
+    
+    <Packages Output="@modpath">
+        <Package Name="Fallout Vore - Main" RootDir="@devpath">
+            <Include>C:\Projects\Fallout Vore\Data\Scripts\Source\User\*.psc</Include>
+            <Include>C:\Projects\Fallout Vore\Data\Scripts\*.pex</Include>
+        </Package>
+    </Packages>
+    
+</PapyrusProject>

@@ -1,0 +1,50 @@
+{
+  "modName": "FalloutVore",
+  "keybinds": [
+	{
+        "id": "scatHotkey",
+		"desc": "Shit Out Prey",
+		"action": {
+			"type": "CallFunction",
+			"form": "FalloutVore.esp|DAB6",
+			"function": "CallScat"
+		}
+    },
+	{
+        "id": "regurgitateHotkey",
+		"desc": "Regurgitate Prey",
+		"action": {
+			"type": "CallFunction",
+			"form": "FalloutVore.esp|DAB6",
+			"function": "Regurgitate"
+		}
+    },
+	{
+        "id": "manualDigestHotkey",
+		"desc": "Start Digestion",
+		"action": {
+			"type": "CallFunction",
+			"form": "FalloutVore.esp|DAB6",
+			"function": "CallDigest"
+		}
+    },
+	{
+		"id": "manualPreyContext",
+		"desc": "Talk to prey",
+		"action": {
+			"type": "CallFunction",
+			"form": "FalloutVore.esp|DAB6",
+			"function": "CallContext"
+		}
+	},
+	{
+		"id": "primeGrowlHotkey",
+		"desc": "Ready Frightening Growl",
+		"action": {
+			"type": "CallFunction",
+			"form": "FalloutVore.esp|DAB6",
+			"function": "CallGrowl"
+		}
+	}
+  ]
+ }

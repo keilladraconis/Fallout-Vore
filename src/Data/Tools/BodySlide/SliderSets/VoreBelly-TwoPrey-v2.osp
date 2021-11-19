@@ -1,0 +1,520 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<SliderSetInfo version="1">
+    <SliderSet name="VoreBelly-TwoPrey-v2">
+        <DataFolder>VoreBelly-TwoPrey-v2</DataFolder>
+        <SourceFile>VoreBelly-TwoPrey-v2.nif</SourceFile>
+        <OutputPath>meshes\gat</OutputPath>
+        <OutputFile GenWeights="false">VoreBelly-TwoPrey</OutputFile>
+        <Shape target="clothbelly1_outfit" DataFolder="VoreBelly-TwoPrey-v2">clothbelly1_outfit</Shape>
+        <Slider name="Breasts" invert="false" default="0">
+            <Data name="clothbelly1_outfitBreasts" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBreasts</Data>
+        </Slider>
+        <Slider name="BreastsCleavage" invert="false" default="0">
+            <Data name="clothbelly1_outfitBreastsCleavage" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBreastsCleavage</Data>
+        </Slider>
+        <Slider name="BreastsGone" invert="false" default="0">
+            <Data name="clothbelly1_outfitBreastsGone" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBreastsGone</Data>
+        </Slider>
+        <Slider name="BreastsNewSH" invert="false" default="0">
+            <Data name="clothbelly1_outfitBreastsNewSH" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBreastsNewSH</Data>
+        </Slider>
+        <Slider name="BreastsSmall" invert="false" default="0">
+            <Data name="clothbelly1_outfitBreastsSmall" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBreastsSmall</Data>
+        </Slider>
+        <Slider name="BreastsSmall2" invert="false" default="0">
+            <Data name="clothbelly1_outfitBreastsSmall2" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBreastsSmall2</Data>
+        </Slider>
+        <Slider name="BreastsTogether" invert="false" default="0">
+            <Data name="clothbelly1_outfitBreastsTogether" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBreastsTogether</Data>
+        </Slider>
+        <Slider name="BreastTopSlope" invert="false" default="0">
+            <Data name="clothbelly1_outfitBreastTopSlope" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBreastTopSlope</Data>
+        </Slider>
+        <Slider name="BreastWidth" invert="false" default="0">
+            <Data name="clothbelly1_outfitBreastWidth" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBreastWidth</Data>
+        </Slider>
+        <Slider name="Butt" invert="false" default="0">
+            <Data name="clothbelly1_outfitButt" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitButt</Data>
+        </Slider>
+        <Slider name="ButtCrack" invert="false" default="0">
+            <Data name="clothbelly1_outfitButtCrack" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitButtCrack</Data>
+        </Slider>
+        <Slider name="ButtNew" invert="false" default="0">
+            <Data name="clothbelly1_outfitButtNew" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitButtNew</Data>
+        </Slider>
+        <Slider name="ButtShape2" invert="false" default="0">
+            <Data name="clothbelly1_outfitButtShape2" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitButtShape2</Data>
+        </Slider>
+        <Slider name="ButtSmall" invert="false" default="0">
+            <Data name="clothbelly1_outfitButtSmall" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitButtSmall</Data>
+        </Slider>
+        <Slider name="ChestDepth" invert="false" default="0">
+            <Data name="clothbelly1_outfitChestDepth" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitChestDepth</Data>
+        </Slider>
+        <Slider name="ChestWidth" invert="false" default="0">
+            <Data name="clothbelly1_outfitChestWidth" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitChestWidth</Data>
+        </Slider>
+        <Slider name="ChubbyArms" invert="false" default="0">
+            <Data name="clothbelly1_outfitChubbyArms" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitChubbyArms</Data>
+        </Slider>
+        <Slider name="ChubbyButt" invert="false" default="0">
+            <Data name="clothbelly1_outfitChubbyButt" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitChubbyButt</Data>
+        </Slider>
+        <Slider name="ChubbyLegs" invert="false" default="0">
+            <Data name="clothbelly1_outfitChubbyLegs" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitChubbyLegs</Data>
+        </Slider>
+        <Slider name="ChubbyWaist" invert="false" default="0">
+            <Data name="clothbelly1_outfitChubbyWaist" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitChubbyWaist</Data>
+        </Slider>
+        <Slider name="CrotchBack" invert="false" default="0">
+            <Data name="clothbelly1_outfitCrotchBack" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitCrotchBack</Data>
+        </Slider>
+        <Slider name="DoubleMelon" invert="false" default="0">
+            <Data name="clothbelly1_outfitDoubleMelon" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitDoubleMelon</Data>
+        </Slider>
+        <Slider name="Groin" invert="false" default="0">
+            <Data name="clothbelly1_outfitGroin" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitGroin</Data>
+        </Slider>
+        <Slider name="HipBack" invert="false" default="0">
+            <Data name="clothbelly1_outfitHipBack" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitHipBack</Data>
+        </Slider>
+        <Slider name="HipBone" invert="false" default="0">
+            <Data name="clothbelly1_outfitHipBone" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitHipBone</Data>
+        </Slider>
+        <Slider name="Hips" invert="false" default="0">
+            <Data name="clothbelly1_outfitHips" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitHips</Data>
+        </Slider>
+        <Slider name="HipUpperWidth" invert="false" default="0">
+            <Data name="clothbelly1_outfitHipUpperWidth" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitHipUpperWidth</Data>
+        </Slider>
+        <Slider name="KneeHeight" invert="false" default="0">
+            <Data name="clothbelly1_outfitKneeHeight" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitKneeHeight</Data>
+        </Slider>
+        <Slider name="LegShape" invert="false" default="0">
+            <Data name="clothbelly1_outfitLegShape" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitLegShape</Data>
+        </Slider>
+        <Slider name="LegsThin" invert="false" default="0">
+            <Data name="clothbelly1_outfitLegsThin" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitLegsThin</Data>
+        </Slider>
+        <Slider name="NippleAreola" invert="false" default="0">
+            <Data name="clothbelly1_outfitNippleAreola" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitNippleAreola</Data>
+        </Slider>
+        <Slider name="NippleDistance" invert="false" default="0">
+            <Data name="clothbelly1_outfitNippleDistance" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitNippleDistance</Data>
+        </Slider>
+        <Slider name="NippleDown" invert="false" default="0">
+            <Data name="clothbelly1_outfitNippleDown" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitNippleDown</Data>
+        </Slider>
+        <Slider name="NipplePerkiness" invert="false" default="0">
+            <Data name="clothbelly1_outfitNipplePerkiness" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitNipplePerkiness</Data>
+        </Slider>
+        <Slider name="NippleUp" invert="false" default="0">
+            <Data name="clothbelly1_outfitNippleUp" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitNippleUp</Data>
+        </Slider>
+        <Slider name="PregnancyBelly" invert="false" default="0">
+            <Data name="clothbelly1_outfitPregnancyBelly" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitPregnancyBelly</Data>
+        </Slider>
+        <Slider name="PushUp" invert="false" default="0">
+            <Data name="clothbelly1_outfitPushUp" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitPushUp</Data>
+        </Slider>
+        <Slider name="RoundAss" invert="false" default="0">
+            <Data name="clothbelly1_outfitRoundAss" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitRoundAss</Data>
+        </Slider>
+        <Slider name="ShoulderWidth" invert="false" default="0">
+            <Data name="clothbelly1_outfitShoulderWidth" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitShoulderWidth</Data>
+        </Slider>
+        <Slider name="SlimThighs" invert="false" default="0">
+            <Data name="clothbelly1_outfitSlimThighs" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitSlimThighs</Data>
+        </Slider>
+        <Slider name="SternumDepth" invert="false" default="0">
+            <Data name="clothbelly1_outfitSternumDepth" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitSternumDepth</Data>
+        </Slider>
+        <Slider name="SternumHeight" invert="false" default="0">
+            <Data name="clothbelly1_outfitSternumHeight" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitSternumHeight</Data>
+        </Slider>
+        <Slider name="Thighs" invert="false" default="0">
+            <Data name="clothbelly1_outfitThighs" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitThighs</Data>
+        </Slider>
+        <Slider name="TummyTuck" invert="false" default="0">
+            <Data name="clothbelly1_outfitTummyTuck" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitTummyTuck</Data>
+        </Slider>
+        <Slider name="VanillaFo4" invert="false" default="0">
+            <Data name="clothbelly1_outfitVanillaFo4" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitVanillaFo4</Data>
+        </Slider>
+        <Slider name="Waist" invert="false" default="0">
+            <Data name="clothbelly1_outfitWaist" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitWaist</Data>
+        </Slider>
+        <Slider name="WaistHeight" invert="false" default="0">
+            <Data name="clothbelly1_outfitWaistHeight" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitWaistHeight</Data>
+        </Slider>
+        <Slider name="WideWaistLine" invert="false" default="0">
+            <Data name="clothbelly1_outfitWideWaistLine" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitWideWaistLine</Data>
+        </Slider>
+        <Slider name="AppleCheeks" invert="false" default="0">
+            <Data name="clothbelly1_outfitAppleCheeks" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitAppleCheeks</Data>
+        </Slider>
+        <Slider name="Arms" invert="false" default="0">
+            <Data name="clothbelly1_outfitArms" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitArms</Data>
+        </Slider>
+        <Slider name="Back" invert="false" default="0">
+            <Data name="clothbelly1_outfitBack" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBack</Data>
+        </Slider>
+        <Slider name="BackArch" invert="false" default="0">
+            <Data name="clothbelly1_outfitBackArch" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBackArch</Data>
+        </Slider>
+        <Slider name="Belly" invert="false" default="0">
+            <Data name="clothbelly1_outfitBelly" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBelly</Data>
+        </Slider>
+        <Slider name="BigBelly" invert="false" default="0">
+            <Data name="clothbelly1_outfitBigBelly" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBigBelly</Data>
+        </Slider>
+        <Slider name="BigButt" invert="false" default="0">
+            <Data name="clothbelly1_outfitBigButt" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBigButt</Data>
+        </Slider>
+        <Slider name="BigTorso" invert="false" default="0">
+            <Data name="clothbelly1_outfitBigTorso" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBigTorso</Data>
+        </Slider>
+        <Slider name="BreastCenter" invert="false" default="0">
+            <Data name="clothbelly1_outfitBreastCenter" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBreastCenter</Data>
+        </Slider>
+        <Slider name="BreastCenterBig" invert="false" default="0">
+            <Data name="clothbelly1_outfitBreastCenterBig" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBreastCenterBig</Data>
+        </Slider>
+        <Slider name="BreastFantasy" invert="false" default="0">
+            <Data name="clothbelly1_outfitBreastFantasy" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBreastFantasy</Data>
+        </Slider>
+        <Slider name="BreastFlatness2" invert="false" default="0">
+            <Data name="clothbelly1_outfitBreastFlatness2" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBreastFlatness2</Data>
+        </Slider>
+        <Slider name="BreastGravity2" invert="false" default="0">
+            <Data name="clothbelly1_outfitBreastGravity2" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBreastGravity2</Data>
+        </Slider>
+        <Slider name="BreastHeight" invert="false" default="0">
+            <Data name="clothbelly1_outfitBreastHeight" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBreastHeight</Data>
+        </Slider>
+        <Slider name="BreastPerkiness" invert="false" default="0">
+            <Data name="clothbelly1_outfitBreastPerkiness" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBreastPerkiness</Data>
+        </Slider>
+        <Slider name="7B Upper" invert="false" default="0">
+            <Data name="clothbelly1_outfit7B Upper" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfit7B Upper</Data>
+        </Slider>
+        <Slider name="7B Lower" invert="false" default="0">
+            <Data name="clothbelly1_outfit7B Lower" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfit7B Lower</Data>
+        </Slider>
+        <Slider name="MuscularChest" invert="false" default="0">
+            <Data name="clothbelly1_outfitMuscularChest" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitMuscularChest</Data>
+        </Slider>
+        <Slider name="MuscularArms" invert="false" default="0">
+            <Data name="clothbelly1_outfitMuscularArms" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitMuscularArms</Data>
+        </Slider>
+        <Slider name="MuscularButt" invert="false" default="0">
+            <Data name="clothbelly1_outfitMuscularButt" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitMuscularButt</Data>
+        </Slider>
+        <Slider name="MuscularLegs" invert="false" default="0">
+            <Data name="clothbelly1_outfitMuscularLegs" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitMuscularLegs</Data>
+        </Slider>
+        <Slider name="FFB Fitness Less" invert="false" default="0">
+            <Data name="clothbelly1_outfitFFB Fitness Less" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitFFB Fitness Less</Data>
+        </Slider>
+        <Slider name="FFB Fitness More" invert="false" default="0">
+            <Data name="clothbelly1_outfitFFB Fitness More" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitFFB Fitness More</Data>
+        </Slider>
+        <Slider name="FFB Fitness Very" invert="false" default="0">
+            <Data name="clothbelly1_outfitFFB Fitness Very" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitFFB Fitness Very</Data>
+        </Slider>
+        <Slider name="CBBE to FFB" invert="false" default="0">
+            <Data name="clothbelly1_outfitCBBE to FFB" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitCBBE to FFB</Data>
+        </Slider>
+        <Slider name="Athlete" invert="false" default="0">
+            <Data name="clothbelly1_outfitAthlete" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitAthlete</Data>
+        </Slider>
+        <Slider name="BodyBuilder" invert="false" default="0">
+            <Data name="clothbelly1_outfitBodyBuilder" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBodyBuilder</Data>
+        </Slider>
+        <Slider name="Muscle Definition" invert="false" default="0">
+            <Data name="clothbelly1_outfitMuscle Definition" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitMuscle Definition</Data>
+        </Slider>
+        <Slider name="Fitness" invert="false" default="0">
+            <Data name="clothbelly1_outfitFitness" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitFitness</Data>
+        </Slider>
+        <Slider name="Tone" invert="false" default="0">
+            <Data name="clothbelly1_outfitTone" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitTone</Data>
+        </Slider>
+        <Slider name="Shades " invert="false" default="0">
+            <Data name="clothbelly1_outfitShades " target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitShades </Data>
+        </Slider>
+        <Slider name="Dibella" invert="false" default="0">
+            <Data name="clothbelly1_outfitDibella" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitDibella</Data>
+        </Slider>
+        <Slider name="Atomic Beauty" invert="false" default="0">
+            <Data name="clothbelly1_outfitAtomic Beauty" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitAtomic Beauty</Data>
+        </Slider>
+        <Slider name="Big Soft Belly" invert="false" default="0">
+            <Data name="clothbelly1_outfitBig Soft Belly" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBig Soft Belly</Data>
+        </Slider>
+        <Slider name="Explosion" invert="false" default="0">
+            <Data name="clothbelly1_outfitExplosion" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitExplosion</Data>
+        </Slider>
+        <Slider name="BBW" invert="false" default="0">
+            <Data name="clothbelly1_outfitBBW" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBBW</Data>
+        </Slider>
+        <Slider name="Detailed" invert="false" default="0">
+            <Data name="clothbelly1_outfitDetailed" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitDetailed</Data>
+        </Slider>
+        <Slider name="Xun ABS" invert="false" default="0">
+            <Data name="clothbelly1_outfitXun ABS" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitXun ABS</Data>
+        </Slider>
+        <Slider name="Belly Smooth" invert="false" default="0">
+            <Data name="clothbelly1_outfitBelly Smooth" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBelly Smooth</Data>
+        </Slider>
+        <Slider name="AB Template" invert="false" default="0">
+            <Data name="clothbelly1_outfitAB Template" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitAB Template</Data>
+        </Slider>
+        <Slider name="Real Atomic Beauty" invert="false" default="0">
+            <Data name="clothbelly1_outfitReal Atomic Beauty" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitReal Atomic Beauty</Data>
+        </Slider>
+        <Slider name="New Atomic" invert="false" default="0">
+            <Data name="clothbelly1_outfitNew Atomic" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitNew Atomic</Data>
+        </Slider>
+        <Slider name="Narrow Hips" invert="false" default="0">
+            <Data name="clothbelly1_outfitNarrow Hips" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitNarrow Hips</Data>
+        </Slider>
+        <Slider name="Leg Slimmer" invert="false" default="0">
+            <Data name="clothbelly1_outfitLeg Slimmer" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitLeg Slimmer</Data>
+        </Slider>
+        <Slider name="More Chest Depth" invert="false" default="0">
+            <Data name="clothbelly1_outfitMore Chest Depth" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitMore Chest Depth</Data>
+        </Slider>
+        <Slider name="Lower Waist" invert="false" default="0">
+            <Data name="clothbelly1_outfitLower Waist" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitLower Waist</Data>
+        </Slider>
+        <Slider name="Wider Back" invert="false" default="0">
+            <Data name="clothbelly1_outfitWider Back" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitWider Back</Data>
+        </Slider>
+        <Slider name="Hips Forward" invert="false" default="0">
+            <Data name="clothbelly1_outfitHips Forward" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitHips Forward</Data>
+        </Slider>
+        <Slider name="Lower Back Smooth" invert="false" default="0">
+            <Data name="clothbelly1_outfitLower Back Smooth" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitLower Back Smooth</Data>
+        </Slider>
+        <Slider name="Smooth Thighs" invert="false" default="0">
+            <Data name="clothbelly1_outfitSmooth Thighs" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitSmooth Thighs</Data>
+        </Slider>
+        <Slider name="Boob Height" invert="false" default="0">
+            <Data name="clothbelly1_outfitBoob Height" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBoob Height</Data>
+        </Slider>
+        <Slider name="Smaller Torso" invert="false" default="0">
+            <Data name="clothbelly1_outfitSmaller Torso" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitSmaller Torso</Data>
+        </Slider>
+        <Slider name="Wider Ass" invert="false" default="0">
+            <Data name="clothbelly1_outfitWider Ass" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitWider Ass</Data>
+        </Slider>
+        <Slider name="Narrow Ass" invert="false" default="0">
+            <Data name="clothbelly1_outfitNarrow Ass" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitNarrow Ass</Data>
+        </Slider>
+        <Slider name="Ass Height" invert="false" default="0">
+            <Data name="clothbelly1_outfitAss Height" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitAss Height</Data>
+        </Slider>
+        <Slider name="Larger Torso" invert="false" default="0">
+            <Data name="clothbelly1_outfitLarger Torso" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitLarger Torso</Data>
+        </Slider>
+        <Slider name="Muscular Body" invert="false" default="0">
+            <Data name="clothbelly1_outfitMuscular Body" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitMuscular Body</Data>
+        </Slider>
+        <Slider name="Tigersan" invert="false" default="0">
+            <Data name="clothbelly1_outfitTigersan" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitTigersan</Data>
+        </Slider>
+        <Slider name="Breast Narrow" invert="false" default="0">
+            <Data name="clothbelly1_outfitBreast Narrow" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBreast Narrow</Data>
+        </Slider>
+        <Slider name="Breast Curve Down" invert="false" default="0">
+            <Data name="clothbelly1_outfitBreast Curve Down" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBreast Curve Down</Data>
+        </Slider>
+        <Slider name="Breast Curve" invert="false" default="0">
+            <Data name="clothbelly1_outfitBreast Curve" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBreast Curve</Data>
+        </Slider>
+        <Slider name="Breast Armpit In" invert="false" default="0">
+            <Data name="clothbelly1_outfitBreast Armpit In" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBreast Armpit In</Data>
+        </Slider>
+        <Slider name="Breast Armpit Wide" invert="false" default="0">
+            <Data name="clothbelly1_outfitBreast Armpit Wide" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBreast Armpit Wide</Data>
+        </Slider>
+        <Slider name="Big Rib Cage" invert="false" default="0">
+            <Data name="clothbelly1_outfitBig Rib Cage" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBig Rib Cage</Data>
+        </Slider>
+        <Slider name="Butt Thin" invert="false" default="0">
+            <Data name="clothbelly1_outfitButt Thin" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitButt Thin</Data>
+        </Slider>
+        <Slider name="Butt Up" invert="false" default="0">
+            <Data name="clothbelly1_outfitButt Up" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitButt Up</Data>
+        </Slider>
+        <Slider name="Hips Up" invert="false" default="0">
+            <Data name="clothbelly1_outfitHips Up" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitHips Up</Data>
+        </Slider>
+        <Slider name="Hip Line" invert="false" default="0">
+            <Data name="clothbelly1_outfitHip Line" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitHip Line</Data>
+        </Slider>
+        <Slider name="Hip Rotate Forward" invert="false" default="0">
+            <Data name="clothbelly1_outfitHip Rotate Forward" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitHip Rotate Forward</Data>
+        </Slider>
+        <Slider name="Pelvis Up" invert="false" default="0">
+            <Data name="clothbelly1_outfitPelvis Up" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitPelvis Up</Data>
+        </Slider>
+        <Slider name="Pussy Down" invert="false" default="0">
+            <Data name="clothbelly1_outfitPussy Down" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitPussy Down</Data>
+        </Slider>
+        <Slider name="Pussy Pinch" invert="false" default="0">
+            <Data name="clothbelly1_outfitPussy Pinch" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitPussy Pinch</Data>
+        </Slider>
+        <Slider name="Thigh Tone" invert="false" default="0">
+            <Data name="clothbelly1_outfitThigh Tone" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitThigh Tone</Data>
+        </Slider>
+        <Slider name="Thigh Together" invert="false" default="0">
+            <Data name="clothbelly1_outfitThigh Together" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitThigh Together</Data>
+        </Slider>
+        <Slider name="Thigh Apart" invert="false" default="0">
+            <Data name="clothbelly1_outfitThigh Apart" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitThigh Apart</Data>
+        </Slider>
+        <Slider name="Thigh Back Thick" invert="false" default="0">
+            <Data name="clothbelly1_outfitThigh Back Thick" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitThigh Back Thick</Data>
+        </Slider>
+        <Slider name="Thigh Gap" invert="false" default="0">
+            <Data name="clothbelly1_outfitThigh Gap" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitThigh Gap</Data>
+        </Slider>
+        <Slider name="Knee Detail" invert="false" default="0">
+            <Data name="clothbelly1_outfitKnee Detail" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitKnee Detail</Data>
+        </Slider>
+        <Slider name="Abdomin Down" invert="false" default="0">
+            <Data name="clothbelly1_outfitAbdomin Down" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitAbdomin Down</Data>
+        </Slider>
+        <Slider name="Abdomin Size" invert="false" default="0">
+            <Data name="clothbelly1_outfitAbdomin Size" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitAbdomin Size</Data>
+        </Slider>
+        <Slider name="Smoother Belly" invert="false" default="0">
+            <Data name="clothbelly1_outfitSmoother Belly" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitSmoother Belly</Data>
+        </Slider>
+        <Slider name="Belly Define" invert="false" default="0">
+            <Data name="clothbelly1_outfitBelly Define" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBelly Define</Data>
+        </Slider>
+        <Slider name="Belly Diameter" invert="false" default="0">
+            <Data name="clothbelly1_outfitBelly Diameter" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBelly Diameter</Data>
+        </Slider>
+        <Slider name="Belly Up" invert="false" default="0">
+            <Data name="clothbelly1_outfitBelly Up" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBelly Up</Data>
+        </Slider>
+        <Slider name="Belly Tight" invert="false" default="0">
+            <Data name="clothbelly1_outfitBelly Tight" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBelly Tight</Data>
+        </Slider>
+        <Slider name="Belly In" invert="false" default="0">
+            <Data name="clothbelly1_outfitBelly In" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBelly In</Data>
+        </Slider>
+        <Slider name="Belly Rotate Up" invert="false" default="0">
+            <Data name="clothbelly1_outfitBelly Rotate Up" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBelly Rotate Up</Data>
+        </Slider>
+        <Slider name="Belly Wider" invert="false" default="0">
+            <Data name="clothbelly1_outfitBelly Wider" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBelly Wider</Data>
+        </Slider>
+        <Slider name="Chest Definition" invert="false" default="0">
+            <Data name="clothbelly1_outfitChest Definition" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitChest Definition</Data>
+        </Slider>
+        <Slider name="Belly Line" invert="false" default="0">
+            <Data name="clothbelly1_outfitBelly Line" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBelly Line</Data>
+        </Slider>
+        <Slider name="Thin Belly" invert="false" default="0">
+            <Data name="clothbelly1_outfitThin Belly" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitThin Belly</Data>
+        </Slider>
+        <Slider name="Belly Thicc" invert="false" default="0">
+            <Data name="clothbelly1_outfitBelly Thicc" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBelly Thicc</Data>
+        </Slider>
+        <Slider name="Back Bulge" invert="false" default="0">
+            <Data name="clothbelly1_outfitBack Bulge" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBack Bulge</Data>
+        </Slider>
+        <Slider name="Thigh Muscular" invert="false" default="0">
+            <Data name="clothbelly1_outfitThigh Muscular" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitThigh Muscular</Data>
+        </Slider>
+        <Slider name="More Abs" invert="false" default="0">
+            <Data name="clothbelly1_outfitMore Abs" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitMore Abs</Data>
+        </Slider>
+        <Slider name="Abdomin Smooth" invert="false" default="0">
+            <Data name="clothbelly1_outfitAbdomin Smooth" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitAbdomin Smooth</Data>
+        </Slider>
+        <Slider name="Shoulder Flex" invert="false" default="0">
+            <Data name="clothbelly1_outfitShoulder Flex" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitShoulder Flex</Data>
+        </Slider>
+        <Slider name="Plump Ass" invert="false" default="0">
+            <Data name="clothbelly1_outfitPlump Ass" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitPlump Ass</Data>
+        </Slider>
+        <Slider name="Thicc Knees" invert="false" default="0">
+            <Data name="clothbelly1_outfitThicc Knees" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitThicc Knees</Data>
+        </Slider>
+        <Slider name="Body aTightTiger" invert="false" default="0">
+            <Data name="clothbelly1_outfitBody aTightTiger" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBody aTightTiger</Data>
+        </Slider>
+        <Slider name="Body Clamp" invert="false" default="0">
+            <Data name="clothbelly1_outfitBody Clamp" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBody Clamp</Data>
+        </Slider>
+        <Slider name="Body WINININININ" invert="false" default="0">
+            <Data name="clothbelly1_outfitBody WINININININ" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBody WINININININ</Data>
+        </Slider>
+        <Slider name="Body Keep" invert="false" default="0">
+            <Data name="clothbelly1_outfitBody Keep" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBody Keep</Data>
+        </Slider>
+        <Slider name="Body a Soul Body" invert="false" default="0">
+            <Data name="clothbelly1_outfitBody a Soul Body" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBody a Soul Body</Data>
+        </Slider>
+        <Slider name="Body Vanilla Coke" invert="false" default="0">
+            <Data name="clothbelly1_outfitBody Vanilla Coke" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitBody Vanilla Coke</Data>
+        </Slider>
+        <Slider name="VaginaClitSize" invert="false" default="0">
+            <Data name="clothbelly1_outfitVaginaClitSize" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitVaginaClitSize</Data>
+        </Slider>
+        <Slider name="VaginaInnie" invert="false" default="0">
+            <Data name="clothbelly1_outfitVaginaInnie" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitVaginaInnie</Data>
+        </Slider>
+        <Slider name="VaginaInnie2" invert="false" default="0">
+            <Data name="clothbelly1_outfitVaginaInnie2" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitVaginaInnie2</Data>
+        </Slider>
+        <Slider name="VaginaNarrower" invert="false" default="0">
+            <Data name="clothbelly1_outfitVaginaNarrower" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitVaginaNarrower</Data>
+        </Slider>
+        <Slider name="VaginaSize" invert="false" default="0">
+            <Data name="clothbelly1_outfitVaginaSize" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitVaginaSize</Data>
+        </Slider>
+        <Slider name="SSBBW2 body" invert="false" default="0">
+            <Data name="clothbelly1_outfitSSBBW2 body" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitSSBBW2 body</Data>
+        </Slider>
+        <Slider name="Giant belly (coldsteelj)" invert="false" default="0">
+            <Data name="clothbelly1_outfitGiant belly (coldsteelj)" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitGiant belly (coldsteelj)</Data>
+        </Slider>
+        <Slider name="Vore prey belly" invert="false" default="0">
+            <Data name="clothbelly1_outfitVore prey belly" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitVore prey belly</Data>
+        </Slider>
+        <Slider name="SSBBW_Muscled" invert="false" default="0">
+            <Data name="clothbelly1_outfitSSBBW_Muscled" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitSSBBW_Muscled</Data>
+        </Slider>
+        <Slider name="SSBBW WGBelly" invert="false" default="0">
+            <Data name="clothbelly1_outfitSSBBW WGBelly" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitSSBBW WGBelly</Data>
+        </Slider>
+        <Slider name="SSBBW UltKir body" invert="false" default="0">
+            <Data name="clothbelly1_outfitSSBBW UltKir body" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitSSBBW UltKir body</Data>
+        </Slider>
+        <Slider name="SSBBW butt growth" invert="false" default="0">
+            <Data name="clothbelly1_outfitSSBBW butt growth" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitSSBBW butt growth</Data>
+        </Slider>
+        <Slider name="SSBBW2 to CBBE" invert="false" default="0">
+            <Data name="clothbelly1_outfitSSBBW2 to CBBE" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitSSBBW2 to CBBE</Data>
+        </Slider>
+        <Slider name="SSBBW2 boobs growth" invert="false" default="0">
+            <Data name="clothbelly1_outfitSSBBW2 boobs growth" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitSSBBW2 boobs growth</Data>
+        </Slider>
+        <Slider name="SSBBW3 body" invert="false" default="0">
+            <Data name="clothbelly1_outfitSSBBW3 body" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitSSBBW3 body</Data>
+        </Slider>
+        <Slider name="Giant belly up" invert="false" default="0">
+            <Data name="clothbelly1_outfitGiant belly up" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitGiant belly up</Data>
+        </Slider>
+        <Slider name="SSBBW3 Belly Sic1" invert="false" default="0">
+            <Data name="clothbelly1_outfitSSBBW3 Belly Sic1" target="clothbelly1_outfit" local="true">VoreBelly-TwoPrey-v2.osd\clothbelly1_outfitSSBBW3 Belly Sic1</Data>
+        </Slider>
+    </SliderSet>
+</SliderSetInfo>

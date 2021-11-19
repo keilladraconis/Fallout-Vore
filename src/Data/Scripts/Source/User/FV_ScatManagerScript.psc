@@ -432,7 +432,7 @@ ItemParse[] Function ProcessSingleItem(Actor akPrey, Actor akPred, Form afItem, 
 		While(j < comps.length)
 			ItemParse scrapItem = new ItemParse
 			MiscObject:MiscComponent breakdownItem = comps[j]
-			scrapItem.object = breakdownItem.Object.GetScrapItem() 
+			scrapItem.object = breakdownItem.Object.GetScrapItem()
 			scrapItem.count = breakdownItem.Count * aiCount
 			processedItem.add(scrapItem)
 			j += 1

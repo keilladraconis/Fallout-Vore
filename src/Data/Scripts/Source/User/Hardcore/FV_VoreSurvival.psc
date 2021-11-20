@@ -8,6 +8,7 @@ Scriptname Hardcore:FV_VoreSurvival extends Quest conditional
 
 Hardcore:HC_ManagerScript Property HC_Manager Auto
 FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto
+FV_ActorDataScript Property FV_ActorData Auto
 
 GlobalVariable Property HC_Rule_VoreEffects const Auto Mandatory
 GlobalVariable Property FV_VoreCoreToggle Auto Mandatory
@@ -91,7 +92,7 @@ Event FV_ConsumptionRegistryScript.OnDigest(FV_ConsumptionRegistryScript akSende
 		If(PlayerRef.GetValue(HC_VoreEffect_FV_) > 0)
 			;modpool is increased for every slot a prey would occupy
 			playerRef.EquipItem(HC_Vore_VoraciousDesire_FV_, abSilent = true) ;re-up this, it's effects last fo 9999 days but conditioned on actor value
-			HC_Manager.ModFoodPoolAndUpdateHungerEffects(FV_ConsumptionRegistry.EvaluateSlotsUsed(akArgs[2] as Actor)*FoodPoolPerSlot)
+			HC_Manager.ModFoodPoolAndUpdateHungerEffects(FV_ActorData.EvaluateSlots(akArgs[2] as Actor)*FoodPoolPerSlot)
 			HC_Manager.HandleDiseaseRiskEvent(DiseaseRiskVoreAmount)
 		EndIf
 	ElseIf(akArgs[0] as actor == PlayerRef && akArgs[1] as int == 3 && Game.GetDifficulty() == 6)

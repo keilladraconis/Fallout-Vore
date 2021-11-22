@@ -6,36 +6,52 @@
             "type": "pyro",
             "projectFile": "FalloutVore.ppj",
             "gamePath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Fallout 4\\",
-            "problemMatcher": [{
-                "source": "Papyrus",
-                "owner": "papyrus",
-                "fileLocation": "absolute",
-                "pattern": {
-                    "regexp": "^(.*)\\[INFO]\\s(.*)\\((\\d+),(\\d+)\\):(.*)$",
-                    "file": 2,
-                    "line": 3,
-                    "column": 4,
-                    "message": 5
+            "problemMatcher": [
+                {
+                    "source": "Papyrus",
+                    "owner": "papyrus",
+                    "fileLocation": "absolute",
+                    "pattern": {
+                        "regexp": "^(.*)\\[INFO]\\s(.*)\\((\\d+),(\\d+)\\):(.*)$",
+                        "file": 2,
+                        "line": 3,
+                        "column": 4,
+                        "message": 5
+                    },
+                    "severity": "info"
                 },
-                "severity":"info"
-            },{
-                "source": "Papyrus",
-                "owner": "papyrus",
-                "fileLocation": "absolute",
-                "pattern": {
-                    "regexp": "^(.*)\\[WARN]\\s(.*)\\((\\d+),(\\d+)\\):(.*)$",
-                    "file": 2,
-                    "line": 3,
-                    "column": 4,
-                    "message": 5
-                },
-                "severity":"warning"
-            }],
+                {
+                    "source": "Papyrus",
+                    "owner": "papyrus",
+                    "fileLocation": "absolute",
+                    "pattern": {
+                        "regexp": "^(.*)\\[WARN]\\s(.*)\\((\\d+),(\\d+)\\):(.*)$",
+                        "file": 2,
+                        "line": 3,
+                        "column": 4,
+                        "message": 5
+                    },
+                    "severity": "warning"
+                }
+            ],
             "label": "pyro: Compile Project (FalloutVore.ppj)",
             "group": {
                 "kind": "build",
                 "isDefault": true
             }
+        },
+        {
+            "label": "Powershell: Build",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-ExecutionPolicy",
+                "Unrestricted",
+                "-NoProfile",
+                "-File",
+                "${cwd}\\build.ps1"
+            ],
+            "problemMatcher": []
         }
     ]
 }

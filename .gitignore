@@ -1,3 +1,4 @@
 *.BA2
 build
-Champollion.exe
+pkg
+*.log

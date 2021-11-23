@@ -1,4 +1,3 @@
-Remove-Item '.\pkg' -Recurse -Force
 Copy-Item 'src\Data\interface' 'build\Data\interface' -Recurse -Force
 Copy-Item 'src\Data\Materials' 'build\Data\Materials' -Recurse -Force
 Copy-Item 'src\Data\Meshes' 'build\Data\Meshes' -Recurse -Force

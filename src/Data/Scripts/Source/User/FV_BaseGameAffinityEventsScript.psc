@@ -1,6 +1,6 @@
 Scriptname FV_BaseGameAffinityEventsScript extends Quest const
-{Base game events that companions in this DLC will respond to}
-
+{Base game events that companions in this DLC will respond to. Attached to FV_CompanionAffinity Quest}
+; This is responsible for how Bria reacts to various events in the MSQ.
 
 group quests
 	Quest property BoS100 auto const mandatory
@@ -122,10 +122,9 @@ group quests
 	Quest Property MS07c const auto mandatory
 	Quest Property RRAct3PickUp const auto mandatory
 	Quest Property RRR04 const auto mandatory
-
 endGroup
 
-	GlobalVariable Property MinCastleAttacker Auto Const
+GlobalVariable Property MinCastleAttacker Auto Const
 
 Group DLCCompanionActors
 	CompanionActorScript Property BriaRef const auto Mandatory

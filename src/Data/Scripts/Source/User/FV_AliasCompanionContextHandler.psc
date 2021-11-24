@@ -1,4 +1,6 @@
 ScriptName FV_AliasCompanionContextHandler extends ReferenceAlias
+; Attached to FV_ContextDialogue as an alias to followers. 
+; Possibly has something to do with contextual vore during command dialogue with followers.
 
 GlobalVariable Property FV_ContextEnabled Auto
 

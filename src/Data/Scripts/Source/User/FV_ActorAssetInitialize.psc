@@ -1,4 +1,5 @@
 Scriptname FV_ActorAssetInitialize extends Actor
+;; Used by FV_Louise and FV_GunnerBoss_Jill. Apparently gives them the Azar ponytail hair.
 
 String Property ModName = "AzarPonytailHairstyles.esp" Auto
 

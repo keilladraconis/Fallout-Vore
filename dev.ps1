@@ -6,4 +6,5 @@ Copy-Item 'src\Data\Textures' 'build\Data\textures' -Recurse -Force
 Copy-Item 'src\Data\F4SE' 'build\Data\F4SE' -Recurse -Force
 Copy-Item 'src\Data\MCM' 'build\Data\MCM' -Recurse -Force
 Copy-Item 'src\Data\Tools' 'build\Data\Tools' -Recurse -Force
+Copy-Item 'src\Data\Scripts\Source\User' 'build\Data\Scripts\Source\User' -Recurse -Force
 Copy-Item 'src\Data\FalloutVore.esp' 'build\Data\FalloutVore.esp' -Force

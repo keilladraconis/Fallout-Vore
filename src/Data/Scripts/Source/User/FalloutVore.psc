@@ -1,4 +1,5 @@
 Scriptname FalloutVore Native Hidden
+;; Native stubs for some special functions. Used by FV_PlayerBellyContainerScript
 
 bool Function OpenVoreLevelMenu() global native
 ;This function will force the Fallout Vore level up menu to open

@@ -1,7 +1,8 @@
 Scriptname FV_ActorDataScript extends Quest
+;; Bound to FV_ActorData Quest. Referenced by many other scripts
 
 ActorValue Property Rads Auto
-SlotData[] Property BaseActorData Auto
+SlotData[] Property BaseActorData Auto ; A list of SlotData structs provided by ESP. Customized in the Creation Kit.
 Faction Property HasBeenCompanionFaction Auto
 Keyword Property ActorTypeBug Auto
 Keyword Property ActorTypeRobot Auto
@@ -26,12 +27,7 @@ Struct SlotData
 	Perk RadResist = None
 EndStruct
 
-
-
-Event OnInit()
-	
-EndEvent
-
+; Finds the index of the entry in BaseActorData which matches the player's race, or otherwise their bug/robot keyword.
 Int Function GetIndex(Actor akActorToCheck)
 	Race RaceToCheck = akActorToCheck.GetRace()
 	int i = BaseActorData.FindStruct("ActorRace", RaceToCheck)
@@ -46,8 +42,8 @@ Int Function GetIndex(Actor akActorToCheck)
 	return i
 EndFunction
 
+; Returns how many belly slots the prey occupies.
 Int Function EvaluateSlots(Actor akPrey, Bool checkHuman = false)
-
 	Int SlotsRequired = 0
 	Int index = GetIndex(akPrey)
 	if(index > -1)
@@ -63,15 +59,15 @@ Int Function EvaluateSlots(Actor akPrey, Bool checkHuman = false)
 	Else
 		Return SlotsRequired
 	EndIf
-
 EndFunction
 
-int Function EvaluateIndigestionChance(Actor akPred)
+; Returns the IndigestionChance when consuming the actor. 
+int Function EvaluateIndigestionChance(Actor akActor)
 	int result = 0
-	Int index = GetIndex(akPred)
+	Int index = GetIndex(akActor)
 	If(index > -1)
 		If BaseActorData[index].IndigestionIncreaseCancelPerk != None
-			If(!akPred.HasPerk(BaseActorData[index].IndigestionIncreaseCancelPerk))
+			If(!akActor.HasPerk(BaseActorData[index].IndigestionIncreaseCancelPerk))
 				result = BaseActorData[index].IndigestionChanceIncrease
 			Endif
 		Else
@@ -82,6 +78,7 @@ int Function EvaluateIndigestionChance(Actor akPred)
 	return result
 EndFunction
 
+; Determines whether a given prey can always be swallowed. For example; Humans, Bloatflies, Dogs
 Bool Function GetCanSwallow(Actor akPred, Actor akPrey)
 	Race RaceToCheck = akPrey.GetRace()
 	Int index = GetIndex(akPrey)
@@ -96,6 +93,8 @@ Bool Function GetCanSwallow(Actor akPred, Actor akPrey)
 	return true
 EndFunction
 
+; Seems like this tracks some stats relating to how many times pred has eaten a prey. Also inexplicably applies radiation damage.
+; Used Once by FV_ConsumptionRegistry
 Function UpdateDigestCount(Actor akPred, Actor akPrey)
 	Int index = GetIndex(akPrey)
 	If(index > -1)
@@ -104,6 +103,7 @@ Function UpdateDigestCount(Actor akPred, Actor akPrey)
 			;update the player tracker if the pred is a companion
 			Game.GetPlayer().ModValue(BaseActorData[index].PreyCount, 1)
 		EndIf
+		; TODO Why is radiation damage applied here?
 		If(BaseActorData[index].RadDamageMax > 0)
 			If(BaseActorData[index].RadResist != NONE)
 				If(!akPred.HasPerk(BaseActorData[index].RadResist))
@@ -116,6 +116,7 @@ Function UpdateDigestCount(Actor akPred, Actor akPrey)
 	EndIf
 EndFunction
 
+; Simple getter. Used once by ConsumptionRegistry to set IsHumanoid VoreData.
 Bool Function GetIsHumanoid(Actor akPrey)
 	Int index = GetIndex(akPrey)
 	if(index > -1)
@@ -124,6 +125,7 @@ Bool Function GetIsHumanoid(Actor akPrey)
 	return false
 EndFunction
 
+; TODO: Unknown purpose. Used by FV_InjectActorDataScript.
 Function InjectAddedInfo(SlotData DataToInject)
 	BaseActorData.add(DataToInject)
 EndFunction

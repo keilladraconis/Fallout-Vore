@@ -1,4 +1,5 @@
 Scriptname AliasDeathScript extends ReferenceAlias Const
+;; Used by Reference Aliases for Bria and Jill on FVS01_BriaQuest_FV_
 
 Int Property StageToSet = -1 Auto Const
 Bool Property UseOnDyingInstead = FALSE Auto Const

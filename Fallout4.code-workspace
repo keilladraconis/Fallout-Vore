@@ -1,16 +1,8 @@
 {
-    // created by vscode papyrus-lang papyrus.fallout4.generateProject
-    "folders": [
-        {
-            "path": "."
-        }
-    ],
-    "settings": {
-        "papyrus.fallout4.enabled": true,
-        "papyrus.skyrim.enabled": false,
-        "papyrus.skyrimSpecialEdition.enabled": false
-    },
-    "extensions": {
-        "recommendations": ["joelday.papyrus-lang-vscode"]
-    }
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {}
 }

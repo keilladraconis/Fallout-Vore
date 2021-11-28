@@ -3,25 +3,25 @@ Scriptname FV_SwallowScript extends activemagiceffect
 Group ActorValues
 	;ActorValue Property ActionPoints Auto
 	;ActorValue Property Health Auto
-	ActorValue Property EnduranceCondition Auto
-	ActorValue Property LeftAttackCondition Auto
-	ActorValue Property LeftMobilityCondition Auto
-	ActorValue Property PerceptionCondition Auto
-	ActorValue Property RightAttackCondition Auto
-	ActorValue Property RightMobilityCondition Auto
-	ActorValue Property FV_BlockSwallowBool Auto
-	ActorValue Property FV_CanAlwaysVore Auto
-	ActorValue Property FV_BellyCapacity Auto
-	ActorValue Property FV_CurrentPrey Auto
-	ActorValue Property FV_SwallowStrength Auto
-	ActorValue Property FV_SwallowResistance Auto
-	ActorValue Property FV_VoreFrenzied Auto
-	ActorValue Property FV_VoreLevel Auto
-	ActorValue Property FV_SwallowProtectionFlag Auto
+	ActorValue Property EnduranceCondition Auto Const Mandatory
+	ActorValue Property LeftAttackCondition Auto Const Mandatory
+	ActorValue Property LeftMobilityCondition Auto Const Mandatory
+	ActorValue Property PerceptionCondition Auto Const Mandatory
+	ActorValue Property RightAttackCondition Auto Const Mandatory
+	ActorValue Property RightMobilityCondition Auto Const Mandatory
+	ActorValue Property FV_BlockSwallowBool Auto Const Mandatory
+	ActorValue Property FV_CanAlwaysVore Auto Const Mandatory
+	ActorValue Property FV_BellyCapacity Auto Const Mandatory
+	ActorValue Property FV_CurrentPrey Auto Const Mandatory
+	ActorValue Property FV_SwallowStrength Auto Const Mandatory
+	ActorValue Property FV_SwallowResistance Auto Const Mandatory
+	ActorValue Property FV_VoreFrenzied Auto Const Mandatory
+	ActorValue Property FV_VoreLevel Auto Const Mandatory
+	ActorValue Property FV_SwallowProtectionFlag Auto Const Mandatory
 EndGroup
 
 Group Factions
-	Faction Property CurrentCompanionFaction Auto
+	Faction Property CurrentCompanionFaction Auto Const Mandatory
 EndGroup
 
 Group FormLists
@@ -29,13 +29,13 @@ Group FormLists
 EndGroup
 
 Group Perks
-	Perk Property FV_DownTheHatch02 Auto
-	Perk Property FV_Ravenous04 Auto
-	Perk Property FV_HighIronDiet02 Auto
-	Perk Property FV_Prowler03 Auto
-	Perk Property FV_Tenderizer01 Auto
-	Perk Property FV_Tenderizer02 Auto
-	Perk Property FV_Tenderizer03 Auto
+	Perk Property FV_DownTheHatch02 Auto Const Mandatory
+	Perk Property FV_Ravenous04 Auto Const Mandatory
+	Perk Property FV_HighIronDiet02 Auto Const Mandatory
+	Perk Property FV_Prowler03 Auto Const Mandatory
+	Perk Property FV_Tenderizer01 Auto Const Mandatory
+	Perk Property FV_Tenderizer02 Auto Const Mandatory
+	Perk Property FV_Tenderizer03 Auto Const Mandatory
 EndGroup
 
 Group Globals
@@ -46,25 +46,25 @@ Group Globals
 EndGroup
 
 Group Potions
-	Potion Property FV_SwallowAPCost Auto
+	Potion Property FV_SwallowAPCost Auto Const Mandatory
 EndGroup
 
 Group Messages
-	Message Property FV_CannotSwallowPowerArmorMessage Auto
-	Message Property FV_TooFullMessage Auto
+	Message Property FV_CannotSwallowPowerArmorMessage Auto Const Mandatory
+	Message Property FV_TooFullMessage Auto Const Mandatory
 EndGroup
 
 Group Markers
-	ObjectReference Property FV_StomachCellMarker Auto
+	ObjectReference Property FV_StomachCellMarker Auto Const Mandatory
 EndGroup
 
 Group Scripts
-	FV_ActorDataScript Property FV_ActorData Auto
-	FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto 
+	FV_ActorDataScript Property FV_ActorData Auto Const Mandatory
+	FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto Const Mandatory
 EndGroup
 
 Group Actors
-	Actorbase Property FV_ScatLootCorpse Auto
+	Actorbase Property FV_ScatLootCorpse Auto Const Mandatory
 EndGroup
 Bool Property IsNonLethalVore = False Auto
 {Set this to true for Non-lethal vore.}
@@ -125,6 +125,7 @@ Event OnEffectStart(actor akTarget, actor akCaster)
 			startvore = 1
 		EndIf
 		
+		;GAZ: Remove this at some point, the coprophage crowd enjoyed when we did this for Devourment Refactor.
 		;Block preds from swallowing scat piles
 		If(akTarget.GetActorBase() == FV_ScatLootCorpse)
 			startvore = 0
@@ -156,10 +157,20 @@ Event OnEffectStart(actor akTarget, actor akCaster)
 				;float HealthPoints = GetActorValuePercentageEX(akTarget, Health)
 				;float AP = GetActorValuePercentageEX(akTarget, ActionPoints)
 				;float chance = 0
-				Float preyResist = (akTarget.GetValue(FV_SwallowResistance) + akTarget.GetValue(Game.GetAgilityAV()))*GetTargetHealthDebuff(akTarget, akCaster)
-				Float predSwallow = akCaster.GetValue(FV_SwallowStrength) + akCaster.GetValue(Game.GetPerceptionAV())
+				Float preyResist = (akTarget.GetValue(FV_SwallowResistance) + 5) * GetTargetHealthDebuff(akTarget, akCaster)
+				Float predSwallow = akCaster.GetValue(FV_SwallowStrength) + 5
 				;chance = (1.0 + (akCaster.GetValue(FV_VoreLevel)-akTarget.GetLevel())/100.0)*Math.pow(2.71828, - HealthPoints - (0.5*AP))
 				;chance = (25 + akCaster.GetValue(Game.GetPerceptionAV()) + akCaster.getValue(FV_SwallowStrength) - akTarget.GetValue(FV_SwallowResistance))/100
+				
+				;is pred stomach full
+				If(akCaster.GetValue(FV_BellyCapacity) < akCaster.GetValue(FV_CurrentPrey) + FV_ActorData.EvaluateSlots(akTarget))
+					;chance=0
+					If(akCaster == Game.GetPlayer())
+						FV_TooFullMessage.Show()
+					EndIf
+					preyResist = predSwallow + 100.0
+					;return
+				EndIf
 				
 				If(akCaster.HasPerk(FV_Tenderizer02))
 					If(akTarget.GetValue(LeftMobilityCondition) <= 0 || aktarget.GetValue(RightMobilityCondition) <= 0 || akTarget.GetValue(EnduranceCondition) <= 0 || akTarget.GetValue(LeftAttackCondition) <= 0 ||akTarget.GetValue(PerceptionCondition) <= 0 || akTarget.GetValue(RightAttackCondition) <= 0)
@@ -186,16 +197,6 @@ Event OnEffectStart(actor akTarget, actor akCaster)
 
 				If(!FV_ActorData.GetCanSwallow(akCaster, akTarget))
 					;chance = 0
-					preyResist = predSwallow + 100.0
-					;return
-				EndIf
-				
-				;is pred stomach full
-				If(akCaster.GetValue(FV_BellyCapacity) < akCaster.GetValue(FV_CurrentPrey) + FV_ActorData.EvaluateSlots(akTarget))
-					;chance=0
-					If(akCaster == Game.GetPlayer())
-						FV_TooFullMessage.Show()
-					EndIf
 					preyResist = predSwallow + 100.0
 					;return
 				EndIf

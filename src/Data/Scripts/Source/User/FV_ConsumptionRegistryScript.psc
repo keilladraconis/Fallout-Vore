@@ -1500,9 +1500,7 @@ Function PerformVoreEventAccept(Actor akPred, Actor akPrey, bool bLethalFlag)
 		FV_ClothesRipMessage.Show()
 	
 		;Sound of ripping
-		FV_FXClothesRip.PlayAndWait(akPred)
-		;Check if keyword for Coldsteel belly should be applied
-		;ColdSteelKeywordCheck(akPred)
+		FV_FXClothesRip.Play(akPred) ;GAZ: Don't use PlayAndWaits, this stalls the system.
 	EndIf
 	
 	;Add prey to the prey array
@@ -1624,7 +1622,7 @@ Function PlayFailSounds(Actor akPred)
 	EndIf
 	bPlayingFailSounds = true
 	If(akPred == PlayerRef)
-		FV_PlayerSwallowFail.PlayandWait(akPred)
+		FV_PlayerSwallowFail.PlayandWait(akPred)	;GAZ: These are fine to stay as PlayAndWaits, since they are run on a parralel execution called by CallFunctionNoWait() and it relies on a bool mutex.
 	Else
 		FV_NPCSwallowFail.PlayandWait(akPred)
 	EndIf
@@ -1961,12 +1959,12 @@ function OnTimerPerformDigestion(int aiTimerID, VoreData data)
 	if(root == data.ParentIndex)
 		If(Utility.RandomInt() > 75)
 			If(currentPred == PlayerRef)
-				FV_PlayerDigestSuccess.PlayAndWait(currentPred)
+				FV_PlayerDigestSuccess.Play(currentPred)	;GAZ: Changed more PlayAndWait spam. Changing these to use .Play instead may cause issues with multiple sounds playing over the top of each other. If this happens, switch to using CallFunctionNoWait method.
 			Else
-				FV_NPCDigestSuccess.PlayAndWait(currentPred)
+				FV_NPCDigestSuccess.Play(currentPred)
 			EndIf
 		Else
-			FV_FXBurp.PlayAndWait(currentPred)
+			FV_FXBurp.Play(currentPred)
 		EndIf
 	Else
 		;TODOSound: 

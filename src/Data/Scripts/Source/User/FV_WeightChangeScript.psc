@@ -1,70 +1,70 @@
 Scriptname FV_WeightChangeScript extends Quest
 
 Group ActorValues
-	ActorValue Property FV_IsActivePred Auto						;defaults to 0 in CK
-	ActorValue Property FV_CurrentPrey Auto
-	ActorValue Property FV_FullnessMeter Auto
-	ActorValue Property FV_GiantBelly Auto
-	ActorValue Property FV_HasHadNukaAcid Auto
-	ActorValue Property FV_IndigestionSeverityFlag Auto
-	ActorValue Property FV_UseFormulaV Auto
-	ActorValue Property FV_HasPlayedFormulaVMessage Auto
+	ActorValue Property FV_IsActivePred Auto Const Mandatory						;defaults to 0 in CK
+	ActorValue Property FV_CurrentPrey Auto Const Mandatory
+	ActorValue Property FV_FullnessMeter Auto Const Mandatory
+	ActorValue Property FV_GiantBelly Auto Const Mandatory
+	ActorValue Property FV_HasHadNukaAcid Auto Const Mandatory
+	ActorValue Property FV_IndigestionSeverityFlag Auto Const Mandatory
+	ActorValue Property FV_UseFormulaV Auto Const Mandatory
+	ActorValue Property FV_HasPlayedFormulaVMessage Auto Const Mandatory
 EndGroup
 
 Group Companions
 	FormList Property FV_ThiccExcludeList Auto
 	{Companions added to this list will be ignored by Thicc Vore}
-	ReferenceAlias Property CurrentCompanion Auto Const
+	ReferenceAlias Property CurrentCompanion Auto
 	ReferenceAlias Property FV_ThiccCompanion Auto
 EndGroup
 
 Group Factions
-	Faction Property CurrentCompanionFaction Auto
-	Faction Property HasBeenCompanionFaction Auto
+	Faction Property CurrentCompanionFaction Auto Const Mandatory
+	Faction Property HasBeenCompanionFaction Auto Const Mandatory
 EndGroup
 
 Group Keywords
-	Keyword Property ActorTypeAnimal Auto
-	Keyword Property ActorTypeBug Auto
-	Keyword Property ActorTypeDeathclaw Auto
-	Keyword Property ActorTypeFeralGhoul Auto
-	Keyword Property ActorTypeGhoul Auto
-	Keyword Property ActorTypeHuman Auto
-	Keyword Property ActorTypeMireLurk Auto
-	Keyword Property ActorTypeMireLurkKing Auto
-	Keyword Property ActorTypeRadScorpion Auto
-	Keyword Property ActorTypeRobot Auto
-	Keyword Property ActorTypeSuperMutant Auto
-	Keyword Property ActorTypeSuperMutantBehemoth Auto
-	Keyword Property ActorTypeSynth Auto
-	Keyword Property ActorTypeYaoGuai Auto
+	Keyword Property ActorTypeAnimal Auto Const Mandatory
+	Keyword Property ActorTypeBug Auto Const Mandatory
+	Keyword Property ActorTypeDeathclaw Auto Const Mandatory
+	Keyword Property ActorTypeFeralGhoul Auto Const Mandatory
+	Keyword Property ActorTypeGhoul Auto Const Mandatory
+	Keyword Property ActorTypeHuman Auto Const Mandatory
+	Keyword Property ActorTypeMireLurk Auto Const Mandatory
+	Keyword Property ActorTypeMireLurkKing Auto Const Mandatory
+	Keyword Property ActorTypeRadScorpion Auto Const Mandatory
+	Keyword Property ActorTypeRobot Auto Const Mandatory
+	Keyword Property ActorTypeSuperMutant Auto Const Mandatory
+	Keyword Property ActorTypeSuperMutantBehemoth Auto Const Mandatory
+	Keyword Property ActorTypeSynth Auto Const Mandatory
+	Keyword Property ActorTypeYaoGuai Auto Const Mandatory
 	Keyword Property FV_VoreMorphKeyword Auto Const Mandatory
-	Keyword Property FV_ColdSteelBody Auto
+	Keyword Property FV_ColdSteelBody Auto Const Mandatory
 EndGroup
 
 Group Messages
-	Message Property FV_HelpThiccVoreSliders Auto
-	Message Property FV_ThiccFormulaVCompanionMessage Auto
-	Message Property FV_ThiccFormulaVPlayerMessage Auto
-	Message Property FV_ThiccVEVReactCompanionMessage Auto
-	Message Property FV_ThiccVEVReactPlayerMessage Auto
-	Message Property FV_ThiccNoNutritonMessage Auto
-	MessageStruct[] Property ThiccMessages Auto
+	Message Property FV_HelpThiccVoreSliders Auto Const Mandatory
+	Message Property FV_ThiccFormulaVCompanionMessage Auto Const Mandatory
+	Message Property FV_ThiccFormulaVPlayerMessage Auto Const Mandatory
+	Message Property FV_ThiccVEVReactCompanionMessage Auto Const Mandatory
+	Message Property FV_ThiccVEVReactPlayerMessage Auto Const Mandatory
+	Message Property FV_ThiccNoNutritonMessage Auto Const Mandatory
+	MessageStruct[] Property ThiccMessages Auto Const Mandatory
 EndGroup
 
 Group Perks
-	Perk Property FV_HungerSpeed Auto
-	Perk Property FV_HungerStaggerResist Auto
+	Perk Property FV_HungerSpeed Auto Const Mandatory
+	Perk Property FV_HungerStaggerResist Auto Const Mandatory
 EndGroup
 
 Group Scripts
-	FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto
-	FollowersScript Property Followers Auto
-	FV_VoreHudScript Property FV_VoreHud Auto
+	FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto Const Mandatory
+	FollowersScript Property Followers Auto Const Mandatory
+	FV_VoreHudScript Property FV_VoreHud Auto Const Mandatory
 EndGroup
 
 Group Sounds
-	Sound Property FV_FXStomachGurgle Auto
+	Sound Property FV_FXStomachGurgle Auto Const Mandatory
 EndGroup
 
 Int MinMeterDownCounter	

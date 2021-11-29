@@ -64,6 +64,7 @@ Group Scripts
 EndGroup
 
 Group Actors
+	Actor Property PlayerRef Auto Const Mandatory	;GAZ: This script previously called Game.GetPlayer() so many times that it was worth sacrificing this small amount of script memory for a property, to scrap those calls. Documentation: http://gamesas.com/best-practices-papyrus-t291375.html
 	Actorbase Property FV_ScatLootCorpse Auto Const Mandatory
 EndGroup
 Bool Property IsNonLethalVore = False Auto
@@ -71,18 +72,9 @@ Bool Property IsNonLethalVore = False Auto
 Float Property NoPerkDebuffLimit = 0.6 Auto
 Float Property Tenderizer01DebuffLimit = 0.4 Auto
 
-Float Function GetActorValuePercentageEX(Actor akActor, ActorValue avValue)
-
-	Float CurrentValue = akActor.GetValue(avValue)
-	Float BaseValue = akActor.GetBaseValue(avValue)
-
-	Float Percent = (CurrentValue / BaseValue)
-	return Percent
-	
-EndFunction 
 
 Float Function GetTargetHealthDebuff(Actor akTarget, Actor akCaster)
-	Float currentHealthPercent = akTarget.GetValue(Game.GetHealthAV())/akTarget.GetBaseValue(Game.GetHealthAV())
+	Float currentHealthPercent = akTarget.GetValuePercentage(Game.GetHealthAV())
 	If(currentHealthPercent < Tenderizer01DebuffLimit && !akCaster.HasPerk(FV_Tenderizer03) && akCaster.HasPerk(FV_Tenderizer01))
 		return Tenderizer01DebuffLimit
 	ElseIf(currentHealthPercent < NoPerkDebuffLimit && !akCaster.HasPerk(FV_Tenderizer03))
@@ -104,7 +96,7 @@ Event OnEffectStart(actor akTarget, actor akCaster)
 			If(FV_MaleVoreEnabled.GetValue() == 1)
 				startvore = 1
 			else
-				If(akCaster == Game.GetPlayer())
+				If(akCaster == PlayerRef)
 					debug.notification("Male vore is disabled")
 				EndIf
 				startvore = 0
@@ -113,7 +105,7 @@ Event OnEffectStart(actor akTarget, actor akCaster)
 			If(FV_FemaleVoreEnabled.GetValue() == 1)
 				startvore = 1
 			else
-				If(akCaster == Game.GetPlayer())
+				If(akCaster == PlayerRef)
 					debug.notification("Female vore is disabled")
 				EndIf
 				startvore = 0
@@ -143,7 +135,7 @@ Event OnEffectStart(actor akTarget, actor akCaster)
 			;Check for non lethal vore attempts  
 			If(IsNonLethalVore)
 				;Make victim dissapear. Move to belly cell
-				If(akTarget != Game.GetPlayer())		
+				If(akTarget != PlayerRef)		
 					akTarget.MoveTo(FV_StomachCellMarker)
 				Else
 					akTarget.setAlpha(0, false)																	;makes player invisible
@@ -165,7 +157,7 @@ Event OnEffectStart(actor akTarget, actor akCaster)
 				;is pred stomach full
 				If(akCaster.GetValue(FV_BellyCapacity) < akCaster.GetValue(FV_CurrentPrey) + FV_ActorData.EvaluateSlots(akTarget))
 					;chance=0
-					If(akCaster == Game.GetPlayer())
+					If(akCaster == PlayerRef)
 						FV_TooFullMessage.Show()
 					EndIf
 					preyResist = predSwallow + 100.0
@@ -189,7 +181,7 @@ Event OnEffectStart(actor akTarget, actor akCaster)
 					predSwallow = preyResist + 100.0
 				Endif
 				
-				If(akTarget.IsInFaction(CurrentCompanionFaction) && FV_SwallowCompanionProtection.GetValue() > 0 && akCaster == Game.GetPlayer())
+				If(akTarget.IsInFaction(CurrentCompanionFaction) && FV_SwallowCompanionProtection.GetValue() > 0 && akCaster == PlayerRef)
 					;chance = 0
 					preyResist = predSwallow + 100.0
 					;return
@@ -203,7 +195,7 @@ Event OnEffectStart(actor akTarget, actor akCaster)
 
 				If(akTarget.IsInPowerArmor() && !akCaster.HasPerk(FV_HighIronDiet02))
 					;chance=0
-					If(akCaster == Game.GetPlayer())
+					If(akCaster == PlayerRef)
 						FV_CannotSwallowPowerArmorMessage.Show()
 					EndIf
 					preyResist = predSwallow + 100.0
@@ -215,15 +207,15 @@ Event OnEffectStart(actor akTarget, actor akCaster)
 					
 				Else
 					;swallow success
-					If(akCaster == Game.GetPlayer() && !IsNonLethalVore)
+					If(akCaster == PlayerRef && !IsNonLethalVore)
 						;Make player spend Action Points
 						If(akCaster.IsSprinting() && akCaster.HasPerk(FV_DownTheHatch02))
 							;do nothing
 						Else
-							Game.GetPlayer().EquipItem(FV_SwallowAPCost, abSilent = true)
+							PlayerRef.EquipItem(FV_SwallowAPCost, abSilent = true)
 						EndIf
 					EndIf
-					If(akTarget != Game.GetPlayer())		
+					If(akTarget != PlayerRef)		
 						akTarget.MoveTo(FV_StomachCellMarker)
 					Else
 						akTarget.setAlpha(0, false)						;makes player invisible

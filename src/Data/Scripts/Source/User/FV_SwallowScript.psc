@@ -64,7 +64,7 @@ Group Scripts
 EndGroup
 
 Group Actors
-	Actor Property PlayerRef Auto Const Mandatory	;GAZ: This script previously called Game.GetPlayer() so many times that it was worth sacrificing this small amount of script memory for a property, to scrap those calls.
+	Actor Property PlayerRef Auto Const Mandatory	;GAZ: This script previously called Game.GetPlayer() so many times that it was worth sacrificing this small amount of script memory for a property, to scrap those calls. Documentation: http://gamesas.com/best-practices-papyrus-t291375.html
 	Actorbase Property FV_ScatLootCorpse Auto Const Mandatory
 EndGroup
 Bool Property IsNonLethalVore = False Auto

@@ -59,7 +59,6 @@ Group Scripts
 	FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto
 	FV_LevelUpManagerScript Property FV_LevelUpManager Auto
 	FV_VoreHudScript Property FV_VoreHud Auto
-	Hardcore:FV_VoreSurvival Property HC_VoreManager const auto mandatory
 EndGroup
 
 Float fCameraVomitMin = 100.0
@@ -227,13 +226,7 @@ Function OnMCMSettingChange(string modName, string id)
 					Game.GetPlayer().Addperk(FV_ContextVorePerk)
 				EndIf
 		ElseIf(id == "ActivatePlayerPred")
-			
-		ElseIf(id=="VoreSurvival")
-			If(FV_VoreCoreToggle.GetValue()==1)
-				HC_VoreManager.StartupHardcore()
-			ElseIf(FV_VoreCoreToggle.GetValue()==0)
-				HC_VoreManager.ShutdownHardcore()
-			EndIf
+			;GAZ: I found this line like this. I wonder if at some point someone tried to make Context ran through MCM Hotkey. Investigate.
 		ElseIf(id=="CrouchScatToggle")
 			If(bCrouchToShit)
 				RegisterForRemoteEvent(PlayerRef, "OnEnterSneaking")

@@ -16,9 +16,8 @@ I'm working on this mod as a service to the community, and to myself. After a lo
 
 ## Developing
 * Build the scripts with /Terminal -> Run Task.../ and pick `pyro: Compile Project (FalloutVore.ppj)`
-* Build the packages/mod with the task `Powershell: dev`
-* Hardlink the pkg directory into your mod staging directory 
-  `New-Item -ItemType Junction -Name FalloutVore -Value '..\Fallout Vore\pkg'`
+* Hardlink the src directory into your mod staging directory 
+  `New-Item -ItemType Junction -Name FalloutVore -Value '..\Fallout Vore\src\Data'`
 * (re)launch Vortex
 
 ## Releasing

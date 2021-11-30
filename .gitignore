@@ -1,4 +1,5 @@
 *.BA2
+*.pex
 build
 pkg
 dist

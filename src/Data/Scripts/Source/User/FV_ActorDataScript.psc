@@ -125,7 +125,7 @@ Bool Function GetIsHumanoid(Actor akPrey)
 	return false
 EndFunction
 
-; TODO: Unknown purpose. Used by FV_InjectActorDataScript.
+;GAZ: Used to patch DLCs and maybe in the future mods. DLC is detected and patched by FV_ConsumptionRegistryScript RunDLCPatches().
 Function InjectAddedInfo(SlotData DataToInject)
 	BaseActorData.add(DataToInject)
 EndFunction

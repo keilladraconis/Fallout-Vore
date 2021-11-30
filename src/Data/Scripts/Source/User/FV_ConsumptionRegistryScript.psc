@@ -178,6 +178,8 @@ Actor PlayerRef
 int PreviousPlayerPOV
 
 Bool KillPlayerAsPrey = false
+Bool DLC03Patched = False	;Far Harbor
+Bool DLC06Patched = False	;Nuka-World
 string sCBBEGiantbelly = "Giant belly (coldsteelj)"
 string sCBBEVorePreyBelly = "Vore prey belly"
 
@@ -270,12 +272,115 @@ Event OnInit()
 	RegisterForPlayerSleep()
 	RegisterForPlayerWait()
 	FV_VoreSurvival.RegisterForVoreSurvival(True)
+	RunDLCPatches()
 EndEvent
 
 Event Actor.OnPlayerLoadGame(Actor akSender)
 	debug.trace("Fallout Vore v3.0 loaded")
 	FV_VoreSurvival.RegisterForVoreSurvival(True)
+	RunDLCPatches()
 EndEvent
+
+Function RunDLCPatches()
+{GAZ: Function to detect DLC and add DLC Races to ActorData if present. Should check each time incase user buys DLC and continues save.
+This way is slightly uglier and more script-intensive on first run, but prevents us from needing to make patch-plugins that confuse and clutter load orders.
+I handle this patching here because there's no benefit to patch things before the Registry is fully ready to go.}
+
+	IF Game.IsPluginInstalled("DLCCoast.esm") && !DLC03Patched
+		
+		Perk pApexPredator = Game.GetFormFromFile(0x0000F8EC, "FalloutVore.esp") as Perk Const	;GAZ: Used ofte, so cache here!
+
+		FV_ActorDataScript:SlotData DLC03Payload = new FV_ActorDataScript:SlotData
+		DLC03Payload.ActorRace = Game.GetFormFromFile(0x000247C1, "DLCCoast.esm") as Race	;GAZ: Gulpers!
+		DLC03Payload.IndigestionChanceIncrease = 20
+		DLC03Payload.Slots = 12
+		DLC03Payload.SwallowMessageToPlay = Game.GetFormFromFile(0x0000C384, "FalloutVore.esp") as Message
+		DLC03Payload.SwallowPerkRequired = pApexPredator
+		FV_ActorData.InjectAddedInfo(DLC03Payload)
+
+		DLC03Payload = new FV_ActorDataScript:SlotData
+		DLC03Payload.ActorRace = Game.GetFormFromFile(0x000180A8, "DLCCoast.esm") as Race	;GAZ: Hermit Crabs!
+		DLC03Payload.IndigestionChanceIncrease = 20
+		DLC03Payload.Slots = 12
+		DLC03Payload.SwallowMessageToPlay = Game.GetFormFromFile(0x0000C385, "FalloutVore.esp") as Message
+		DLC03Payload.SwallowPerkRequired = pApexPredator
+		FV_ActorData.InjectAddedInfo(DLC03Payload)
+
+		DLC03Payload = new FV_ActorDataScript:SlotData
+		DLC03Payload.ActorRace = Game.GetFormFromFile(0x0004E28E, "DLCCoast.esm") as Race	;GAZ: Small Gulpers!
+		DLC03Payload.CanAlwaysSwallow = True
+		DLC03Payload.IndigestionChanceIncrease = 5
+		DLC03Payload.Slots = 3
+		FV_ActorData.InjectAddedInfo(DLC03Payload)
+
+		DLC03Payload = new FV_ActorDataScript:SlotData
+		DLC03Payload.ActorRace = Game.GetFormFromFile(0x0000FEEA, "DLCCoast.esm") as Race	;GAZ: Anglers!
+		DLC03Payload.CanAlwaysSwallow = True
+		DLC03Payload.IndigestionChanceIncrease = 5
+		DLC03Payload.Slots = 4
+		FV_ActorData.InjectAddedInfo(DLC03Payload)
+
+		DLC03Payload = new FV_ActorDataScript:SlotData
+		DLC03Payload.ActorRace = Game.GetFormFromFile(0x00014174, "DLCCoast.esm") as Race	;GAZ: Fog Crawlers!
+		DLC03Payload.IndigestionChanceIncrease = 20
+		DLC03Payload.Slots = 12
+		DLC03Payload.SwallowMessageToPlay = Game.GetFormFromFile(0x0000C386, "FalloutVore.esp") as Message
+		DLC03Payload.SwallowPerkRequired = pApexPredator
+		FV_ActorData.InjectAddedInfo(DLC03Payload)
+
+		DLC03Payload = new FV_ActorDataScript:SlotData
+		DLC03Payload.ActorRace = Game.GetFormFromFile(0x0003FD66, "DLCCoast.esm") as Race	;GAZ: Rad Chickens!
+		DLC03Payload.CanAlwaysSwallow = True
+		DLC03Payload.Slots = 1
+		FV_ActorData.InjectAddedInfo(DLC03Payload)
+
+		DLC03Payload = new FV_ActorDataScript:SlotData
+		DLC03Payload.ActorRace = Game.GetFormFromFile(0x0003DDDE, "DLCCoast.esm") as Race	;GAZ: Rad Rabbits!
+		DLC03Payload.CanAlwaysSwallow = True
+		DLC03Payload.Slots = 1
+		FV_ActorData.InjectAddedInfo(DLC03Payload)
+
+		Debug.Notification("FalloutVore detected Far Harbor DLC and patched it.")	;GAZ: Feedback is important so the player knows it's working.
+		DLC03Patched = True
+
+	EndIf
+
+	IF Game.IsPluginInstalled("DLCNukaWorld.esm") && !DLC06Patched
+		
+		Perk pApexPredator = Game.GetFormFromFile(0x0000F8EC, "FalloutVore.esp") as Perk Const	;GAZ: Used ofte, so cache here!
+
+		FV_ActorDataScript:SlotData DLC06Payload = new FV_ActorDataScript:SlotData
+		DLC06Payload.ActorRace = Game.GetFormFromFile(0x0003637A, "DLCNukaWorld.esm") as Race	;GAZ: Gatorclaws!
+		DLC06Payload.IndigestionChanceIncrease = 20
+		DLC06Payload.Slots = 12
+		DLC06Payload.SwallowMessageToPlay = Game.GetFormFromFile(0x0000C383, "FalloutVore.esp") as Message
+		DLC06Payload.SwallowPerkRequired = pApexPredator
+		FV_ActorData.InjectAddedInfo(DLC06Payload)
+
+		DLC06Payload = new FV_ActorDataScript:SlotData
+		DLC06Payload.ActorRace = Game.GetFormFromFile(0x0000AAFE, "DLCNukaWorld.esm") as Race	;GAZ: Cave Crickets!
+		DLC06Payload.CanAlwaysSwallow = True
+		DLC06Payload.IndigestionChanceIncrease = 5
+		DLC06Payload.Slots = 2
+		FV_ActorData.InjectAddedInfo(DLC06Payload)
+
+		DLC06Payload = new FV_ActorDataScript:SlotData
+		DLC06Payload.ActorRace = Game.GetFormFromFile(0x0004CBCE, "DLCNukaWorld.esm") as Race	;GAZ: Ghoulrillas!
+		DLC06Payload.IndigestionChanceIncrease = 20
+		DLC06Payload.Slots = 9
+		DLC06Payload.SwallowMessageToPlay = Game.GetFormFromFile(0x0000C383, "FalloutVore.esp") as Message
+		DLC06Payload.SwallowPerkRequired = pApexPredator
+		FV_ActorData.InjectAddedInfo(DLC06Payload)
+
+		FormList BlockedList = Game.GetFormFromFile(0x0000E1A8, "FalloutVore.esp") as FormList
+		BlockedList.AddForm(Game.GetFormFromFile(0x0000B028, "DLCNukaWorld.esm") as Race)	;GAZ: Add Ant-Swarms to the Block-List. They cause crashes when swallowed.
+
+		Debug.Notification("FalloutVore detected Nuka-World DLC and patched it.")	;GAZ: Feedback is important so the player knows it's working.
+		DLC06Patched = True
+
+	EndIf
+
+EndFunction
 
 ;Any updates that require a function call are initilize here
 Function MakePlayerPred()

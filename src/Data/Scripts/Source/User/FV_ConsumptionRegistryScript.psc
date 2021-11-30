@@ -2,36 +2,36 @@ Scriptname FV_ConsumptionRegistryScript extends Quest
 {Registry script to store Consumption data globaly for scripts to use.}
 
 Group ActorValues
-	ActorValue Property FV_AcidDamage Auto
-	ActorValue Property FV_AcidResistance Auto
-	ActorValue Property FV_AcidStrengthValue Auto
-	ActorValue Property FV_BlockSwallowFlag Auto
-	ActorValue Property FV_CurrentPrey Auto
-	ActorValue Property FV_CurrentAlivePrey Auto
-	ActorValue Property FV_DigestionSpeed Auto
-	ActorValue Property FV_DigestionStage Auto
-	ActorValue Property FV_DigestionStarted Auto
-	ActorValue Property FV_EscapeChance Auto
-	ActorValue Property FV_EscapeDamage Auto
-	ActorValue Property FV_HasBloating Auto
-	ActorValue Property FV_HasHadNukaAcid Auto
-	ActorValue Property FV_HumanPreyCount Auto
-	ActorValue Property FV_IndigestionChanceOnNextDigest Auto
-	ActorValue Property FV_IndigestionResistance Auto
-	ActorValue Property FV_IndigestionSeverityFlag Auto
-	ActorValue Property FV_ReadyToDigest Auto
-	ActorValue Property FV_ReformChance Auto
-	ActorValue Property FV_Scatready Auto
-	ActorValue Property FV_BellyCapacity Auto
-	ActorValue Property FV_StomachStrength Auto
-	ActorValue Property FV_TicksTillEscape Auto
-	ActorValue Property FV_Entrapment Auto
-	ActorValue Property FV_TicksTillEscapeStart Auto
-	ActorValue Property FV_RegurgitateBool Auto
+	ActorValue Property FV_AcidDamage Auto Const Mandatory
+	ActorValue Property FV_AcidResistance Auto Const Mandatory
+	ActorValue Property FV_AcidStrengthValue Auto Const Mandatory
+	ActorValue Property FV_BlockSwallowFlag Auto Const Mandatory
+	ActorValue Property FV_CurrentPrey Auto Const Mandatory
+	ActorValue Property FV_CurrentAlivePrey Auto Const Mandatory
+	ActorValue Property FV_DigestionSpeed Auto Const Mandatory
+	ActorValue Property FV_DigestionStage Auto Const Mandatory
+	ActorValue Property FV_DigestionStarted Auto Const Mandatory
+	ActorValue Property FV_EscapeChance Auto Const Mandatory
+	ActorValue Property FV_EscapeDamage Auto Const Mandatory
+	ActorValue Property FV_HasBloating Auto Const Mandatory
+	ActorValue Property FV_HasHadNukaAcid Auto Const Mandatory
+	ActorValue Property FV_HumanPreyCount Auto Const Mandatory
+	ActorValue Property FV_IndigestionChanceOnNextDigest Auto Const Mandatory
+	ActorValue Property FV_IndigestionResistance Auto Const Mandatory
+	ActorValue Property FV_IndigestionSeverityFlag Auto Const Mandatory
+	ActorValue Property FV_ReadyToDigest Auto Const Mandatory
+	ActorValue Property FV_ReformChance Auto Const Mandatory
+	ActorValue Property FV_Scatready Auto Const Mandatory
+	ActorValue Property FV_BellyCapacity Auto Const Mandatory
+	ActorValue Property FV_StomachStrength Auto Const Mandatory
+	ActorValue Property FV_TicksTillEscape Auto Const Mandatory
+	ActorValue Property FV_Entrapment Auto Const Mandatory
+	ActorValue Property FV_TicksTillEscapeStart Auto Const Mandatory
+	ActorValue Property FV_RegurgitateBool Auto Const Mandatory
 EndGroup
 
 Group Ammo
-	Ammo Property AmmoFusionCell Auto
+	Ammo Property AmmoFusionCell Auto Const Mandatory
 EndGroup
 
 Group Armor
@@ -42,15 +42,15 @@ EndGroup
 Group Cells
 	ObjectReference Property FV_BellyContainer  Auto
 	ObjectReference Property FV_CompanionBellyContainer Auto
-	Container Property FV_NPCBellyContainer Auto
+	Container Property FV_NPCBellyContainer Auto Const Mandatory
 EndGroup
 
 Group Factions
-	Faction Property CurrentCompanionFaction Auto
+	Faction Property CurrentCompanionFaction Auto Const Mandatory
 	Faction Property FV_PredPreyFaction Auto
-	Faction Property HasBeenCompanionFaction Auto
-	Faction Property WorkshopDialogueFaction Auto
-	Faction Property WorkshopNPCFaction Auto
+	Faction Property HasBeenCompanionFaction Auto Const Mandatory
+	Faction Property WorkshopDialogueFaction Auto Const Mandatory
+	Faction Property WorkshopNPCFaction Auto Const Mandatory
 EndGroup
 
 Group Formlists
@@ -79,96 +79,97 @@ Group Globals
 EndGroup
 
 Group Holotapes
-	Holotape Property FV_FalloutVoreHolotape Auto
+	Holotape Property FV_FalloutVoreHolotape Auto Const Mandatory
 EndGroup
 
 Group Keywords
-	Keyword Property ActorTypeRobot Auto
+	Keyword Property ActorTypeRobot Auto Const Mandatory
 EndGroup
 
 Group Messages
-	Message Property FV_CannotSwallowCapacityMessage Auto
-	Message Property FV_CannotSwallowIndigestionMessage Auto
-	Message Property FV_ClothesRipMessage Auto
-	Message Property FV_GainedAPerkMessage Auto
-	Message Property FV_IndigestionMinorMessage Auto
-	Message Property FV_IndigestionNormalMessage Auto
-	Message Property FV_IndigestionMajorMessage Auto
-	Message Property FV_IndigestionSevereMessage Auto
-	Message Property FV_LevelUpMessage Auto
-	Message Property FV_ReadyToDigestMessage Auto
-	Message Property FV_ReadyToScatMessage Auto
-	Message Property FV_SleepWaitDisruptMessage Auto
-	Message Property FV_TooFullMessage Auto
-	Message Property FV_TheHungerMessage Auto
+	Message Property FV_CannotSwallowCapacityMessage Auto Const Mandatory
+	Message Property FV_CannotSwallowIndigestionMessage Auto Const Mandatory
+	Message Property FV_ClothesRipMessage Auto Const Mandatory
+	Message Property FV_GainedAPerkMessage Auto Const Mandatory
+	Message Property FV_IndigestionMinorMessage Auto Const Mandatory
+	Message Property FV_IndigestionNormalMessage Auto Const Mandatory
+	Message Property FV_IndigestionMajorMessage Auto Const Mandatory
+	Message Property FV_IndigestionSevereMessage Auto Const Mandatory
+	Message Property FV_LevelUpMessage Auto Const Mandatory
+	Message Property FV_ReadyToDigestMessage Auto Const Mandatory
+	Message Property FV_ReadyToScatMessage Auto Const Mandatory
+	Message Property FV_SleepWaitDisruptMessage Auto Const Mandatory
+	Message Property FV_TooFullMessage Auto Const Mandatory
+	Message Property FV_TheHungerMessage Auto Const Mandatory
 EndGroup
 
 Group Misc
-	EffectShader Property ReformFXS_FV_ Auto
-	ActorBase Property FV_ScatLootCorpse Auto
+	EffectShader Property ReformFXS_FV_ Auto Const Mandatory
+	ActorBase Property FV_ScatLootCorpse Auto Const Mandatory
 EndGroup
 
 Group Perks
-	Perk Property FV_CauseIndigestion01 Auto
-	Perk Property FV_CauseIndigestion02 Auto
-	Perk Property FV_CauseIndigestion03 Auto
-	Perk Property FV_ContextVorePerk Auto
-	Perk Property FV_DigestInvulnerability Auto
-	Perk Property FV_HighIronDiet03  Auto
-	Perk Property FV_HeavyPredNPC Auto
-	Perk Property FV_HeavyPredPlayer Auto
-	Perk Property FV_PlayerSwallowAbility Auto
-	Perk Property FV_PredSneakDebuff Auto
-	Perk Property FV_QuitToMenu Auto
-	Perk Property FV_ReformPerk01 Auto
-	Perk Property FV_ReformPerk02 Auto
-	Perk Property FV_ReformPerk03 Auto
+	Perk Property FV_CauseIndigestion01 Auto Const Mandatory
+	Perk Property FV_CauseIndigestion02 Auto Const Mandatory
+	Perk Property FV_CauseIndigestion03 Auto Const Mandatory
+	Perk Property FV_ContextVorePerk Auto Const Mandatory
+	Perk Property FV_DigestInvulnerability Auto Const Mandatory
+	Perk Property FV_HighIronDiet03  Auto Const Mandatory
+	Perk Property FV_HeavyPredNPC Auto Const Mandatory
+	Perk Property FV_HeavyPredPlayer Auto Const Mandatory
+	Perk Property FV_PlayerSwallowAbility Auto Const Mandatory
+	Perk Property FV_PredSneakDebuff Auto Const Mandatory
+	Perk Property FV_QuitToMenu Auto Const Mandatory
+	Perk Property FV_ReformPerk01 Auto Const Mandatory
+	Perk Property FV_ReformPerk02 Auto Const Mandatory
+	Perk Property FV_ReformPerk03 Auto Const Mandatory
 EndGroup
 
 Group Potions
-	Potion Property FV_RegurgitatePotion Auto
-	Potion Property FV_DigestPotion Auto
-	Potion Property FV_ScatPotion Auto
-	Potion Property FV_ContextPreyPotion Auto
-	Potion Property FV_IndigestionEffect Auto
-	Potion Property FV_RemoveSwallowProtection Auto
+	Potion Property FV_RegurgitatePotion Auto Const Mandatory
+	Potion Property FV_DigestPotion Auto Const Mandatory
+	Potion Property FV_ScatPotion Auto Const Mandatory
+	Potion Property FV_ContextPreyPotion Auto Const Mandatory
+	Potion Property FV_IndigestionEffect Auto Const Mandatory
+	Potion Property FV_RemoveSwallowProtection Auto Const Mandatory
 EndGroup
 
 Group Scripts
-	FV_ActorDataScript Property FV_ActorData Auto
-	FV_ColdSteelBellyScript Property FV_ColdSteelBellyQuest Auto
-	FV_PlayerStruggleScript Property FV_PlayerStruggle Auto
-	FV_ScatManagerScript Property FV_ScatManager Auto
-	FV_VoreHudScript Property FV_VoreHud Auto
+	FV_ActorDataScript Property FV_ActorData Auto Const Mandatory
+	FV_ColdSteelBellyScript Property FV_ColdSteelBellyQuest Auto Const Mandatory
+	FV_PlayerStruggleScript Property FV_PlayerStruggle Auto Const Mandatory
+	FV_ScatManagerScript Property FV_ScatManager Auto Const Mandatory
+	FV_VoreHudScript Property FV_VoreHud Auto Const Mandatory
+	FV_VoreSurvivalScript Property FV_VoreSurvival Auto Const Mandatory
 EndGroup
 
 Group Sounds
-	Sound Property FV_FXBurp Auto
-	Sound Property FV_FXClothesRip Auto
-	Sound Property FV_FXStomachGurgle Auto
-	Sound Property FV_FXVomit Auto
-	Sound Property FV_NPCDigestSuccess Auto
-	Sound Property FV_NPCSwallowAttempt Auto
-	Sound Property FV_NPCSwallowFail Auto
-	Sound Property FV_NPCSwallowSuccess Auto
-	Sound Property FV_PlayerDigestSuccess Auto
-	Sound Property FV_PlayerPostSwallowComment Auto
-	Sound Property FV_PlayerSwallowAttempt Auto
-	Sound Property FV_PlayerSwallowFail Auto
-	Sound Property FV_PlayerSwallowSuccess Auto
+	Sound Property FV_FXBurp Auto Const Mandatory
+	Sound Property FV_FXClothesRip Auto Const Mandatory
+	Sound Property FV_FXStomachGurgle Auto Const Mandatory
+	Sound Property FV_FXVomit Auto Const Mandatory
+	Sound Property FV_NPCDigestSuccess Auto Const Mandatory
+	Sound Property FV_NPCSwallowAttempt Auto Const Mandatory
+	Sound Property FV_NPCSwallowFail Auto Const Mandatory
+	Sound Property FV_NPCSwallowSuccess Auto Const Mandatory
+	Sound Property FV_PlayerDigestSuccess Auto Const Mandatory
+	Sound Property FV_PlayerPostSwallowComment Auto Const Mandatory
+	Sound Property FV_PlayerSwallowAttempt Auto Const Mandatory
+	Sound Property FV_PlayerSwallowFail Auto Const Mandatory
+	Sound Property FV_PlayerSwallowSuccess Auto Const Mandatory
 EndGroup
 
 Group Spells
-	Spell Property FV_spIndigestion Auto
+	Spell Property FV_spIndigestion Auto Const Mandatory
 EndGroup
 
 Group VEVItems
-	LeveledItem Property LLD_VEV_Crystals_Prey_FV_ Auto
+	LeveledItem Property LLD_VEV_Crystals_Prey_FV_ Auto Const Mandatory
 EndGroup
 
 Group Weapons
-	Weapon Property FV_Swallow Auto
-	Weapon Property FV_SwallowNonLethal Auto
+	Weapon Property FV_Swallow Auto Const Mandatory
+	Weapon Property FV_SwallowNonLethal Auto Const Mandatory
 EndGroup
 ;end values to be entered through creation kit
 
@@ -268,10 +269,12 @@ Event OnInit()
 	debug.trace("Fallout Vore v3.0 initialized")
 	RegisterForPlayerSleep()
 	RegisterForPlayerWait()
+	FV_VoreSurvival.RegisterForVoreSurvival(True)
 EndEvent
 
 Event Actor.OnPlayerLoadGame(Actor akSender)
 	debug.trace("Fallout Vore v3.0 loaded")
+	FV_VoreSurvival.RegisterForVoreSurvival(True)
 EndEvent
 
 ;Any updates that require a function call are initilize here

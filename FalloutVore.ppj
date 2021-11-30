@@ -2,20 +2,14 @@
 <!-- Created by vscode papyrus-lang papyrus.fallout4.generateProject -->
 <PapyrusProject xmlns="PapyrusProject.xsd" 
     Flags="Institute_Papyrus_Flags.flg" 
-    Output="@rootpath\build\Data\Scripts" 
+    Output="src\Data\Scripts" 
     Game="fo4" 
     Asm="Discard" 
     Optimize="false" Anonymize="true" Release="false" Final="false">
-    <Variables>
-        <Variable Name="modname" Value="Fallout Vore" />
-        <Variable Name="rootpath" Value="C:\Projects\@modname" />
-        <Variable Name="devpath" Value="@rootpath\src" />
-        <Variable Name="buildpath" Value="@rootpath\build" />
-        <Variable Name="pkgpath" Value="@rootpath\pkg" />
-    </Variables>
     <Imports>
-        <Import>C:\Projects\Fallout Vore\src\vendor\f4se\Data\Scripts\Source\User</Import>
-        <Import>C:\Projects\Fallout Vore\src\vendor\hudframework\SCRIPTS</Import>
+        <Import>src\vendor\f4se\Data\Scripts\Source\User</Import>
+        <Import>src\vendor\hudframework\SCRIPTS</Import>
+        <Import>src\vendor\looksmenu\Data\Scripts\Source\User</Import>
         <Import>C:\Program Files (x86)\Steam\steamapps\common\Fallout 4\Data\Scripts\Source\Base</Import>
         <Import>C:\Program Files (x86)\Steam\steamapps\common\Fallout 4\Data\Scripts\Source\User</Import>
     </Imports>

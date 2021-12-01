@@ -81,6 +81,16 @@
 			}
 		},
 		{
+			"id": "SwallowPerksToggle",
+			"text": "$FVSE_MCM_SWLW_PRKS_REQ",
+			"type": "switcher",
+			"help": "$FVSE_MCM_SWLW_PRKS_REQ_HELP",
+			"valueOptions": {
+				"sourceType": "GlobalValue",
+				"sourceForm": "FalloutVore.esp|C387"
+			}
+		},
+		{
 			"id": "ColdSteelToggle",
 			"text": "$FVSE_MCM_COLDSTEEL_BELLY_TOG",
 			"type": "switcher",

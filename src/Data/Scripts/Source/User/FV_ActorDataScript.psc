@@ -1,13 +1,14 @@
 Scriptname FV_ActorDataScript extends Quest
 ;; Bound to FV_ActorData Quest. Referenced by many other scripts
 
-ActorValue Property Rads Auto
+ActorValue Property Rads Auto Const Mandatory
 SlotData[] Property BaseActorData Auto ; A list of SlotData structs provided by ESP. Customized in the Creation Kit.
-Faction Property HasBeenCompanionFaction Auto
-Keyword Property ActorTypeBug Auto
-Keyword Property ActorTypeRobot Auto
-Race Property BloatFlyRace Auto
-Race Property ProtectronRace Auto
+Faction Property HasBeenCompanionFaction Auto Const Mandatory
+Keyword Property ActorTypeBug Auto Const Mandatory
+Keyword Property ActorTypeRobot Auto Const Mandatory
+GlobalVariable Property FV_SwallowPerksRequired Auto
+Race Property BloatFlyRace Auto Const Mandatory
+Race Property ProtectronRace Auto Const Mandatory
 
 Struct SlotData
 	Keyword ActorType
@@ -83,7 +84,7 @@ Bool Function GetCanSwallow(Actor akPred, Actor akPrey)
 	Race RaceToCheck = akPrey.GetRace()
 	Int index = GetIndex(akPrey)
 	if(index > -1)
-		If(!BaseActorData[index].CanAlwaysSwallow && !akPred.HasPerk(BaseActorData[index].SwallowPerkRequired))
+		If(!BaseActorData[index].CanAlwaysSwallow && !akPred.HasPerk(BaseActorData[index].SwallowPerkRequired) && FV_SwallowPerksRequired.GetValue() as Int == 1)
 			If(akPred == Game.GetPlayer())
 				BaseActorData[index].SwallowMessageToPlay.Show()
 			EndIf

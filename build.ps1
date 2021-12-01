@@ -1,3 +1,5 @@
+Remove-Item ".\dist" -Recurse
+Remove-Item ".\pkg" -Recurse
 Copy-Item 'src\Data\F4SE' 'pkg\Data\F4SE' -Recurse -Force
 Copy-Item 'src\Data\MCM' 'pkg\Data\MCM' -Recurse -Force
 Copy-Item 'src\Data\Tools' 'pkg\Data\Tools' -Recurse -Force

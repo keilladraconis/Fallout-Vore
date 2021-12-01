@@ -52,32 +52,6 @@
                 "${cwd}\\build.ps1"
             ],
             "problemMatcher": []
-        },
-        {
-            "label": "Powershell: Dev",
-            "type": "shell",
-            "command": "powershell",
-            "args": [
-                "-ExecutionPolicy",
-                "Unrestricted",
-                "-NoProfile",
-                "-File",
-                "${cwd}\\dev.ps1"
-            ],
-            "problemMatcher": []
-        },
-        {
-            "label": "Powershell: Clean",
-            "type": "shell",
-            "command": "powershell",
-            "args": [
-                "-ExecutionPolicy",
-                "Unrestricted",
-                "-NoProfile",
-                "-File",
-                "${cwd}\\clean.ps1"
-            ],
-            "problemMatcher": []
         }
     ]
 }

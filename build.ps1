@@ -17,4 +17,4 @@ archive2 ".\src\Data\textures"`
 
 New-Item -Path ".\dist" -ItemType Directory -Force
 
-Compress-Archive -Path ".\pkg\*" -DestinationPath ".\dist\FalloutVore - v3.1.0.zip" -Force
+Compress-Archive -Path ".\pkg\*" -DestinationPath ".\dist\FalloutVore - v3.1.1.zip" -Force

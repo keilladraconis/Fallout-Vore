@@ -110,6 +110,7 @@ EndGroup
 Group Misc
 	EffectShader Property ReformFXS_FV_ Auto Const Mandatory
 	ActorBase Property FV_ScatLootCorpse Auto Const Mandatory
+	Actor Property PlayerRef Auto Const Mandatory
 EndGroup
 
 Group Perks
@@ -178,7 +179,6 @@ EndGroup
 ;end values to be entered through creation kit
 
 inputenablelayer playerLayer
-Actor PlayerRef
 int PreviousPlayerPOV
 
 Bool KillPlayerAsPrey = false

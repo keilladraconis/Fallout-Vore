@@ -575,54 +575,6 @@ EndFunction
 ;         [BranchType = 2, index = 28, Tick = -3, ParentIndex = 27, TimerState = 100, Pred = None, Prey = [mirelurkqueenspawnscript < (FF014A57)>], IsLethal = True, IsDead = False, IsPredator = False, ContainAPrey = False]
 ;     [BranchType = 2, index = 30, Tick = 0, ParentIndex = 29, TimerState = 100, Pred = None, Prey = [Actor < (0303250A)>], IsLethal = True, IsDead = False, IsPredator = False, ContainAPrey = False]
 
-; Get root from index, if 'stopAtParent' stop at the first parent. Scans PPA.
-; iIndex = 28, stopAtParent = False, return 29
-; iIndex = 28, stopAtParent = True , return 27
-; iIndex = 27, stopAtParent = xxxx , return -1
-Int Function GetRoot(int iIndex, Bool stopAtParent = True) 
-	Int i = PredPreyArray.FindStruct("Index", iIndex)
-	If(i < 0)
-		Return -1
-	EndIf
-	If(PredPreyArray[i].ParentIndex == -1)
-		Return -1
-	EndIf
-	
-	Return GetRoot1(PredPreyArray[i].ParentIndex, stopAtParent)
-EndFunction
-
-; Actually scans the PPA... recursively. Finds the ultimate parent of a given PPA id.
-Int Function GetRoot1(int iIndex, Bool stopAtParent) 
-	int i = 0
-	int result = iIndex;
-	If(stopAtParent)
-		While (i < PredPreyArray.Length)
-			if(PredPreyArray[i].index == iIndex && PredPreyArray[i].ParentIndex == -1 && PredPreyArray[i].BranchType == BranchTypePrey)
-				Return result
-			elseif (PredPreyArray[i].index == iIndex && PredPreyArray[i].BranchType == BranchTypePrey)
-				result = GetRoot1(PredPreyArray[i].ParentIndex, stopAtParent)
-			endif
-			i += 1
-		EndWhile
-	Else
-		While (i < PredPreyArray.Length)
-			if(PredPreyArray[i].index == iIndex && PredPreyArray[i].ParentIndex == -1)
-				Return result
-			elseif (PredPreyArray[i].index == iIndex)
-				result = GetRoot1(PredPreyArray[i].ParentIndex, stopAtParent)
-			endif
-			i += 1
-		EndWhile
-	EndIf
-	return result
-EndFunction
-
-; Tree sample
-; [BranchType = 1, index = 29, Tick = 2, ParentIndex = -1, TimerState = 100, Pred = [Actor < (00000014)>], Prey = None, IsLethal = False, IsDead = False, IsPredator = False, ContainAPrey = False]
-;     [BranchType = 1, index = 27, Tick = 1, ParentIndex = 29, TimerState = 100, Pred = [Actor < (FF0130A5)>], Prey = None, IsLethal = True, IsDead = False, IsPredator = True, ContainAPrey = False]
-;         [BranchType = 2, index = 28, Tick = -3, ParentIndex = 27, TimerState = 100, Pred = None, Prey = [mirelurkqueenspawnscript < (FF014A57)>], IsLethal = True, IsDead = False, IsPredator = False, ContainAPrey = False]
-;     [BranchType = 2, index = 30, Tick = 0, ParentIndex = 29, TimerState = 100, Pred = None, Prey = [Actor < (0303250A)>], IsLethal = True, IsDead = False, IsPredator = False, ContainAPrey = False]
-
 ; iIndex = 28, result:
 ; [BranchType = 1, index = 29, Tick = 2, ParentIndex = -1, TimerState = 100, Pred = [Actor < (00000014)>], Prey = None, IsLethal = False, IsDead = False, IsPredator = False, ContainAPrey = False]
 ;     [BranchType = 2, index = 28, Tick =-3, ParentIndex = 29, TimerState = 100, Pred = None, Prey = [mirelurkqueenspawnscript < (FF014A57)>], IsLethal = True, IsDead = False, IsPredator = False, ContainAPrey = False]
@@ -644,11 +596,11 @@ Int Function TreeMoveUp(int iIndex)
 		Return -1
 	EndIf
 
-	int root = GetRoot(currentBranchdata.ParentIndex) ; SCAN PPA
-	int root1 = GetRoot(currentBranchdata.Index) ; SCAN PPA. KEILLA: Root1 should be the same fuckin' thing as root.
+	; int root = GetRoot(currentBranchdata.ParentIndex) ; SCAN PPA
+	; int root1 = GetRoot(currentBranchdata.Index) ; SCAN PPA. KEILLA: Root1 should be the same fuckin' thing as root.
 	result = currentBranchdata.ParentIndex ; KEILLA: are all assignments by reference?
 	
-	currentBranchdata.ParentIndex = root ; KEILLA: Wat? Just puts this node up to be the first ancestor of the local root?
+	; currentBranchdata.ParentIndex = root ; KEILLA: Wat? Just puts this node up to be the first ancestor of the local root?
 	
 	Int[] children = new Int[0]
 	; Getchildren(children,iIndex) ; SCAN PPA
@@ -661,13 +613,13 @@ Int Function TreeMoveUp(int iIndex)
 	
 	children.Clear()
 	; Getchildren(children,root1) ; SCAN PPA
-	int i = PredPreyArray.FindStruct("Index", root1) ; SCAN PPA
+	; int i = PredPreyArray.FindStruct("Index", root1) ; SCAN PPA
 	
-	if(children.Length == 0)
-		PredPreyArray[i].BranchType = BranchTypePrey
-	Else
-		PredPreyArray[i].BranchType = BranchTypePred
-	EndIf
+	; if(children.Length == 0)
+	; 	PredPreyArray[i].BranchType = BranchTypePrey
+	; Else
+	; 	PredPreyArray[i].BranchType = BranchTypePred
+	; EndIf
 	
 	Return result
 EndFunction
@@ -1365,13 +1317,8 @@ endState
 
 ; Plays stomach noise sounds.
 function OnTimerPlaySound(VoreData data)
-	int root = GetRoot(data.Index, false)
-	if(root == data.ParentIndex)
-		FV_FXStomachGurgle.Play(data.Pred)
-	Else
-		int instanceID = FV_FXStomachGurgle.Play(data.Pred) 	; remove
-		Sound.SetInstanceVolume(instanceID, 0.5)						; remove
-	EndIf
+	int instanceID = FV_FXStomachGurgle.Play(data.Pred) 	
+	Sound.SetInstanceVolume(instanceID, 0.5)
 EndFunction
 
 ; Tracks the mortality of prey by timer ID. Many triggers for the prey to be vomited for many reasons, protection against death, and eventually AV damage to prey and in the case of escape, the pred.
@@ -1752,13 +1699,13 @@ Function OnTimerFinishedDigestion(int aiTimerID, VoreData data)
 	Actor currentPred		= data.Pred
 	Actor currentPrey		= data.Prey
 
-	int root = GetRoot(data.Index, false)
-	if(root == data.ParentIndex)
-		FV_FXBurp.Play(data.Pred)
-	Else
-		int instanceID = FV_FXBurp.Play(data.Pred) 	
-		Sound.SetInstanceVolume(instanceID, 0.5)					
-	EndIf
+	; int root = GetRoot(data.Index, false)
+	; if(root == data.ParentIndex)
+	; 	FV_FXBurp.Play(data.Pred)
+	; Else
+	int instanceID = FV_FXBurp.Play(data.Pred) 	
+	Sound.SetInstanceVolume(instanceID, 0.5)					
+	; EndIf
 
     ;End of digestions
     currentPred.SetValue(FV_DigestionStage, 0)
@@ -1937,7 +1884,7 @@ function OnTimerTransfer(int aiTimerID, int child, VoreData data)
 	Actor currentPrey = data.Prey
 	Actor currentPred = data.Pred
 	
-	int root = GetRoot(data.Index, false)
+	; int root = GetRoot(data.Index, false)
 
 	TreeMoveDown(aiTimerID , child)
 	UpdateCurrentInStomach(currentPred, true)

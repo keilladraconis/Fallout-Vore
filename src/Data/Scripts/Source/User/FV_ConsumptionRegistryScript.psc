@@ -194,8 +194,6 @@ CustomEvent OnVomit
 CustomEvent OnDigestProtection
 
 ; constants
-int BranchTypePred 					= 1 const		; never change
-int BranchTypePrey 					= 2 const		; never change
 int GhostTimerRemovalID				= 9999999 const	; used to remove Ghost invulnerability from player
 int ReformTimerID					= 10000000 const
 int DigestTimerID					= 1001			; Single master digestion ticking timer.
@@ -875,133 +873,44 @@ EndFunction
 
 ;Timers for timing vore events
 Event OnTimer(int aiTimerID)
-
-	;trace(self, "Tick: " + aiTimerID)
 	GotoState("OnTimerState") ; Defer other timers.
-	
-	;++
-	If(aiTimerID < -1000)
-		trace(self, "[BUG] Tick " + aiTimerID)
-		GotoState("")	
-		Return
-	EndIf
-	
-	If(aiTimerID == GhostTimerRemovalID)
+		
+	If (aiTimerID == GhostTimerRemovalID)
 		trace(self, "OnTimer() aiTimerID: " + GhostTimerRemovalID + " player invulnerability remove.")
 		PlayerRef.setGhost(False)
-		GotoState("")
-		Return
-	EndIf
-	If(aiTimerID == ReformTimerID)
+	ElseIf (aiTimerID == ReformTimerID)
 		trace(self, "OnTimer() aiTimerID: " + ReformTimerID + " player reformed.")
 		OnTimerReformPlayerFinish()
-		GotoState("")
-		Return
-	EndIf
-
-	If (aiTimerID == DigestTimerID)
-	; 	; TODO Write loops to process all the prey for digestion
-	; 	; code
-	; 	VoreData data = GetPrey() ; SCAN PPA
-	; If(data == None)
-	; 	trace(self, "[BUG] Tick " + aiTimerID)
-	; 	GotoState("")	
-	; 	Return
-	; EndIf
-	; trace(self, "OnTimer() Tick: " + aiTimerID + " TimerState: " + data.TimerState)
-	; Actor currentPrey = data.Prey
-	; Actor currentPred = data.Pred
-	
-	; If(data.TimerState == 100) ; Prey is alive, taking damage
-	; 	OnTimerDecreaseTicks(aiTimerID, data)
-	
-	; ElseIf (data.TimerState >= 12 && data.TimerState < 99) ; Prey is being turned into mush, but not yet able to cause gas
-	; 	; Do a bunch of accounting for coldsteel belly.
-	; 	If((FV_ColdSteelEnabled.GetValue() > 0 && (currentPred.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))) 
-	; 		UpdateColdSteelCounter(aiTimerID, data.ColdSteelCounter - 1)
-	; 		FV_ColdSteelBellyQuest.ChangeColdSteelDigestFullness(currentPred, data.TimerState as float)
-	; 		If(data.ColdSteelCounter == 0)
-	; 			trace(self, "OnTimer() ChangeColdSteelDigestFullness() aiTimerID: " + aiTimerID + " currentPred: " + currentPred + " TimerState: " + data.TimerState)
-	; 			UpdateColdSteelCounter(aiTimerID, ColdSteelCounts as int)
-	; 			UpdateTimerState(aiTimerID, data.TimerState-1)
-	; 			OnTimerPlaySound(data)
-	; 			currentPred.SetValue(FV_DigestionStage, data.TimerState-1)
-	; 			UpdateDigestionPreyCount(data.Pred)
-	; 		EndIf
-	; 		StartTimer(data.DigestSpeedTime/ColdSteelCounts, aiTimerID)
-	; 	Else ; Accounting for Equippable belly
-	; 		trace(self, "OnTimer() state < 99 && >= 12 aiTimerID: " + aiTimerID + " currentPred: " + currentPred + " TimerState: " + data.TimerState)
-	; 		ChangeDigestFullnessArmor(currentPred, data.TimerState)
-	; 		UpdateTimerState(aiTimerID, data.TimerState-1)
-	; 		OnTimerPlaySound(data)
-	; 		currentPred.SetValue(FV_DigestionStage, data.TimerState-1)
-	; 		UpdateDigestionPreyCount(data.Pred)
-	; 		StartTimer(data.DigestSpeedTime, aiTimerID)
-	; 	EndIf
-	; ElseIf (data.TimerState >= 1 && data.TimerState <= 11) ; Prey causing gas/indigestion
-	; 	; More accounting for ColdSteel belly
-	; 	If(data.ColdSteelCounter > 0 && (FV_ColdSteelEnabled.GetValue() > 0 && (currentPred.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))) 
-	; 		FV_ColdSteelBellyQuest.ChangeColdSteelDigestFullness(currentPred, data.TimerState as float)
-	; 		UpdateColdSteelCounter(aiTimerID, data.ColdSteelCounter - 1)
-	; 		StartTimer((data.DigestSpeedTime)/ColdSteelCounts, aiTimerID)
-	; 	Else
-	; 		trace(self, "OnTimer() ColdSteelCounter == 0 aiTimerID: " + aiTimerID + " currentPred: " + currentPred + " TimerState: " + data.TimerState)
-	; 		; more FV_IndigestionSeverityFlag is high, more belly has chance to grow ( max 6 times )
-	; 		int indig = currentPred.GetValue(FV_IndigestionSeverityFlag) as int
-	; 		int indigFactor = -1
-	; 		currentPred.SetValue(FV_HasBloating, 0)
-	; 		; Some rather detailed mechanical behavior about indigestion bloating.
-	; 		if(!DigestionAllowsBloating || data.TimerState < 3 || data.CustomVar1 > 6 )
-	; 			indigFactor = -1
-	; 		ElseIf(indig == 1)
-	; 			indigFactor = 6
-	; 		ElseIf(indig == 2)
-	; 			indigFactor = 12
-	; 		ElseIf(indig == 3)
-	; 			indigFactor = 15
-	; 		ElseIf(indig == 4)
-	; 			indigFactor = 19
-	; 		EndIf
-			
-	; 		int newStage = data.TimerState
-	; 		if(Utility.RandomInt() < indigFactor)
-	; 			newStage += 1
-	; 			setCustomVar1(aiTimerID, data.CustomVar1 + 1)
-	; 			currentPred.SetValue(FV_HasBloating, 1)
-	; 		Else
-	; 			newStage -= 1
-	; 		EndIf
-	; 		UpdateTimerState(aiTimerID, newStage)
-	; 		OnTimerPlaySound(data)
-	; 		currentPred.SetValue(FV_DigestionStage, newStage)
-	; 		If((FV_ColdSteelEnabled.GetValue() > 0 && (currentPred.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1)))
-	; 			UpdateColdSteelCounter(aiTimerID, ColdSteelCounts as int)
-	; 			StartTimer((data.DigestSpeedTime)/ColdSteelCounts, aiTimerID)
-	; 		Else
-	; 			ChangeDigestFullnessArmor(currentPred, newStage + 1)
-	; 			StartTimer(data.DigestSpeedTime, aiTimerID)
-	; 		EndIf
-	; 		UpdateDigestionPreyCount(data.Prey)
-	; 		EndIf
-	; ElseIf (data.TimerState == 0) ; Prey digestion complete.
-	; 	If((FV_ColdSteelEnabled.GetValue() > 0 && (currentPred.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))) ;currentPred.HasKeyword(FV_ColdSteelBody))
-	; 		FV_ColdSteelBellyQuest.ChangeColdSteelDigestFullness(currentPred, data.TimerState as float)
-	; 	Else
-	; 		ChangeDigestFullnessArmor(currentPred, data.TimerState)
-	; 	EndIf
-	; 	UpdateTimerState(aiTimerID, data.TimerState-1)
-	; 	OnTimerPlaySound(data)
-		
-	; 	currentPred.SetValue(FV_DigestionStage, data.TimerState-1)
-	; 	OnTimerFinishedDigestion(aiTimerID, data)
-		
-	; else
-	; 	trace(self, "Tick BUG" + aiTimerID)
-	; EndIf
-	; GotoState("")	
+	ElseIf (aiTimerID == DigestTimerID)
+		int i = 0
+		PreyData data
+		While i < ConsumptionRegistry.Length
+			data = ConsumptionRegistry[i]
+			int digestionStage = data.Prey.getValue(FV_DigestionStage) as int
+			If digestionStage == 100 ; Prey is alive, taking damage.
+				OnTimerDecreaseTicks(data)
+			Else
+				; TODO: Actually, doing fullness armor this way probably leads to flippy-floppy digestion appearance.
+				If((FV_ColdSteelEnabled.GetValue() > 0 && (data.Pred.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))) 
+					FV_ColdSteelBellyQuest.ChangeColdSteelDigestFullness(data.Pred, digestionStage)
+				Else
+					ChangeDigestFullnessArmor(data.Pred, digestionStage)
+				EndIf
+				
+				If digestionStage > 0
+					OnTimerPlaySound(data)
+					data.Pred.ModValue(FV_DigestionStage, -1)
+					UpdateDigestionPreyCount(data.Pred)
+				Else
+					OnTimerFinishedDigestion(data)
+				EndIf
+			EndIf
+		EndWhile
+		If ConsumptionRegistry.Length > 0
+			StartTimer(DigestionSpeed, DigestTimerID)
+		EndIf
 	EndIf
 	GotoState("")
-
 EndEvent
 
 ; prevent multiple call ( specially with Sound.PlayAndWait)
@@ -1019,10 +928,9 @@ function OnTimerPlaySound(PreyData data)
 EndFunction
 
 ; Tracks the mortality of prey by timer ID. Many triggers for the prey to be vomited for many reasons, protection against death, and eventually AV damage to prey and in the case of escape, the pred.
-function OnTimerDecreaseTicks(int aiTimerID, PreyData data)
+function OnTimerDecreaseTicks(PreyData data)
 	; Dead pred autovomit
 	if(data.Pred.IsDead())
-		trace(self, "Tick Pred: " + data.Pred + " IsDead: " + aiTimerID)
 		OnTimerPerformVomit(data.Prey)
 		Return
 	EndIf
@@ -1097,9 +1005,11 @@ function OnTimerDecreaseTicks(int aiTimerID, PreyData data)
 	ElseIf(data.isLethal)
 		currentPrey.DamageValue(HealthAV, DamageDealt) ;if prey was not meant to die, deal damage to it now
 	EndIf
-	If(currentPred == PlayerRef)
-		FV_VoreHud.UpdateHealthBar(aiTimerID, currentPrey)
-	EndIf
+
+	; TODO: Broken until VoreHud can accept Prey
+	; If(currentPred == PlayerRef)
+	; 	FV_VoreHud.UpdateHealthBar(aiTimerID, currentPrey)
+	; EndIf
 	
 	Int EscapeRoll = Utility.RandomInt()
 	
@@ -1123,9 +1033,6 @@ function OnTimerDecreaseTicks(int aiTimerID, PreyData data)
 		;vomit
 		trace(self, " OnTimerDecreaseTicks() Prey escaped - EscapeCheck: " + EscapeCheck + " EscapeRoll: " + EscapeRoll)
 		OnTimerPerformVomit(data.Prey)
-	Else
-		;restart timer					
-		; StartTimer(data.Prey.GetValue(FV_DigestionSpeed), aiTimerID)
 	EndIf
 EndFunction
 
@@ -1269,7 +1176,6 @@ Function OnTimerTriggerDigestionSequence(Actor akPred)
 	int CurrentInStomach = (((akPred.GetValue(FV_CurrentPrey)/2-1) * 3) + 6) as int ; KEILLA: What is this magic math?
 	akPred.SetValue(FV_DigestionStage, CurrentInStomach)
 
-	; UpdateTimerState(1, CurrentInStomach) ; CLEAN: Can't we just use the FV_DigestionStage?
 	trace(self, "OnTimerTriggerDigestionSequence() CurrentInStomach: " + CurrentInStomach + " currentPred: " + akPred)
 	PreyData data = GetDataByPred(akPred)
 	Var[] kArgs = new Var[4]
@@ -1286,7 +1192,6 @@ Function OnTimerTriggerDigestionSequence(Actor akPred)
 	Else
 		ChangeDigestFullnessArmor(akPred,CurrentInStomach)
 	EndIf
-	StartTimer(DigestionSpeed, DigestTimerID)
 EndFunction
 
 ; Plays sounds, updates belly graphics, prepares scat, sends events, does player reformation....
@@ -1376,9 +1281,6 @@ function OnTimerPerformVomit(Actor akPrey)
 	int instanceID = FV_FXVomit.Play(currentPred) 	
 	Sound.SetInstanceVolume(instanceID, 0.25)					
 	
-	; TODO: Should start timer?
-	StartTimer(DigestionSpeed, DigestTimerID)
-
 	; update stomach value and update armor
 	UpdateCurrentInStomach(currentPred, true)
 	

@@ -542,9 +542,10 @@ EndFunction
 
 ; Based on the CurrentPrey and DigestionStage AVs, decides how many child nodes to drop out of the buffer, and iterates through them.
 Function UpdateDigestionPreyCount(Actor akPred)
-	int CurrentSize = (((akPred.GetValue(FV_CurrentPrey)/2-1) * 3) + 6) as int
-	If(CurrentSize > akPred.GetValue(FV_DigestionStage))
-		int slotsToDelete = CurrentSize - akPred.GetValue(FV_DigestionStage) as int
+	int currentSize = (((akPred.GetValue(FV_CurrentPrey)/2-1) * 3) + 6) as int
+	int digestionStage = akPred.GetValue(FV_DigestionStage) as int
+	If(currentSize > digestionStage)
+		int slotsToDelete = currentSize - digestionStage
 		bool keepSearching = true
 
 		Actor[] preys = GetAllPrey(akPred)
@@ -567,14 +568,6 @@ Function UpdateDigestionPreyCount(Actor akPred)
 		UpdateCurrentInStomach(akPred = akPred)
 	Endif
 	
-EndFunction
-
-; Called a few times after a vomit or transfer. Probably can just inline this if we have the data.
-Function resetTick(int iIndex)
-	Int i = PredPreyArray.FindStruct("Index", iIndex) ; Scan PPA
-	If(i >= 0)
-		PredPreyArray[i].Tick = 2
-	EndIf
 EndFunction
 
 ;************************************************************************************

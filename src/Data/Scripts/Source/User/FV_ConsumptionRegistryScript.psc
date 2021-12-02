@@ -2178,6 +2178,7 @@ Function OnTimerTriggerDigestionSequence(int aiTimerID, VoreData data)
 		predData.LastIndex = aiTimerID
 	EndIf
 	
+	; KEILLA: More presentational stuff about the belly appearance
 	If((FV_ColdSteelEnabled.GetValue() > 0 && (currentPred.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1)))
 		UpdateColdSteelCounter(aiTimerID, ColdSteelCounts as int)
 		FV_ColdSteelBellyQuest.ChangeColdSteelDigestFullness(currentPred, (CurrentInStomach as float))
@@ -2188,6 +2189,7 @@ Function OnTimerTriggerDigestionSequence(int aiTimerID, VoreData data)
 	EndIf
 EndFunction
 
+; Plays sounds, updates belly graphics, prepares scat, sends events, does player reformation....
 Function OnTimerFinishedDigestion(int aiTimerID, VoreData data)
 	trace(self, "OnTimerFinishedDigestion: " + data)
 	if(data == None)
@@ -2196,20 +2198,16 @@ Function OnTimerFinishedDigestion(int aiTimerID, VoreData data)
 	EndIf
 	PrintInfos()
 
-	Actor soundActor 		= data.Pred ; TODO get the top level 
+	Actor soundActor 		= data.Pred 
 	Actor akCurrentPred		= data.Pred
 	Actor akCurrentPrey		= data.Prey
 
-	;Play finished sound
-	;Search the top most parent
 	int root = GetRoot(data.Index, false)
 	if(root == data.ParentIndex)
 		FV_FXBurp.Play(data.Pred)
 	Else
-		;TODOSound 
-		;FV_FXBurp1.Play(PredPreyArray[root].Pred)					; add
-		int instanceID = FV_FXBurp.Play(GetFromIndex(root).Pred) 	; remove
-		Sound.SetInstanceVolume(instanceID, 0.5)							; remove
+		int instanceID = FV_FXBurp.Play(GetFromIndex(root).Pred) 	
+		Sound.SetInstanceVolume(instanceID, 0.5)					
 	EndIf
 
     ;End of digestions
@@ -2221,20 +2219,16 @@ Function OnTimerFinishedDigestion(int aiTimerID, VoreData data)
 		If(FV_ScatEnabled.GetValue() == 1)
 			If(akCurrentPred.getValue(FV_Scatready) == 0)
 				akCurrentPred.SetValue(FV_Scatready, 1)
-				;Debug.Notification("You feel the pressure of your preys' remains build in your bowels.")
 				FV_ReadyToScatMessage.show()
 			EndIf
-		Else
-			;Open belly
-			;FV_BellyContainer.Activate(akCurrentPred, false)
 		EndIf
 	;Activate belly container for player if they are not a pred and an ally has finished digestion
 	ElseIf(akCurrentPred.IsInFaction(CurrentCompanionFaction) && FV_CompanionScat.GetValue() == 1)
 		akCurrentPred.SetValue(FV_Scatready, 1)
 	ElseIf(FV_ScatEnabled.GetValue() == 1 && FV_NPCScatEnabled.GetValue() == 1 && !akCurrentPred.IsInFaction(CurrentCompanionFaction))
-		FV_ScatManager.NPCScat(akCurrentPred)
+		FV_ScatManager.NPCScat(akCurrentPred) ; NPCs autoscat
 	ElseIf(PlayerRef.GetValue(FV_HasHadNukaAcid) == 0 && (akCurrentpred.IsInFaction(WorkshopNPCFaction) || akCurrentpred.IsInFaction(WorkshopDialogueFaction) || akCurrentpred.IsInFaction(CurrentCompanionFaction)))
-		FV_BellyContainer.Activate(PlayerRef, false)
+		FV_BellyContainer.Activate(PlayerRef, false) ; Auto-open belly container if you don't have nukaacid and you're in some workshop faction thing
 	EndIf
 	
 	PrintInfos()	
@@ -2243,9 +2237,7 @@ Function OnTimerFinishedDigestion(int aiTimerID, VoreData data)
 	int p = GetRoot(aiTimerID)
 	VoreData dataRoot = GetParentFromIndex(p)
 	if(dataRoot != None)
-		p = dataRoot.Index
-	Else
-		p = -1
+		UpdateCurrentInStomach(-1,dataRoot.Index,None,true,True)
 	EndIf
 	
 	CleanUpBuffer(aiTimerID)
@@ -2258,10 +2250,6 @@ Function OnTimerFinishedDigestion(int aiTimerID, VoreData data)
 		ReformPlayer(akCurrentPred)	;may need to add ways to keep player as last prey no matter what.  Potential for player to get lost in prey heirarchy
 	EndIf
 	
-	if(p>=0)
-		UpdateCurrentInStomach(-1,p,None,true,True)
-	EndIf
-	
 	PrintInfos()
 	
 	;Custom event transmission
@@ -2271,16 +2259,14 @@ Function OnTimerFinishedDigestion(int aiTimerID, VoreData data)
 	kArgs[2] = NONE
 	kArgs[3] = FindBellyContainer(akCurrentPred)
 	SendCustomEvent("OnDigest", kArgs)
-	
 EndFunction
 	
+; Reenable the player when the player's time as prey is up.
 Function OnTimerReformPlayerFinish()
 	trace(self, "OnTimerReformPlayerFinish()")
 	
 	PlayerRef.setAlpha(1, False)																			;Make player visible again
 	playerLayer.Reset()																		;Enable player controls
-	;playerLayer.EnableJumping(true)
-	;playerLayer.EnableFighting(true)
 	FV_PlayerAsPreyContext.SetValue(0)
 	
 	ClearPredPreyFaction()
@@ -2292,7 +2278,7 @@ EndFunction
 ;************************************************************************************
 ; Vomit events
 	
-;Vomits up the prey
+;Vomits up the prey. KEILLA: The timerID is usually the pred.
 function OnTimerPerformVomit(int aiTimerID, VoreData data)
 	trace(self, "OnTimerPerformVomit: " + data)
 	PrintInfos()
@@ -2321,10 +2307,8 @@ function OnTimerPerformVomit(int aiTimerID, VoreData data)
 	if(root == data.ParentIndex)
 		FV_FXVomit.PlayAndWait(currentPred)
 	else
-		;TODOSound 
-		;VomitSound1.Play(PredPreyArray[root].Pred)					; add
-		int instanceID = FV_FXVomit.Play(GetFromIndex(root).Pred) 	; remove
-		Sound.SetInstanceVolume(instanceID, 0.25)					; remove
+		int instanceID = FV_FXVomit.Play(GetFromIndex(root).Pred) 	
+		Sound.SetInstanceVolume(instanceID, 0.25)					
 	EndIf
 
 	; if prey has no parent 
@@ -2340,11 +2324,9 @@ function OnTimerPerformVomit(int aiTimerID, VoreData data)
 		
 		If (currentPrey == PlayerRef)																		;If current prey is player
 			trace(self, "OnTimerPerformVomit() Player was prey - pred: " + CurrentPred + ", prey: " + CurrentPrey)
-			;currentPred.MoveTo(currentPrey)																			;Move the pred to player
 			CurrentPrey.TranslateToRef(currentPred, 25000)
 			currentPrey.setAlpha(1, False)																			;Make player visible again
 			playerLayer.Reset()																		;Enable player controls
-			;Debug.EnableDetection(True)																				;Re-Enables detection
 			
 			FixCamera(currentPrey)
 
@@ -2509,15 +2491,7 @@ function ChangeDigestFullnessArmor(Actor currentDigester, int item = -1) ; item 
 	endif
 EndFunction
 
-Function ReloadGame()
-	If(KillPlayerAsPrey)
-		;Bye bye player
-		KillPlayerAsPrey = false
-		playerLayer.Reset()
-		Game.QuitToMainMenu()
-	EndIf
-EndFunction
-
+; Attaches the camera to the predator when player is consumed.
 Function FixCamera(Actor akActor)
 	If(akActor != PlayerRef)
 		trace(self, "Player swallowed.  Switching camera to NPC pred")
@@ -2550,6 +2524,7 @@ Function FixCamera(Actor akActor)
 	EndIf
 EndFunction
 
+; Remoes actors from the PredPrey faction and resets them so they resume fighting.
 Function ClearPredPreyFaction()
 	int i = 0
 	While(i<FV_PredPreyFormList.GetSize())
@@ -2563,16 +2538,16 @@ Function ClearPredPreyFaction()
 	FV_PredPreyFormList.Revert()
 EndFunction
 
+bool ModResetting = false
+
+; Reset everything that is happening, including all timers and other modifications of state.
 ; to use this Function
 ; open the console
 ;    type: 'help ConsumptionRegi 0' to get the quest Id  (xx004c90)
 ;    type: 'CallQuestFunction xx004c90 ResetVoreMod'
 ; OR type: 'CallQuestFunction xx004c90 ResetVoreMod True'     to also do a reset of the player
 ; wait
-; 
-
-bool ModResetting = false
-
+; KEILLA: Can't this be called from MCM? Also this is a great summary of all the shit that is happening in here.
 Function ResetVoreMod(Bool resetPlayer = False)
 	If(ModResetting)
 		return
@@ -2727,51 +2702,43 @@ EndFunction
 int[] EscapedPreyIndices
 int WakeUpTick
 float WakeDay
-bool bSleepInterrupted = false
 float SleepWaitStartDay
 float SleepWaitStopDay
 
+; When player waits, record the start time.
 Event OnPlayerWaitStart(float afWaitStartTime, float afDesiredWaitEndTime)
 	OnPlayerWaitSleepStart(afWaitStartTime, afDesiredWaitEndTime)
 EndEvent
 
+; When player is done waiting, handle it.
 Event OnPlayerWaitStop(bool abInterrupted)
-	bSleepInterrupted = abInterrupted
 	PlayerSleepWaitStop()
 EndEvent
 
+; When player sleeps, record the start time.
 Event OnPlayerSleepStart(float afSleepStartTime, float afDesiredSleepEndTime, ObjectReference akBed)
 	OnPlayerWaitSleepStart(afSleepStartTime, afDesiredSleepEndTime)
 EndEvent
 
+; When player is done sleeping, handle it.
 Event OnPlayerSleepStop(bool abInterrupted, ObjectReference akBed)
 	trace(self, " OnPlayerSleepStop() WakeDay: " + WakeDay)
-	bSleepInterrupted = abInterrupted
 	PlayerSleepWaitStop()
 EndEvent
 
+; Records the sleep/wait start time.
 Function OnPlayerWaitSleepStart(float afSleepWaitStartTime, float afDesiredWaitSleepEndTime)
 	trace(self, " OnPlayerWaitSleepStart() afSleepWaitStartTime: " + afSleepWaitStartTime + " afDesiredSleepEndTime: " + afDesiredWaitSleepEndTime + " WakeDay: " + WakeDay)
-	bSleepInterrupted = false
 	SleepWaitStartDay = afSleepWaitStartTime
 	
-	If(!GetIfPlayerCanSleepWait())
-		;"wake up" the player
-		PlayerRef.Moveto(PlayerRef)
-	EndIf
-
-EndFunction
-
-Bool Function GetIfPlayerCanSleepWait()
 	if(PlayerRef.GetValue(FV_CurrentAlivePrey) > 0)
 		FV_SleepWaitDisruptMessage.Show()
-		return false
-	EndIf
-	return true
+		PlayerRef.Moveto(PlayerRef) ; Hack that interrupts the sleep action
+	EndIF
 EndFunction
 
+; Loop all preds in the PredPreyArray and run digestion for them.
 Function PlayerSleepWaitStop()
-	
 	SleepWaitStopDay = Utility.GetCurrentGameTime()
 	WakeDay = Utility.GetCurrentGameTime()
 	int i = predpreyarray.FindStruct("Pred", PlayerRef)
@@ -2790,8 +2757,8 @@ Function PlayerSleepWaitStop()
 	EndWhile
 EndFunction
 
+; This should run digestion stages for all the prey for the data pred.
 Function HandleDigestionStage(Voredata data)
-	
 	int DigestTicksRemaining = 0
 	VoreData preyData
 	int tempTimerState = 0
@@ -2800,7 +2767,6 @@ Function HandleDigestionStage(Voredata data)
 	;let's convert the remaining ticks over to the digest tick rate
 	
 	if k >= 0
-		;preyData.clear()
 		preyData = predpreyarray[k]
 		If data.pred.GetValue(FV_CurrentAlivePrey) > 0 || !preyData.IsLethal
 			;only handle preds that are in the digestin phase.  If they still have living prey, they can ride out the sleep cycle.
@@ -2816,7 +2782,6 @@ Function HandleDigestionStage(Voredata data)
 		trace(self, " HandleDigestionStage() Pred: " + preyData.pred + " WakeUpTick: " + WakeUpTick + " tempTimerState: " + tempTimerState)
 		If WakeUpTick >= tempTimerState
 			;code to finish digestion and reset pred
-			;preyData.TimerState = 0
 			UpdateTimerState(preyData.Index, 0)
 			
 			If((FV_ColdSteelEnabled.GetValue() > 0 && (preyData.Pred.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))); preyData.Pred.HasKeyword(FV_ColdSteelBody))
@@ -2842,54 +2807,7 @@ Function HandleDigestionStage(Voredata data)
 	EndIf
 EndFunction
 
-Function MakeLethal(Actor akPrey)
-	Int i = PredPreyArray.FindStruct("Prey", akPrey)
-	If(i < 0)
-		trace(self, " MakeLethal() Bug.  akPrey not found: " + akPrey)
-		return 
-	EndIf
-	trace(self, " MakeLethal() set IsLethal true for akPrey: " + akPrey )
-	PredPreyArray[i].IsLethal = true
-	
-EndFunction
-
-Function MakeNonLethal(Actor akPrey)
-	Int i = PredPreyArray.FindStruct("Prey", akPrey)
-	If(i < 0)
-		trace(self, " MakeNonLethal() Bug.  akPrey not found: " + akPrey)
-		return
-	EndIf
-	trace(self, " MakeNonLethal() set IsLethal false for akPrey: " + akPrey)
-	PredPreyArray[i].IsLethal = false
-EndFunction
-
-Function DisablePlayerMovement()
-	;This is used to disable the player movement externally to allow NPCs to eat the player without the player being able to kite
-	If(!playerLayer)
-		playerLayer = inputenablelayer.Create()
-	EndIf
-	
-	playerLayer.EnableMovement(false)
-	playerLayer.EnableJumping(false)
-EndFunction
-
-Function EnablePlayerMovement()
-	;Obviously, we need to re-enable player movement
-	If(playerLayer)
-		playerLayer.EnableMovement(true)
-		playerLayer.EnableJumping(true)
-	Endif
-EndFunction
-
-Function PlayerEscapes(int aiIndex)
-	int i = PredPreyArray.FindStruct("Prey", PlayerRef)
-	
-	If(i > -1)
-		Voredata data = GetPreyAndPredFromIndex(aiIndex)
-		OnTimerPerformVomit(data.index, data)
-	EndIf
-EndFunction
-
+; Reforms the player post-digestion.
 Function ReformPlayer(Actor akPred)
 	Actor InvisActor = akPred.PlaceActorAtMe(FV_ScatLootCorpse)
 	InvisActor.killsilent()										;kill so it will be cleaned up
@@ -2914,6 +2832,7 @@ EndFunction
 
 float fSecondWindLastTime = 0.0
 
+; Instead of dying, there's a random chance you can be reformed?
 Function PlayerDies(int aiIndex, VoreData aData = NONE)
 	Int i = PredPreyArray.FindStruct("Prey", PlayerRef)
 	
@@ -2942,12 +2861,4 @@ Function PlayerDies(int aiIndex, VoreData aData = NONE)
 		OnTimerPerformDigestion(aiIndex, aData)
 		
 	EndIf
-EndFunction
-
-Function UpdateCameraSwallowDistance(Float afValue)
-	fCameraDistanceSwallow = afValue
-EndFunction
-
-Function UpdateCameraVomitDistance(Float afValue)
-	fCameraDistanceVomit = afValue
 EndFunction

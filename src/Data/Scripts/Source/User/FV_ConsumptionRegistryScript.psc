@@ -253,7 +253,6 @@ Struct VoreArmor
 	Int PreyCount
 EndStruct
 
-; KEILLA: Is this like a duplicate of the VoreData?
 Struct SlotData
 	Keyword ActorType
 	Race ActorRace
@@ -262,13 +261,6 @@ Struct SlotData
 	Int IndigestionChanceIncrease = 0
 	Perk IndigestionIncreaseCancelPerk = NONE
 EndStruct
-
-; Main Buffer
-VoreData[] PredPreyArray
-
-; This global tracks the "tail" of the array, returning the "index" which that slot believes it is in.
-; KEILLA: What the actual fuck, why is this not just PredPreyArray.Length()?
-Int CurrentVoreIndex
 
 ;Initialise mod
 Event OnInit()
@@ -624,66 +616,15 @@ EndFunction
 
 ;Called from other functions if digestion is triggered externaly rarther than after prey death.
 Function TriggerDigestionSequence(Actor currentPred)
-	
-	; ; get pred from buffer
-	; int i = PredPreyArray.FindStruct("Pred", currentPred) ; SCAN PPA
-	; if(i<0)
-	; 	trace(self, "TriggerDigestionSequence pred " + currentPred + " not found")
-	; 	PrintTree()
-	; 	Return
-	; EndIf
-	
-	; ; get the children
-	; ; KEILLA: Why do we get the children, then just toss all but the first one?
-	; Int[] children = new Int[0]
-	; GetchildrenAsSameLevel(children, PredPreyArray[i].Index)
-	
-	; if(children.Length == 0)
-	; 	Return
-	; EndIf
-	
-	; VoreData data = GetPreyAndPredFromIndex(children[0]) ; SCAN PPA
 	OnTimerTriggerDigestionSequence(currentPred)
 EndFunction
 
 ;Vomits up the prey
 function PerformVomit(Actor currentPred)
-	
-	; ; get pred from buffer
-	; int i = PredPreyArray.FindStruct("Pred", currentPred) ; SCAN PPA
-	; if(i<0)
-	; 	trace(self, "PerformVomit pred " + currentPred + " not found")
-	; 	PrintTree()
-	; 	Return
-	; EndIf
-	
-	; get it's children
-	; Int[] children = new Int[0]
-	; GetchildrenAsSameLevel(children, i)
-	
-	; ; nothing found
-	; if(children.Length == 0)
-	; 	trace(self, "PerformVomit pred " + currentPred + " not child")
-	; 	PrintTree()
-	; 	Return
-	; EndIf
-	
-	; randomly select a child
-	; i = children[Utility.RandomInt(0,children.Length-1)]
-	; VoreData data = GetPreyAndPredFromIndex(i) ; SCAN PPA
-	
-
-	; CancelTimer(i) ; Stop timer for the prey
 	Actor[] preys = GetAllPrey(currentPred)
 	Actor randomPrey = preys[Utility.RandomInt(0, preys.Length - 1)]
 	OnTimerPerformVomit(randomPrey) ; Do it now
-	
 EndFunction
-
-;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-; Private functions
-
 
 ;************************************************************************************
 ;************************************************************************************
@@ -714,21 +655,6 @@ Function ForceNukaAcidOnNPCPred(Actor akPred)
 	EndIf
 EndFunction
 
-Function ParanoidPredatorCheckOrphanedPrey(Actor akPrey)
-	int indexCheck = PredPreyArray.FindStruct("Prey", akPrey) ; SCAN PPA
-	If(indexCheck > -1)
-		;prey alreay exists in buffer.  First, check if orphaned and allow this pred to take the prey IF the previous pred was already cleaned up.  Otherwise, bail out
-		int predCheck = PredPreyArray.FindStruct("Index", PredPreyArray[indexCheck].ParentIndex) ; SCAN PPA
-		If(predCheck < 0)
-			;pred's index was unreturnable, meaning it was cleaned up but the prey was orphaned
-			canceltimer(PredPreyArray[indexCheck].Index)
-			PredPreyArray.remove(indexCheck)
-		Else
-			return
-		EndIf
-	EndIf
-EndFunction
-
 Function DropCombatOnPlayerPrey(Actor akPred, Actor akPrey)
 	; KEILLA: This is all RPG and game mechanical stuff related to being vored. Extract.
 	trace(self, "Player is prey.  Adding local combatants to faction list to end combat against player.")
@@ -754,7 +680,6 @@ EndFunction
 ; Does a lot of game mechanics stuff to handle a swallow. Everything from setting AVs, messing with the camera and belly, and manipulating player input. Way too much.
 Function ProcessSingleSwallow(Actor akPred, Actor akPrey, bool bLethalFlag)
 	ForceNukaAcidOnNPCPred(akPred)
-	ParanoidPredatorCheckOrphanedPrey(akPrey)
 	
 	;save Giant Belly value if this is the first prey pred is eating.  Prevents accidentally saving GiantBelly to 0 on subsequent prey
 	; KEILLA: Seems like a presentational concern that should be cleaned up with better comms.
@@ -771,7 +696,7 @@ Function ProcessSingleSwallow(Actor akPred, Actor akPrey, bool bLethalFlag)
 	; WIKI: Arrays that are created by scripts via the New operation or Add() function are limited to 128 elements.
 	; Determines whether there is free space in the buffer. 
 	; KEILLA: This should be impossible at this point. Stop the vore process earlier.
-	If(PredPreyArray != None && PredPreyArray.Length > 125)
+	If(ConsumptionRegistry != None && ConsumptionRegistry.Length > 125)
 		PerformVoreEventReject(akPred, akPrey)
 		Return
 	EndIf
@@ -797,7 +722,7 @@ Function ProcessSingleSwallow(Actor akPred, Actor akPrey, bool bLethalFlag)
 	int predInPrey = akPrey.GetValue(FV_CurrentPrey) as int
 	
 	; Pred can exceed capacity in case of Voreception
-	if(akPrey.GetValue(FV_CurrentPrey) > 0)
+	if(predInPrey > 0)
 		maxCapacity = maxCapacity - predInPrey + StomachCapacityOverload
 	EndIf
 	
@@ -871,7 +796,6 @@ Function PerformVoreEventAccept(Actor akPred, Actor akPrey, bool bLethalFlag)
 	
 	;Add prey to the prey array
 	int PreyIndex = Add(akPred, akPrey)
-	; CLEAN: Int PreyIndex = InsertIntoBuffer(akPred, akPrey, bLethalFlag)
 	
 	;Reset manual digestion
 	If(akPred.GetValue(FV_ReadyToDigest) == 1)
@@ -880,21 +804,16 @@ Function PerformVoreEventAccept(Actor akPred, Actor akPrey, bool bLethalFlag)
 	
 	;Mod tracking values
 	UpdateCurrentInStomach(akPred)
-	trace(self, "PerformVoreEventAccept() akPred: " + akPred + " FV_CurrentPrey: " + akPred.GetValue(FV_CurrentPrey) + " FV_CurrentAlivePrey: " + akPred.GetValue(FV_CurrentAlivePrey))
-	; If((akPred.GetValue(FV_CurrentPrey) as int) > (akPred.GetValue(FV_CurrentAlivePrey)))
-	; 	;Reset timers if there are more dead prey than live prey.  This will reset the belly when swallowing after digestion has begun (timerstates have been set during digestion)
-	; 	;Impact to damage stage should be 0.  All prey already at timerstate 100
-	; 	ResetTimerState(akPred)
-	; EndIf
 	
 	akPrey.ModValue(FV_TicksTillEscapeStart, akPred.GetValue(FV_Entrapment))
 	akPrey.ModValue(FV_TicksTillEscape, akPrey.GetValue(FV_TicksTillEscapeStart))
-	trace(self, "Ticks till escape: " + akPrey.GetValue(FV_TicksTillEscapeStart))
+	
+	; TODO: broken until VoreHud can accept actors
+	; If(akPred == PlayerRef)
+		; FV_VoreHud.UpdateHealthBar(PreyIndex, akPrey) 
+	; EndIf
+
 	;Start vore timer
-	; VoreData data = GetPreyAndPredFromIndex(preyIndex) ; SCAN PPA
-	If(akPred == PlayerRef)
-		FV_VoreHud.UpdateHealthBar(PreyIndex, akPrey)
-	EndIf
 	If akPrey.IsDead()
 		OnTimerPerformDigestion(akPrey)
 	ElseIf akPrey == PlayerRef && bLethalFlag
@@ -954,11 +873,11 @@ Function PerformVoreEventReject(Actor akPred, Actor akPrey)
 	; TODO: Spilt audio into two sections with one to be triggered after move thus making this hack to be redundant.
 	Utility.Wait(2)
 	
-	If (akPrey == PlayerRef)																			;If the prey is player
+	If (akPrey == PlayerRef)	;If the prey is player
 		trace(self, "player failed to be swallowed.  Vore event rejection")
 		akPrey.TranslateToRef(akPred, 25000)
-		akPrey.setAlpha(1 as float, False)																	;Make player visible again
-		playerLayer.Reset()																	;Enable player controls.  No need to list all trues.  All passes default to true
+		akPrey.setAlpha(1 as float, False)	;Make player visible again
+		playerLayer.Reset()		;Enable player controls.  No need to list all trues.  All passes default to true
 		FixCamera(akPrey)
 
 		ClearPredPreyFaction()
@@ -969,7 +888,7 @@ Function PerformVoreEventReject(Actor akPred, Actor akPrey)
 		
 		StartTimer(4.0, GhostTimerRemovalID)
 	Else
-		akPrey.MoveTo(akPred)																				;Move prey to pred
+		akPrey.MoveTo(akPred)	; Move prey to pred
 	EndIf
 	akPrey.EquipItem(FV_RemoveSwallowProtection, true, true) ; Forces prey to consume a swallow protection potion so they can't just be reswallowed.
 EndFunction
@@ -1135,31 +1054,13 @@ state OnTimerState
 endState
 
 ; Plays stomach noise sounds.
-function OnTimerPlaySound(VoreData data)
+function OnTimerPlaySound(PreyData data)
 	int instanceID = FV_FXStomachGurgle.Play(data.Pred) 	
 	Sound.SetInstanceVolume(instanceID, 0.5)
 EndFunction
 
 ; Tracks the mortality of prey by timer ID. Many triggers for the prey to be vomited for many reasons, protection against death, and eventually AV damage to prey and in the case of escape, the pred.
 function OnTimerDecreaseTicks(int aiTimerID, VoreData data)
-	; KEILLA: Randomly transfers nested prey which are dead to the predator's stomach. Useless.
-	; if(AllowPredReEatPrey && data.IsPredator)
-	; 	If(data.Tick < 0 && Utility.RandomInt()> 90)
-	; 		trace(self, "Tick RandomInt > 0 ")
-	; 		Int[] children = new Int[0]
-	; 		children.Clear()
-	; 		GetchildrenAsSameLevelAndCheckFirstParent(children, data.parentIndex, data.Index) ; SCAN PPA
-	; 		trace(self, "Tick children " + children)
-	; 		if(children.Length > 0)
-	; 			int i = children[Utility.RandomInt(0,children.Length-1)]
-	; 			PreyData tdata = Get(data.Prey)
-	; 			if(tdata!= None && tdata.Tick < 0 && !tdata.IsDead && tdata.TimerState >= 100)
-	; 				OnTimerTransfer(aiTimerID, i, data)
-	; 			EndIf
-	; 		EndIf
-	; 	EndIf
-	; EndIf
-	
 	; do nothing if the prey is also a pred
 	if(data.ContainAPrey)
 		;check if pred should regurgitate nested pred
@@ -1172,7 +1073,6 @@ function OnTimerDecreaseTicks(int aiTimerID, VoreData data)
 		Return
 	EndIf
 
-	
 	; Oh, dead pred autovomit
 	if(data.Pred.IsDead())
 		trace(self, "Tick Pred: " + data.Pred + " IsDead: " + aiTimerID)
@@ -1290,25 +1190,13 @@ EndFunction
 ;End of lethal vore. Clears up variables and runs post vore actions TODO: Scat + other post vore options
 ; Does a lot, sounds, RPG stuff, Vore mechanics, move the inventories
 function OnTimerPerformDigestion(Actor akPrey)
-	; trace(self, "OnTimerPerformDigestion: " + data)
-	; if(data == None)
-	; 	trace(self, "[BUG] OnTimerPerformDigestion")
-	; 	Return
-	; EndIf
-	; PrintInfos()
-	
-	; If(data.HasDigested)
-	; 	trace(self, "OnTimerPerformDigestion() HasDigested: " + data.HasDigested + data)
-	; 	Return
-	; EndIf
-	
-	Actor pred = GetPred(akPrey)
+	PreyData data = GetDataByPrey(akPrey)
 	
 	Var[] kArgs = new Var[4]
-	kArgs[0] = pred
+	kArgs[0] = data.Pred
 	kArgs[1] = 0 ; KEILLA: What is this?
 	kArgs[2] = akPrey
-	kArgs[3] = GetDataByPrey(akPrey).BellyContainer
+	kArgs[3] = data.BellyContainer
 	SendCustomEvent("OnDigest", kArgs)
 
 	; BROKEN until prey can be passed to FV_VoreHud functions
@@ -1316,24 +1204,10 @@ function OnTimerPerformDigestion(Actor akPrey)
 	; 	FV_VoreHud.RemoveHealthBar(aiTimerID)
 	; EndIf
 
-	; data.IsDead = true
-	akPrey.Kill(pred)
-	UpdateCurrentInStomach(pred)
+	akPrey.Kill(data.Pred)
+	UpdateCurrentInStomach(data.Pred)
 	
-	; KEILLA: More sounds. Extract to a sound script.
-	; int root = GetRoot(data.Index, false)
-	; if(root == data.ParentIndex)
-	; 	If(Utility.RandomInt() > 75)
-	; 		If(pred == PlayerRef)
-	; 			FV_PlayerDigestSuccess.Play(pred)	;GAZ: Changed more PlayAndWait spam. Changing these to use .Play instead may cause issues with multiple sounds playing over the top of each other. If this happens, switch to using CallFunctionNoWait method.
-	; 		Else
-	; 			FV_NPCDigestSuccess.Play(pred)
-	; 		EndIf
-	; 	Else
-	; 		FV_FXBurp.Play(pred)
-	; 	EndIf
-	; Else
-	int instanceID = FV_FXBurp.Play(pred) 	
+	int instanceID = FV_FXBurp.Play(data.Pred) 	
 	Sound.SetInstanceVolume(instanceID, 0.5)					
 		Sound.SetInstanceVolume(instanceID, 0.5)					
 	Sound.SetInstanceVolume(instanceID, 0.5)					
@@ -1342,49 +1216,27 @@ function OnTimerPerformDigestion(Actor akPrey)
 	; EndIf
 	
 	;Increase the chance of indigestion
-	pred.ModValue(FV_IndigestionChanceOnNextDigest, CalculateIndigestionChance(pred, akPrey))
+	data.Pred.ModValue(FV_IndigestionChanceOnNextDigest, CalculateIndigestionChance(data.Pred, akPrey))
 	
 	;Stats stuff
-	If (pred == PlayerRef || pred.IsInFaction(HasBeenCompanionFaction))
-		FV_ActorData.UpdateDigestCount(pred, akPrey)
+	If (data.Pred == PlayerRef || data.Pred.IsInFaction(HasBeenCompanionFaction))
+		FV_ActorData.UpdateDigestCount(data.Pred, akPrey)
 	EndIf
 	
 	; OH HEY, if you ate a robot, you get some fusion cells! Isn't this a good place to do that? KEILLA: It is not.
-	If(akPrey.HasKeyword(ActorTypeRobot) && pred.HasPerk(FV_HighIronDiet03))		
-		pred.Additem(AmmoFusionCell, akPrey.GetLevel()/2 as int, false)		
+	If(akPrey.HasKeyword(ActorTypeRobot) && data.Pred.HasPerk(FV_HighIronDiet03))		
+		data.Pred.Additem(AmmoFusionCell, akPrey.GetLevel()/2 as int, false)		
 	EndIf
 	
 	;Add XP
 	;CalculateVoreXP(CurrentPred, CurrentPrey)
 	If(akPrey != PlayerRef)
-		FV_ScatManager.ProcessPreyItems(akPrey, pred)
+		FV_ScatManager.ProcessPreyItems(akPrey, data.Pred)
 	EndIf
 	akPrey.AddItem(LLD_VEV_Crystals_Prey_FV_, 1, true)
 	
-	; CLEAN: Figure out the target container way far outside this function
-	;If the pred is the player
-	If(pred == PlayerRef)
-	
-		;Move all items into the belly container
-		akPrey.RemoveAllItems(FV_BellyContainer)
-	
-		;Set bool to say there are items in the belly to be true (used in holotape)
-		FV_HasItemsInBellyBool.SetValue(1)
-	
-	; no, transfer prey items to pred
-	ElseIf(akPrey == PlayerRef)
-		;do nothing
-	ElseIf(pred.IsInFaction(CurrentCompanionFaction) && FV_CompanionScat.GetValue() == 1)
-		akPrey.RemoveAllItems(FV_CompanionBellyContainer)
-	ElseIf(FV_ScatEnabled.GetValue() == 1 && FV_NPCScatEnabled.GetValue() == 1 && !pred.IsInFaction(CurrentCompanionFaction))
-		ObjectReference predContainer = GetDataByPrey(akPrey).BellyContainer
-		akPrey.RemoveAllItems(predContainer)
-	ElseIf(pred.isinfaction(WorkshopNPCFaction) || pred.isinfaction(WorkshopDialogueFaction) || pred.isinfaction(CurrentCompanionFaction))
-		akPrey.RemoveAllItems(FV_BellyContainer)
-	Else
-		akPrey.RemoveAllItems(pred)
-	EndIf
-	
+	akPrey.RemoveAllItems(data.BellyContainer)
+		
 	;eliminate corpse and move back to original spawn location for cell reset
 	If(akPrey != PlayerRef)
 		akPrey.SetCriticalStage(4) ; The prey corpse is vaporized so it does not render.
@@ -1392,18 +1244,15 @@ function OnTimerPerformDigestion(Actor akPrey)
 		trace(self, "Prey NPC has been moved back to original editor location")
 	EndIf
 	
-	;Update if prey has previously digested.  Will prevent additional XP calculations and timer restarts
-	; data.HasDigested = true
-		
 	;Was that the last prey in the stomach of the pred? 
-	If((pred.GetValue(FV_CurrentAlivePrey) <= 0 && pred != PlayerRef) || (pred.GetValue(FV_CurrentAlivePrey) <= 0 && FV_ManualDigestionEnabled.GetValue() == 0))
+	If((data.Pred.GetValue(FV_CurrentAlivePrey) <= 0 && data.Pred != PlayerRef) || (data.Pred.GetValue(FV_CurrentAlivePrey) <= 0 && FV_ManualDigestionEnabled.GetValue() == 0))
 		;Trigger digestion as set to auto digest
 		trace(self, "Start TriggerDigestionSequence")
-		OnTimerTriggerDigestionSequence(pred)
-	ElseIf(pred.GetValue(FV_CurrentAlivePrey) <= 0)
+		OnTimerTriggerDigestionSequence(data.Pred)
+	ElseIf(data.Pred.GetValue(FV_CurrentAlivePrey) <= 0)
 		; You do not digest while you have alive prey
-		pred.SetValue(FV_ReadyToDigest, 1)
-		If(pred == Game.GetPlayer())
+		data.Pred.SetValue(FV_ReadyToDigest, 1)
+		If(data.Pred == Game.GetPlayer())
 			FV_ReadyToDigestMessage.Show()
 		EndIf
 	EndIf
@@ -1480,23 +1329,17 @@ Function OnTimerTriggerDigestionSequence(Actor akPred)
 
 	; UpdateTimerState(1, CurrentInStomach) ; CLEAN: Can't we just use the FV_DigestionStage?
 	trace(self, "OnTimerTriggerDigestionSequence() CurrentInStomach: " + CurrentInStomach + " currentPred: " + akPred)
-	Actor prey = GetPrey(akPred)
+	PreyData data = GetDataByPred(akPred)
 	Var[] kArgs = new Var[4]
 	kArgs[0] = akPred
 	kArgs[1] = 3 ; KEILLA: What is this?
-	kArgs[2] = prey
-	kArgs[3] = GetDataByPrey(prey).BellyContainer
+	kArgs[2] = data.Prey
+	kArgs[3] = data.BellyContainer
 	SendCustomEvent("OnDigest", kArgs)
-	
-	; CLEAN
-	; VoreData predData = GetPredFromIndex(data.ParentIndex)
-	; If(predData != NONE)
-	; 	predData.LastIndex = aiTimerID
-	; EndIf
-	
+		
 	; KEILLA: More presentational stuff about the belly appearance
 	If((FV_ColdSteelEnabled.GetValue() > 0 && (akPred.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1)))
-		; UpdateColdSteelCounter(aiTimerID, ColdSteelCounts as int)
+		; UpdateColdSteelCounter(aiTimerID, ColdSteelCounts as int) KEILLA: TBD what this is
 		FV_ColdSteelBellyQuest.ChangeColdSteelDigestFullness(akPred, (CurrentInStomach as float))
 	Else
 		ChangeDigestFullnessArmor(akPred,CurrentInStomach)
@@ -1516,13 +1359,8 @@ Function OnTimerFinishedDigestion(PreyData aData)
 	Actor currentPred		= aData.Pred
 	Actor currentPrey		= aData.Prey
 
-	; int root = GetRoot(data.Index, false)
-	; if(root == data.ParentIndex)
-	; 	FV_FXBurp.Play(data.Pred)
-	; Else
 	int instanceID = FV_FXBurp.Play(aData.Pred) 	
 	Sound.SetInstanceVolume(instanceID, 0.5)					
-	; EndIf
 
     ;End of digestions
     currentPred.SetValue(FV_DigestionStage, 0)
@@ -1558,7 +1396,7 @@ Function OnTimerFinishedDigestion(PreyData aData)
 	kArgs[0] = currentPred
 	kArgs[1] = 1
 	kArgs[2] = NONE
-	kArgs[3] = GetDataByPred(currentPred).BellyContainer
+	kArgs[3] = aData.BellyContainer
 	SendCustomEvent("OnDigest", kArgs)
 
 	Remove(currentPrey)
@@ -1583,71 +1421,20 @@ EndFunction
 	
 ;Vomits up the prey. KEILLA: The timerID is usually the pred.
 function OnTimerPerformVomit(Actor akPrey)
-	; trace(self, "OnTimerPerformVomit: " + data)
-	; PrintInfos()
-	; if(data == None)
-	; 	trace(self, "[BUG] OnTimerPerformVomit")
-	; 	Return
-	; EndIf
+
 	
 	PreyData data = GetDataByPrey(akPrey)
 	Actor currentPred = data.Pred
-	If(currentPred == PlayerRef)
-		; FV_VoreHud.RemoveHealthBar(aiTimerID) ; TODO: Broken until VoreHud can receive a prey
-	EndIf
+	; TODO: Broken until VoreHud can receive a prey
+	; If(currentPred == PlayerRef)
+		; FV_VoreHud.RemoveHealthBar(aiTimerID) 
+	; EndIf
 	
-	; int root = GetRoot(data.Index, false)
-	
-	; move up the prey
-	; Int parentPred = TreeMoveUp(aiTimerID)
-
-	; resetTick(aiTimerID)
-	; read the new data for the prey
-	; VoreData newData = GetPreyFromIndex(aiTimerID)
-	; PrintInfos()
 	;Play vomit audio
 	int instanceID = FV_FXVomit.Play(currentPred) 	
 	Sound.SetInstanceVolume(instanceID, 0.25)					
 	
-	; if prey has no parent 
-	; CLEAN: Why would this happen?
-	; if(newData.ParentIndex == -1)
-	; 	; regurgitates the prey
-		
-	; 	;Set values back to 0
-	; 	CurrentPrey.ModValue(FV_TicksTillEscapeStart, -1*CurrentPrey.GetValue(FV_TicksTillEscapeStart))
-	; 	CurrentPrey.ModValue(FV_TicksTillEscape, -1*CurrentPrey.GetValue(FV_TicksTillEscape))
-		
-	; 	;Reset prey size
-	; 	currentPrey.SetScale(1)
-		
-	; 	If (currentPrey == PlayerRef)																		;If current prey is player
-	; 		trace(self, "OnTimerPerformVomit() Player was prey - pred: " + CurrentPred + ", prey: " + CurrentPrey)
-	; 		CurrentPrey.TranslateToRef(currentPred, 25000)
-	; 		currentPrey.setAlpha(1, False)																			;Make player visible again
-	; 		playerLayer.Reset()																		;Enable player controls
-			
-	; 		FixCamera(currentPrey)
-
-	; 		FV_PlayerAsPreyContext.SetValue(0)
-
-	; 		Utility.SetINIFloat("fVertibirdVanityModeMaxDist:Camera", fCameraDistanceVomit)
-	; 		Utility.SetINIBool("bApplyCameraNodeAnimations:Camera", 1)
-			
-
-	; 		ClearPredPreyFaction()
-			
-	; 		StartTimer(4, GhostTimerRemovalID)																		;allow player to remain ghosted for 4 seconds.  Timer will remove
-	; 	Else
-	; 		currentPrey.MoveTo(currentPred)																			;Move prey to pred	
-	; 		currentPrey.PushActorAway(currentPrey, 0)																;moved this to only happen to NPC actors.  Delayed ragdoll to player is problematic
-	; 	EndIf
-	; 	currentPrey.EquipItem(FV_RemoveSwallowProtection, true, true)
-	; Else
-	
-	; 	; continue digestion
-	; 	StartTimer(data.DigestSpeedTime, aiTimerID)
-	; EndIf
+	; TODO: Should start timer?
 	StartTimer(DigestionSpeed, DigestTimerID)
 
 	; update stomach value and update armor
@@ -1657,30 +1444,7 @@ function OnTimerPerformVomit(Actor akPrey)
 	kArgs[0] = currentPred	
 	kArgs[1] = akPrey
 	SendCustomEvent("OnVomit", kArgs)
-	
-	; call OnTimerTriggerDigestionSequence if needed
-	; CLEAN: THis does not seem like it should be needed.
-	; if(currentPred.GetValue(FV_CurrentAlivePrey) <= 0 && currentPred.GetValue(FV_CurrentPrey) > 0)
-	; 	Int child = GetOneChild(parentPred)
-	; 	if(child >= 0)
-	; 		OnTimerTriggerDigestionSequence(child, GetPreyAndPredFromIndex(child))
-	; 	EndIf
-	; EndIf
-	
-	; remove the vomited prey from buffer
-	; if(newData.ParentIndex == -1)
 	Remove(akPrey)
-	; EndIf	
-	
-	; ; remove also the pred if needed
-	; if(parentPred >= 0 && currentPred.GetValue(FV_CurrentPrey) <= 0)
-	; 	newData = GetFromIndex(parentPred)
-	; 	if(newData != None && newData.ParentIndex == -1)
-	; 		RemoveFromBufferIfNochildren(parentPred)
-	; 	EndIf
-	; EndIf
-	
-	trace(self, "OnTimerPerformVomit() - PerformVomit Done")
 EndFunction
 
 ;************************************************************************************
@@ -1885,7 +1649,7 @@ Function ResetVoreMod(Bool abResetPlayer = False)
 	trace(self, "          Reset pred and prey")
 	int i = 0
 	While (i < ConsumptionRegistry.Length)
-		PreyData data = ConsumptionRegistry[i]
+		data = ConsumptionRegistry[i]
 	
 		ChangeFullnessArmor(data.Pred, 0)
 		ChangeDigestFullnessArmor(data.Pred)
@@ -1999,7 +1763,7 @@ Function OnPlayerWaitSleepStart(float afSleepWaitStartTime, float afDesiredWaitS
 	EndIF
 EndFunction
 
-; Loop all preds in the PredPreyArray and run digestion for them.
+; Loop all preds in the ConsumptionRegistry and run digestion for them.
 Function PlayerSleepWaitStop()
 	SleepWaitStopDay = Utility.GetCurrentGameTime()
 	WakeDay = Utility.GetCurrentGameTime()

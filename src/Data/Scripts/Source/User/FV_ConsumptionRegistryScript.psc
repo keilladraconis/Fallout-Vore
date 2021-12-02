@@ -501,16 +501,6 @@ EndFunction
 ; an array, which is constrained to 128 elements. Each element is a VoreData of BranchTypePred or BranchTypePrey.Function AddInventoryEventFilter(Form akFilter)
 ; Each element has an index pointer to its 'parent', which for a prey element is likely a predator.
 
-; Just scans and updates the coldsteelcounter value.
-Function UpdateColdSteelCounter(int iIndex, Int value)
-	Int i = PredPreyArray.FindStruct("Index", iIndex)
-	If(i < 0) 
-		;trace(self, "UpdateColdSteelCounter: NONE")
-		return 
-	EndIf
-	PredPreyArray[i].ColdSteelCounter = value
-EndFunction
-
 ; Updates the AVs for current stomach contents, and also updates armor, heavy pred perks, and vore hud.
 Function UpdateCurrentInStomach(Actor akPred = None, bool updateFullness = false)
 	; Int index = iPreyIndex

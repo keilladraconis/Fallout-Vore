@@ -1826,8 +1826,9 @@ function OnTimerPlaySound(VoreData data)
 	EndIf
 EndFunction
 
+; Tracks the mortality of prey by timer ID. Many triggers for the prey to be vomited for many reasons, protection against death, and eventually AV damage to prey and in the case of escape, the pred.
 function OnTimerDecreaseTicks(int aiTimerID, VoreData data)
-
+	; KEILLA: I do not understand what/why this does.
 	if(AllowPredReEatPrey && data.IsPredator)
 		If(data.Tick < 0 && Utility.RandomInt()> 90)
 			trace(self, "Tick RandomInt > 0 ")
@@ -1858,6 +1859,7 @@ function OnTimerDecreaseTicks(int aiTimerID, VoreData data)
 	EndIf
 
 	
+	; Oh, dead pred autovomit
 	if(data.Pred.IsDead())
 		trace(self, "Tick Pred: " + data.Pred + " IsDead: " + aiTimerID)
 		OnTimerPerformVomit(aiTimerID, data)
@@ -1872,6 +1874,7 @@ function OnTimerDecreaseTicks(int aiTimerID, VoreData data)
 	EndIf
 	
 	if(!data.IsLethal)
+		; If you set manual regurgitation, do the vomit and reset.
 		If(data.Pred.GetValue(FV_RegurgitateBool) == 1)
 		
 			;Reset regurgetate bool
@@ -1880,8 +1883,9 @@ function OnTimerDecreaseTicks(int aiTimerID, VoreData data)
 			;Vomit
 			OnTimerPerformVomit(aiTimerID, data)
 		Else
-			If(data.Prey == PlayerRef && PlayerRef.GetDistance(data.Pred) > 4000)
-				;move player in case pred gets nearly a cell away.  A cell is 4096x4096 units
+			If(data.Prey == PlayerRef && PlayerRef.GetDistance(data.Pred) > 4000) 
+				; If the player is the prey, keep moving their invisible ghost closer to the predator so they don't get too far and unload or something.
+				; KEILLA: This is absolutely besides the point of this function. Should be managed elsewhere.
 				PlayerRef.TranslateToRef(data.Pred, 25000)
 			Endif
 			;restart timer
@@ -1896,15 +1900,16 @@ function OnTimerDecreaseTicks(int aiTimerID, VoreData data)
 	
 	currentPrey.ModValue(FV_TicksTillEscape, -1)
 	
+	; Calculate the belly acid damage.
 	Float DamageDealt = (currentPred.GetValue(FV_AcidDamage)+currentPred.GetValue(Game.GetEnduranceAV()))*(1-(currentPrey.GetValue(FV_AcidResistance)-currentPred.GetValue(FV_AcidStrengthValue))/100)
 	trace(self, "damage calculated " + DamageDealt + " prey health: " + currentPrey.GetValue(Game.GetHealthAV()))
 	
+	; If we might kill the prey
 	If((currentPrey.GetValue(Game.GetHealthAV()) as float) - DamageDealt <= 0)										;Check if prey will die from damage.  If so, perform special handling
 		trace(self, "damage greater than current health of enemny")
-		If(currentPrey == PlayerRef)
-
+		If(currentPrey == PlayerRef) ; If player is the prey
 			;we kill the player but have to make sure the triggerdigestionsequence is passed early enough, to prevent regurgitation of half dead player
-			if((currentPrey.GetValue(Game.GetHealthAV())) > (currentPrey.getBaseValue(Game.GetHealthAV()) * 0.5)); - (currentPrey.getBaseValue(Game.GetHealthAV()) * 0.25)) > 0 )
+			if((currentPrey.GetValue(Game.GetHealthAV())) > (currentPrey.getBaseValue(Game.GetHealthAV()) * 0.5))
 				currentPrey.DamageValue(Game.GetHealthAV(), ((currentPrey.getBaseValue(Game.GetHealthAV()) * 0.2)))
 				Debug.Notification("Your predator enjoys feeling you struggle in their stomach.")
 				FV_FXBurp.Play(currentPred)
@@ -1913,16 +1918,16 @@ function OnTimerDecreaseTicks(int aiTimerID, VoreData data)
 				PlayerDies(aiTimerID, data)
 				return
 			EndIf
-		ElseIf(currentPrey.HasPerk(FV_DigestInvulnerability))
+		ElseIf(currentPrey.HasPerk(FV_DigestInvulnerability)) ; If invulnerable to digestion, force vomit the prey
 			Var[] kArgs = new Var[2]
 			kArgs[0] = CurrentPred
 			kArgs[1] = CurrentPrey
 			SendCustomEvent("OnDigestProtection", kArgs)
 			OnTimerPerformVomit(aiTimerID, data)
 			return
-		ElseIf(currentPrey.IsInFaction(HasBeenCompanionFaction))
-			If(FV_DigestCompanionProtection.GetValue()>0)
-				currentPrey.DamageValue(Game.GetHealthAV(), DamageDealt)														;Put companions in bleed out and then vomit them up
+		ElseIf(currentPrey.IsInFaction(HasBeenCompanionFaction)) ; If someone is digesting a companion
+			If(FV_DigestCompanionProtection.GetValue()>0) ;Put companions in bleed out and then vomit them up
+				currentPrey.DamageValue(Game.GetHealthAV(), DamageDealt)														
 				OnTimerPerformVomit(aiTimerID, data)
 				return
 			ElseIf(FV_KillEssentialEnabled.GetValue() == 1)
@@ -1934,7 +1939,7 @@ function OnTimerDecreaseTicks(int aiTimerID, VoreData data)
 			currentPrey.Kill(currentPred)
 		EndIf
 	ElseIf(data.isLethal)
-		currentPrey.DamageValue(Game.GetHealthAV(), DamageDealt)															;if prey was not meant to die, deal damage to it now
+		currentPrey.DamageValue(Game.GetHealthAV(), DamageDealt) ;if prey was not meant to die, deal damage to it now
 	EndIf
 	If(currentPred == PlayerRef)
 		FV_VoreHud.UpdateHealthBar(aiTimerID, currentPrey)
@@ -1944,9 +1949,11 @@ function OnTimerDecreaseTicks(int aiTimerID, VoreData data)
 	
 	int EscapeCheck = 12 + currentPrey.GetValue(FV_EscapeChance) as int - CurrentPred.GetValue(FV_StomachStrength) as int
 	
-	If(!data.isLethal)																							;set escape roll higher than escape chance is expected to happen to prevent accident escaping of non-lethal prey
+	If(!data.isLethal)	;set escape roll higher than escape chance is expected to happen to prevent accident escaping of non-lethal prey
 		EscapeRoll = 999
 	EndIf
+
+	; KEILLA: THis seems redundant with the above check about whether the data.isDead, though in this case we are checking the Actor
 	If(currentPrey.IsDead())
 		OnTimerPerformDigestion(aiTimerID, data)
 	ElseIf((EscapeRoll < EscapeCheck && data.Tick <= 0 ) || currentPred.GetValue(FV_RegurgitateBool) == 1 || currentPrey.GetValue(FV_TicksTillEscape) <= 0)
@@ -1967,6 +1974,7 @@ function OnTimerDecreaseTicks(int aiTimerID, VoreData data)
 EndFunction
 
 ;End of lethal vore. Clears up variables and runs post vore actions TODO: Scat + other post vore options
+; Does a lot, sounds, RPG stuff, Vore mechanics, move the inventories
 function OnTimerPerformDigestion(int aiTimerID, VoreData data)
 	trace(self, "OnTimerPerformDigestion: " + data)
 	if(data == None)
@@ -1985,7 +1993,7 @@ function OnTimerPerformDigestion(int aiTimerID, VoreData data)
 	
 	Var[] kArgs = new Var[4]
 	kArgs[0] = CurrentPred
-	kArgs[1] = 0
+	kArgs[1] = 0 ; KEILLA: What is this?
 	kArgs[2] = CurrentPrey
 	kArgs[3] = FindBellyContainer(CurrentPred)
 	SendCustomEvent("OnDigest", kArgs)
@@ -1997,6 +2005,7 @@ function OnTimerPerformDigestion(int aiTimerID, VoreData data)
 	data.IsDead = true
 	UpdateCurrentInStomach(aiTimerID)
 	
+	; KEILLA: More sounds. Extract to a sound script.
 	int root = GetRoot(data.Index, false)
 	if(root == data.ParentIndex)
 		If(Utility.RandomInt() > 75)
@@ -2009,21 +2018,19 @@ function OnTimerPerformDigestion(int aiTimerID, VoreData data)
 			FV_FXBurp.Play(currentPred)
 		EndIf
 	Else
-		;TODOSound: 
-		;PreyDeadSound1.Play(PredPreyArray[root].Pred)					; add
-		int instanceID = FV_FXBurp.Play(GetFromIndex(root).Pred) 	; remove
-		Sound.SetInstanceVolume(instanceID, 0.5)						; remove
+		int instanceID = FV_FXBurp.Play(GetFromIndex(root).Pred) 	
+		Sound.SetInstanceVolume(instanceID, 0.5)					
 	EndIf
 	
 	;Increase the chance of indigestion
 	currentPred.ModValue(FV_IndigestionChanceOnNextDigest, CalculateIndigestionChance(currentPred, currentPrey))
 	
 	;Stats stuff
-	
 	If (CurrentPred == PlayerRef || CurrentPred.IsInFaction(HasBeenCompanionFaction))
 		FV_ActorData.UpdateDigestCount(CurrentPred, CurrentPrey)
 	EndIf
 	
+	; OH HEY, if you ate a robot, you get some fusion cells! Isn't this a good place to do that? KEILLA: It is not.
 	If(currentPrey.HasKeyword(ActorTypeRobot) && currentPred.HasPerk(FV_HighIronDiet03))		
 		currentPred.Additem(AmmoFusionCell, currentPrey.GetLevel()/2 as int, false)		
 	EndIf
@@ -2060,7 +2067,7 @@ function OnTimerPerformDigestion(int aiTimerID, VoreData data)
 	
 	;eliminate corpse and move back to original spawn location for cell reset
 	If(currentPrey != PlayerRef)
-		currentPrey.SetCriticalStage(4)
+		currentPrey.SetCriticalStage(4) ; The prey corpse is vaporized so it does not render.
 		currentPrey.MoveToMyEditorLocation()
 		trace(self, "Prey NPC has been moved back to original editor location")
 	EndIf
@@ -2074,7 +2081,7 @@ function OnTimerPerformDigestion(int aiTimerID, VoreData data)
 		trace(self, "Start TriggerDigestionSequence")
 		OnTimerTriggerDigestionSequence(aiTimerID, data)
 	ElseIf(currentPred.GetValue(FV_CurrentAlivePrey) <= 0)
-		;TODO: Play sounds
+		; You do not digest while you have alive prey
 		currentPred.SetValue(FV_ReadyToDigest, 1)
 		If(currentPred == Game.GetPlayer())
 			FV_ReadyToDigestMessage.Show()
@@ -2085,6 +2092,7 @@ function OnTimerPerformDigestion(int aiTimerID, VoreData data)
 	PrintInfos()
 EndFunction
 
+; Updates the digestion stages on the predator AV, implements some indigestion stuff, and calls to update belly appearances.
 Function OnTimerTriggerDigestionSequence(int aiTimerID, VoreData data)
 	if(data == None)
 		trace(self, "[BUG] OnTimerTriggerDigestionSequence")
@@ -2154,13 +2162,13 @@ Function OnTimerTriggerDigestionSequence(int aiTimerID, VoreData data)
 	;Remove bulge belly
 	ChangeFullnessArmor(currentPred, -1)				;changed pass value from 0 to -1 to avoid resetting ColdSteel Giant Belly
 	
-	int CurrentInStomach = (((currentPred.GetValue(FV_CurrentPrey)/2-1) * 3) + 6) as int
+	int CurrentInStomach = (((currentPred.GetValue(FV_CurrentPrey)/2-1) * 3) + 6) as int ; KEILLA: What is this magic math?
 	currentPred.SetValue(FV_DigestionStage, CurrentInStomach)
 	UpdateTimerState(aiTimerID, CurrentInStomach)
 	trace(self, "OnTimerTriggerDigestionSequence() CurrentInStomach: " + CurrentInStomach + " currentPred: " + currentPred)
 	Var[] kArgs = new Var[4]
 	kArgs[0] = CurrentPred
-	kArgs[1] = 3
+	kArgs[1] = 3 ; KEILLA: What is this?
 	kArgs[2] = CurrentPrey
 	kArgs[3] = FindBellyContainer(CurrentPred)
 	SendCustomEvent("OnDigest", kArgs)
@@ -2170,12 +2178,11 @@ Function OnTimerTriggerDigestionSequence(int aiTimerID, VoreData data)
 		predData.LastIndex = aiTimerID
 	EndIf
 	
-	If((FV_ColdSteelEnabled.GetValue() > 0 && (currentPred.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))); currentPred.HasKeyword(FV_ColdSteelBody))
+	If((FV_ColdSteelEnabled.GetValue() > 0 && (currentPred.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1)))
 		UpdateColdSteelCounter(aiTimerID, ColdSteelCounts as int)
 		FV_ColdSteelBellyQuest.ChangeColdSteelDigestFullness(currentPred, (CurrentInStomach as float))
 		StartTimer((data.DigestSpeedTime)/ColdSteelCounts, aiTimerID)
 	Else
-		;Start digestion timer
 		ChangeDigestFullnessArmor(currentPred,CurrentInStomach)
 		StartTimer(data.DigestSpeedTime, aiTimerID)
 	EndIf

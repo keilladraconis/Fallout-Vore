@@ -492,41 +492,13 @@ PreyData Function GetDataByPred(Actor akPred)
 	Return ConsumptionRegistry[i]
 EndFunction
 
-
-;******************************************************************************
-; PREDATION BUFFER
-; 
-; This is an implementation of a data structure that tracks all predators and their prey contents
-; in the game. It features a global lock to protect concurrent access. The underlying structure is
-; an array, which is constrained to 128 elements. Each element is a VoreData of BranchTypePred or BranchTypePrey.Function AddInventoryEventFilter(Form akFilter)
-; Each element has an index pointer to its 'parent', which for a prey element is likely a predator.
+; *******END ConsumptionRegistry ********
 
 ; Updates the AVs for current stomach contents, and also updates armor, heavy pred perks, and vore hud.
 Function UpdateCurrentInStomach(Actor akPred = None, bool updateFullness = false)
-	; Int index = iPreyIndex
-	; Actor Pred = akPred
-	
-	; If(akPred != None)
-	; 	int i = PredPreyArray.FindStruct("Pred", akPred)
-	; 	If(i >= 0)
-	; 		index = PredPreyArray[i].Index
-	; 	EndIf
-	; ElseIf (iPreyIndex != -1)
-	; 	VoreData data = GetParentFromIndex(iPreyIndex)
-	; 	Pred  = data.Pred
-	; 	index = data.Index
-	; ElseIf (iPredIndex != -1)
-	; 	int j = PredPreyArray.FindStruct("Index", iPredIndex)
-	; 	If(j >= 0)
-	; 		index = PredPreyArray[j].Index
-	; 		Pred  = PredPreyArray[j].Pred
-	; 	EndIf
-	; EndIf
-	; trace(self, "UpdateCurrentInStomach() FV_CurrentPrey: " + Pred.GetValue(FV_CurrentPrey) + " FV_CurrentAlivePrey: " + Pred.GetValue(FV_CurrentAlivePrey) + " FV_HumanPreyCount: " + Pred.GetValue(FV_HumanPreyCount))
-	; Updates the actor values that track the number of prey based on what we have in the registry.
 	Actor[] preys = GetAllPrey(akPred)
-	int alivePrey = 0 ;GetNumberOfAlivePrey(index)-(Pred.GetValue(FV_CurrentAlivePrey) as int)
-	int humanPrey = 0 ;GetNumberOfPrey(index, true)-(Pred.GetValue(FV_HumanPreyCount) as int)
+	int alivePrey = 0
+	int humanPrey = 0
 	int i = 0
 	While (i < preys.Length)
 		If (!preys[i].isDead())
@@ -563,12 +535,6 @@ Function UpdateCurrentInStomach(Actor akPred = None, bool updateFullness = false
 		Endif
 	Endif
 	
-	; Update parents too, all the way up.
-	; CLEAN: No more worrying about nested vore stuffs for now.
-	; int k = PredPreyArray.FindStruct("Index", index)
-	; if(treeUp && PredPreyArray[k].ParentIndex>=0)
-	; 	UpdateCurrentInStomach(-1,PredPreyArray[k].ParentIndex, None,updateFullness,True)
-	; EndIf
 	If akPred == PlayerRef
 		FV_VoreHud.SendTrackerUpdate() ; Just emit an event dammit
 	Endif
@@ -600,60 +566,6 @@ Function UpdateDigestionPreyCount(Actor akPred)
 		EndWhile
 		UpdateCurrentInStomach(akPred = akPred)
 	Endif
-	
-EndFunction
-
-; Tree sample
-; [BranchType = 1, index = 29, Tick = 2, ParentIndex = -1, TimerState = 100, Pred = [Actor < (00000014)>], Prey = None, IsLethal = False, IsDead = False, IsPredator = False, ContainAPrey = False]
-;     [BranchType = 1, index = 27, Tick = 1, ParentIndex = 29, TimerState = 100, Pred = [Actor < (FF0130A5)>], Prey = None, IsLethal = True, IsDead = False, IsPredator = True, ContainAPrey = False]
-;         [BranchType = 2, index = 28, Tick = -3, ParentIndex = 27, TimerState = 100, Pred = None, Prey = [mirelurkqueenspawnscript < (FF014A57)>], IsLethal = True, IsDead = False, IsPredator = False, ContainAPrey = False]
-;     [BranchType = 2, index = 30, Tick = 0, ParentIndex = 29, TimerState = 100, Pred = None, Prey = [Actor < (0303250A)>], IsLethal = True, IsDead = False, IsPredator = False, ContainAPrey = False]
-
-; aiTimerID = 28
-; [BranchType = 1, index = 29, Tick = 2, ParentIndex = -1, TimerState = 100, Pred = [Actor < (00000014)>], Prey = None, IsLethal = False, IsDead = False, IsPredator = False, ContainAPrey = False]
-;     [BranchType = 2, index = 27, Tick = 1, ParentIndex = 29, TimerState = 100, Pred = None, Prey = [Actor < (FF0130A5)>], IsLethal = True, IsDead = False, IsPredator = false, ContainAPrey = False]
-;     [BranchType = 2, index = 30, Tick = 0, ParentIndex = 29, TimerState = 100, Pred = None, Prey = [Actor < (0303250A)>], IsLethal = True, IsDead = False, IsPredator = False, ContainAPrey = False]
-
-; Called once during OnTimerFinishDigestion. Given a particular PPA index, finds that element and all its children and removes all of them.
-Function CleanUpBuffer(Int aiTimerID)
-	Int root = GetRoot(aiTimerID) ; SCAN PPA
-	
-	int i = PredPreyArray.FindStruct("Index", root) ; KEILLA SCAN PPA
-	VoreData data = PredPreyArray[i]
-	trace(self, "CleanUpBuffer root: " + data)
-	
-	Int[] children = new Int[0]
-	children.Clear()
-	
-	; Zero out the predator's assorted actor values.
-	data.Pred.ModValue(FV_CurrentPrey, 		0-data.Pred.GetValue(FV_CurrentPrey))
-	data.Pred.ModValue(FV_CurrentAlivePrey, 	0-data.Pred.GetValue(FV_CurrentAlivePrey))
-	; Remove heavy pred perks
-	If(data.Pred == PlayerRef && data.Pred.HasPerk(FV_HeavyPredPlayer))
-		data.Pred.RemovePerk(FV_HeavyPredPlayer)
-	ElseIf(data.Pred != PlayerRef && data.Pred.HasPerk(FV_HeavyPredNPC))
-		data.Pred.RemovePerk(FV_HeavyPredNPC)
-	EndIf
-	; If the element has no parent and it is a pred, add self to the children array.
-	if(data.ParentIndex == -1 && data.BranchType == BranchTypePred)
-		children.Add(root)
-	Else
-		data.IsPredator = false
-		data.BranchType = BranchTypePrey
-		data.Prey = data.Pred
-		data.Pred = None
-	EndIf
-	; Get all the children
-	Getchildren(children,root) ; SCAN PPA
-	trace(self, "CleanUpBuffer children: " + children)
-	
-	i = 0
-	Int j = 0
-	While (i < children.Length)
-		j = PredPreyArray.FindStruct("Index", children[i]) ; SCAN PPA
-		PredPreyArray.Remove(j)
-		i += 1
-	EndWhile
 	
 EndFunction
 
@@ -1907,8 +1819,8 @@ Function OnTimerFinishedDigestion(int aiTimerID, VoreData data)
 	PrintInfos()
 
 	Actor soundActor 		= data.Pred 
-	Actor akCurrentPred		= data.Pred
-	Actor akCurrentPrey		= data.Prey
+	Actor currentPred		= data.Pred
+	Actor currentPrey		= data.Prey
 
 	int root = GetRoot(data.Index, false)
 	if(root == data.ParentIndex)
@@ -1919,55 +1831,47 @@ Function OnTimerFinishedDigestion(int aiTimerID, VoreData data)
 	EndIf
 
     ;End of digestions
-    akCurrentPred.SetValue(FV_DigestionStage, 0)
+    currentPred.SetValue(FV_DigestionStage, 0)
 	
 	;Only activate for the prey. Prevents crash TODO: Other methods of item retrival.
-	If(akCurrentPred == PlayerRef)
+	If(currentPred == PlayerRef)
 		
 		If(FV_ScatEnabled.GetValue() == 1)
-			If(akCurrentPred.getValue(FV_Scatready) == 0)
-				akCurrentPred.SetValue(FV_Scatready, 1)
+			If(currentPred.getValue(FV_Scatready) == 0)
+				currentPred.SetValue(FV_Scatready, 1)
 				FV_ReadyToScatMessage.show()
 			EndIf
 		EndIf
 	;Activate belly container for player if they are not a pred and an ally has finished digestion
-	ElseIf(akCurrentPred.IsInFaction(CurrentCompanionFaction) && FV_CompanionScat.GetValue() == 1)
-		akCurrentPred.SetValue(FV_Scatready, 1)
-	ElseIf(FV_ScatEnabled.GetValue() == 1 && FV_NPCScatEnabled.GetValue() == 1 && !akCurrentPred.IsInFaction(CurrentCompanionFaction))
-		FV_ScatManager.NPCScat(akCurrentPred) ; NPCs autoscat
-	ElseIf(PlayerRef.GetValue(FV_HasHadNukaAcid) == 0 && (akCurrentpred.IsInFaction(WorkshopNPCFaction) || akCurrentpred.IsInFaction(WorkshopDialogueFaction) || akCurrentpred.IsInFaction(CurrentCompanionFaction)))
+	ElseIf(currentPred.IsInFaction(CurrentCompanionFaction) && FV_CompanionScat.GetValue() == 1)
+		currentPred.SetValue(FV_Scatready, 1)
+	ElseIf(FV_ScatEnabled.GetValue() == 1 && FV_NPCScatEnabled.GetValue() == 1 && !currentPred.IsInFaction(CurrentCompanionFaction))
+		FV_ScatManager.NPCScat(currentPred) ; NPCs autoscat
+	ElseIf(PlayerRef.GetValue(FV_HasHadNukaAcid) == 0 && (currentPred.IsInFaction(WorkshopNPCFaction) || currentPred.IsInFaction(WorkshopDialogueFaction) || currentPred.IsInFaction(CurrentCompanionFaction)))
 		FV_BellyContainer.Activate(PlayerRef, false) ; Auto-open belly container if you don't have nukaacid and you're in some workshop faction thing
 	EndIf
 	
 	PrintInfos()	
 	
-	; update stomach and armor only if the pred is in another pred
-	; CLEAN: No nested predation stuff.
-	; int p = GetRoot(aiTimerID)
-	; VoreData dataRoot = GetParentFromIndex(p)
-	; if(dataRoot != None)
-	; 	UpdateCurrentInStomach(-1,dataRoot.Index,None,true,True)
-	; EndIf
-	
-	CleanUpBuffer(aiTimerID)
-	
-	if(akCurrentPred == PlayerRef)
+	if(currentPred == PlayerRef)
 		FV_VoreHud.SendTrackerUpdate()
 	Endif
 	
-	If(akCurrentPrey == PlayerRef && PlayerRef.HasPerk(FV_ReformPerk01))
-		ReformPlayer(akCurrentPred)	;may need to add ways to keep player as last prey no matter what.  Potential for player to get lost in prey heirarchy
+	If(currentPrey == PlayerRef && PlayerRef.HasPerk(FV_ReformPerk01))
+		ReformPlayer(currentPred)	;may need to add ways to keep player as last prey no matter what.  Potential for player to get lost in prey heirarchy
 	EndIf
 	
 	PrintInfos()
 	
 	;Custom event transmission
 	Var[] kArgs = new Var[4]
-	kArgs[0] = akCurrentPred
+	kArgs[0] = currentPred
 	kArgs[1] = 1
 	kArgs[2] = NONE
-	kArgs[3] = GetDataByPred(akCurrentPred).BellyContainer
+	kArgs[3] = GetDataByPred(currentPred).BellyContainer
 	SendCustomEvent("OnDigest", kArgs)
+
+	Remove(currentPrey)
 EndFunction
 	
 ; Reenable the player when the player's time as prey is up.

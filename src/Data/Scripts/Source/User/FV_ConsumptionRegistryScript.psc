@@ -221,15 +221,6 @@ Struct VoreArmor
 	Int PreyCount
 EndStruct
 
-Struct SlotData
-	Keyword ActorType
-	Race ActorRace
-	Int Slots = 2
-	Bool IsHuman = false
-	Int IndigestionChanceIncrease = 0
-	Perk IndigestionIncreaseCancelPerk = NONE
-EndStruct
-
 ;Initialise mod
 Event OnInit()
 	PlayerRef.AddPerk(FV_ContextVorePerk)

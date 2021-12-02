@@ -1,5 +1,7 @@
 Scriptname FV_ConsumptionRegistryScript extends Quest
-{Registry script to store Consumption data globaly for scripts to use.}
+{Tracks who has eaten whom. Specifically monitors the Prey actors' relationship to their current predator
+so that in the event of vomit or escape they can reappear at the correct location. Also facilitates looking up a prey
+actor, or returning a list of prey actors given a predator actor.}
 
 Group ActorValues
 	ActorValue Property FV_AcidDamage Auto Const Mandatory
@@ -399,7 +401,67 @@ Function MakePlayerPred()
 	; trace(self, "Player has had Nuka Acid.  Vore items have been added to inventory.")
 EndFunction
 
-;************************************************************************************
+;******************************************************************************
+; CONSUMPTION REGISTRY
+; Tracks which actor ate each prey. Upon insertion each prey actor is given a
+; sequential identifier as an Actor Value. They retain this ID forever.
+; IDs are assigned sequentially from 1 to 2,147,483,647. They wrap around after that.
+; (IS ID really necessary for anything?)
+;*****************************
+Struct PreyData
+	Actor pred
+	Actor prey
+EndStruct
+PreyData[] ConsumptionRegistry
+
+; Adds a pred/prey to the ConsumptionRegistry
+bool Function ConsumptionRegistry_Add(Actor akPred, Actor akPrey)
+	if ConsumptionRegistry == None
+		ConsumptionRegistry = new PreyData[0]
+	EndIf
+
+	if ConsumptionRegistry.Length >= 128
+		Return false
+	endif
+	PreyData data = new PreyData
+	data.pred = akPred
+	data.prey = akPrey
+	ConsumptionRegistry.Add(data)
+	Return true
+EndFunction
+
+; Remove a prey from the ConsumptionRegistry
+bool Function ConsumptionRegistry_Remove(Actor akPrey)
+	int i = ConsumptionRegistry.FindStruct("prey", akPrey)
+	if i < 0
+		Return false
+	else
+		ConsumptionRegistry.Remove(i)
+		Return true
+	Endif
+EndFunction
+
+; Return all prey for a given pred
+Actor[] Function ConsumptionRegistry_GetAllPrey(Actor akPred)
+	Actor[] prey = new Actor[0]
+	int i = 0
+	While i < ConsumptionRegistry.Length
+		If ConsumptionRegistry[i].pred == akPred
+			prey.Add(ConsumptionRegistry[i].prey)
+		EndIf
+		i += 1
+	EndWhile
+	Return prey
+EndFunction
+
+; Get the predator for a given prey
+Actor Function ConsumptionRegistry_GetPred(Actor akPrey)
+	int i = ConsumptionRegistry.FindStruct("prey", akPrey)
+	Return ConsumptionRegistry[i].pred
+EndFunction
+
+
+;******************************************************************************
 ; PREDATION BUFFER
 ; 
 ; This is an implementation of a data structure that tracks all predators and their prey contents

@@ -569,28 +569,6 @@ Function UpdateDigestionPreyCount(Actor akPred)
 	
 EndFunction
 
-; Tree sample
-; [BranchType = 1, index = 29, Tick = 2, ParentIndex = -1, TimerState = 100, Pred = [Actor < (00000014)>], Prey = None, IsLethal = False, IsDead = False, IsPredator = False, ContainAPrey = False]
-;     [BranchType = 1, index = 27, Tick = 1, ParentIndex = 29, TimerState = 100, Pred = [Actor < (FF0130A5)>], Prey = None, IsLethal = True, IsDead = False, IsPredator = True, ContainAPrey = False]
-;         [BranchType = 2, index = 28, Tick = -3, ParentIndex = 27, TimerState = 100, Pred = None, Prey = [mirelurkqueenspawnscript < (FF014A57)>], IsLethal = True, IsDead = False, IsPredator = False, ContainAPrey = False]
-;     [BranchType = 2, index = 30, Tick = 0, ParentIndex = 29, TimerState = 100, Pred = None, Prey = [Actor < (0303250A)>], IsLethal = True, IsDead = False, IsPredator = False, ContainAPrey = False]
-
-; Return all children. Almost the exact same thing as getchildren
-; iIndex = 27, return 28
-; iIndex = 29, return 27,30
-Function GetchildrenAsSameLevel(Int[] children, int iIndex, int level = 0)
-	int i = 0
-	if(level == 1)
-		children.Add(iIndex)
-	EndIf
-	While (i < PredPreyArray.Length)
-		if(PredPreyArray[i].ParentIndex == iIndex)
-			GetchildrenAsSameLevel(children,PredPreyArray[i].Index,level+1)
-		EndIf
-		i += 1
-	EndWhile
-EndFunction
-
 ; Almost the exact same thing as getchildren
 Function GetchildrenAsSameLevelAndCheckFirstParent(Int[] children, int iIndex, int firstParent, int level = 0)
 	int i = 0
@@ -599,7 +577,7 @@ Function GetchildrenAsSameLevelAndCheckFirstParent(Int[] children, int iIndex, i
 	EndIf
 	While (i < PredPreyArray.Length)
 		if(PredPreyArray[i].ParentIndex == iIndex && PredPreyArray[i].ParentIndexCopy == firstParent)
-			GetchildrenAsSameLevel(children,PredPreyArray[i].Index,level+1)
+			; GetchildrenAsSameLevel(children,PredPreyArray[i].Index,level+1)
 		EndIf
 		i += 1
 	EndWhile
@@ -739,7 +717,7 @@ bool Function TreeMoveDown(int iRoot, int iIndex)
 	int bIndex= PredPreyArray.FindStruct("index", iIndex) ; SCAN PPA
 
 	Int[] children = new Int[0]
-	GetchildrenAsSameLevel(children, PredPreyArray[bRoot].parentIndex) ; SCAN PPA
+	; GetchildrenAsSameLevel(children, PredPreyArray[bRoot].parentIndex) ; SCAN PPA
 	
 	int i = 0
 	bool found = false

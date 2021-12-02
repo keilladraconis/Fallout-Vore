@@ -272,10 +272,8 @@ Int CurrentVoreIndex
 
 ;Initialise mod
 Event OnInit()
-	PlayerRef = Game.GetPlayer() ; KEILLA: Replace with a Property
 	PlayerRef.AddPerk(FV_ContextVorePerk)
 	RegisterForRemoteEvent(PlayerRef, "OnPlayerLoadGame")
-	;EventRegistration()
 	debug.trace("Fallout Vore v3.0 initialized")
 	RegisterForPlayerSleep()
 	RegisterForPlayerWait()
@@ -416,11 +414,12 @@ Struct PreyData
 	Actor Prey
 	Int Tick	; To create a delay between 'transfer' 'swallow' 'vomit'
 	ObjectReference BellyContainer
+	Bool IsLethal
 EndStruct
 PreyData[] ConsumptionRegistry
 
 ; Adds a prey to the ConsumptionRegistry
-int Function Add(Actor akPred, Actor akPrey)
+int Function Add(Actor akPred, Actor akPrey, Bool abIsLethal = false)
 	if ConsumptionRegistry == None
 		ConsumptionRegistry = new PreyData[0]
 	EndIf
@@ -445,6 +444,7 @@ int Function Add(Actor akPred, Actor akPrey)
 	data.Pred = akPred
 	data.Prey = akPrey
 	data.BellyContainer = bellyContainer
+	data.IsLethal = abIsLethal
 	ConsumptionRegistry.Add(data)
 	Return ConsumptionRegistry.Length - 1
 EndFunction
@@ -1574,23 +1574,23 @@ Function OnTimerTriggerDigestionSequence(Actor akPred)
 EndFunction
 
 ; Plays sounds, updates belly graphics, prepares scat, sends events, does player reformation....
-Function OnTimerFinishedDigestion(int aiTimerID, VoreData data)
-	trace(self, "OnTimerFinishedDigestion: " + data)
-	if(data == None)
+Function OnTimerFinishedDigestion(PreyData aData)
+	trace(self, "OnTimerFinishedDigestion: " + aData)
+	if(aData == None)
 		trace(self, "[BUG] OnTimerFinishedDigestion")
 		Return
 	EndIf
 	PrintInfos()
 
-	Actor soundActor 		= data.Pred 
-	Actor currentPred		= data.Pred
-	Actor currentPrey		= data.Prey
+	Actor soundActor 		= aData.Pred 
+	Actor currentPred		= aData.Pred
+	Actor currentPrey		= aData.Prey
 
 	; int root = GetRoot(data.Index, false)
 	; if(root == data.ParentIndex)
 	; 	FV_FXBurp.Play(data.Pred)
 	; Else
-	int instanceID = FV_FXBurp.Play(data.Pred) 	
+	int instanceID = FV_FXBurp.Play(aData.Pred) 	
 	Sound.SetInstanceVolume(instanceID, 0.5)					
 	; EndIf
 
@@ -1758,24 +1758,6 @@ function OnTimerPerformVomit(Actor akPrey)
 	PrintInfos()
 EndFunction
 
-
-; KEILLA: I don't know exactly. 
-function OnTimerTransfer(int aiTimerID, int child, VoreData data)
-	trace(self, "OnTimerTransfer: " + data)
-	PrintInfos()
-	if(data == None)
-		trace(self, "[BUG] OnTimerTransfer")
-		Return
-	EndIf
-
-	Actor currentPrey = data.Prey
-	Actor currentPred = data.Pred
-	
-	UpdateCurrentInStomach(currentPred, true)
-	resetTick(aiTimerID)
-	resetTick(child)	
-EndFunction	
-	
 ;************************************************************************************
 ;************************************************************************************
 ; Others
@@ -2071,7 +2053,6 @@ bool Function trace(ScriptObject CallingObject, string asTextToPrint, int aiSeve
 	EndIf
 EndFunction
 
-int[] EscapedPreyIndices
 int WakeUpTick
 float WakeDay
 float SleepWaitStartDay
@@ -2113,74 +2094,49 @@ EndFunction
 Function PlayerSleepWaitStop()
 	SleepWaitStopDay = Utility.GetCurrentGameTime()
 	WakeDay = Utility.GetCurrentGameTime()
-	int i = predpreyarray.FindStruct("Pred", PlayerRef)
-	If(i >= 0 && PredPreyArray[i].Pred == PlayerRef)
-		HandleDigestionStage(PredPreyArray[i])
-	Endif
-	i = 0
-	
-	;now search for the other preds
-	while i < predpreyarray.Length
-		if(predpreyarray[i].pred != NONE && predpreyarray[i].pred != PlayerRef)
-			;we have a pred!  Let's handle its prey
-			HandleDigestionStage(predpreyarray[i])
-		EndIf
+	int i = 0
+	while i < ConsumptionRegistry.Length
+		HandleDigestionStage(ConsumptionRegistry[i])
 		i += 1
 	EndWhile
 EndFunction
 
 ; This should run digestion stages for all the prey for the data pred.
-Function HandleDigestionStage(Voredata data)
+Function HandleDigestionStage(PreyData aData)
 	int DigestTicksRemaining = 0
-	VoreData preyData
-	int tempTimerState = 0
+	int tempTimerState
 	
-	int k = predpreyarray.FindStruct("Index", data.lastIndex)
-	;let's convert the remaining ticks over to the digest tick rate
+	If aData.Pred.GetValue(FV_CurrentAlivePrey) > 0 || !aData.IsLethal
+		;only handle preds that are in the digestin phase.  If they still have living prey, they can ride out the sleep cycle.
+		trace(self, "  HandleDigestionStage() Pred: " + aData.Pred + " FV_CurrentAlivePrey: " + aData.Pred.GetValue(FV_CurrentAlivePrey) + " IsLethal: " + aData.IsLethal)
+		return
+	Endif
+	WakeUpTick = math.floor(((WakeDay - SleepWaitStartDay)*1440)/(aData.Prey.GetValue(FV_DigestionSpeed)*TimeScale.GetValue()/60)) as int
 	
-	if k >= 0
-		preyData = predpreyarray[k]
-		If data.Pred.GetValue(FV_CurrentAlivePrey) > 0 || !preyData.IsLethal
-			;only handle preds that are in the digestin phase.  If they still have living prey, they can ride out the sleep cycle.
-			trace(self, "  HandleDigestionStage() Pred: " + data.Pred + " FV_CurrentAlivePrey: " + data.Pred.GetValue(FV_CurrentAlivePrey) + " IsLethal: " + data.IsLethal)
-			return
-		Endif
-		WakeUpTick = math.floor(((WakeDay - SleepWaitStartDay)*1440)/(preyData.DigestSpeedTime*TimeScale.GetValue()/60)) as int
-		trace(self, "HandleDigestionStage() WakeDay: " + WakeDay + " SleepWaitStartDay: " + SleepWaitStartDay + " DigestSpeedTime: " + data.DigestSpeedTime + " TimeScale: " + TimeScale.GetValue())
-		canceltimer(preyData.Index)
-		preydata.Pred = data.Pred
+	tempTimerState = aData.Pred.GetValue(FV_DigestionStage) as int
+	trace(self, " HandleDigestionStage() Pred: " + aData.Pred + " WakeUpTick: " + WakeUpTick + " tempTimerState: " + tempTimerState)
+	If WakeUpTick >= tempTimerState
+		;code to finish digestion and reset pred
+		aData.Pred.SetValue(FV_DigestionStage, 0)
 		
-		tempTimerState = preyData.timerstate
-		trace(self, " HandleDigestionStage() Pred: " + preydata.Pred + " WakeUpTick: " + WakeUpTick + " tempTimerState: " + tempTimerState)
-		If WakeUpTick >= tempTimerState
-			;code to finish digestion and reset pred
-			data.Pred.SetValue(FV_DigestionStage, 0)
-
-			; UpdateTimerState(preyData.Index, 0)
-			
-			If((FV_ColdSteelEnabled.GetValue() > 0 && (preydata.Pred.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))); preydata.Pred.HasKeyword(FV_ColdSteelBody))
-				FV_ColdSteelBellyQuest.ChangeColdSteelDigestFullness(preydata.Pred, 0.0)
-			Else
-				ChangeDigestFullnessArmor(preydata.Pred, 0)
-			EndIf
-			OnTimerFinishedDigestion(preyData.index, preyData)
+		If((FV_ColdSteelEnabled.GetValue() > 0 && (aData.Pred.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))); preydata.Pred.HasKeyword(FV_ColdSteelBody))
+			FV_ColdSteelBellyQuest.ChangeColdSteelDigestFullness(aData.Pred, 0.0)
 		Else
-			;the pred couldn't finish digesting ALL OF THAT DELICIOUS Prey  Let's set timerstates, equip some armors, and then start some timers
-			;preyData.timerstate = tempTimerState - WakeUpTick
-			data.Pred.ModValue(FV_DigestionStage, -WakeupTick)
-
-			; UpdateTimerState(preyData.Index, tempTimerState - WakeUpTick)
-			preydata.Pred.SetValue(FV_DigestionStage, preyData.timerstate)
-			UpdateDigestionPreyCount(preydata.Pred)
-			;UpdateCurrentInStomach(akPred = preydata.Pred)
-			If((FV_ColdSteelEnabled.GetValue() > 0 && (preydata.Pred.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))); preydata.Pred.HasKeyword(FV_ColdSteelBody))
-				FV_ColdSteelBellyQuest.ChangeColdSteelDigestFullness(preydata.Pred, preyData.TimerState as float)
-			Else
-				ChangeDigestFullnessArmor(preydata.Pred, preyData.TimerState)
-			EndIf
-			OnTimerTriggerDigestionSequence(preydata.Pred)
+			ChangeDigestFullnessArmor(aData.Pred, 0)
 		EndIf
+		OnTimerFinishedDigestion(aData)
+	Else
+		float nextTimerState = tempTimerState - WakeUpTick
+		aData.Pred.SetValue(FV_DigestionStage, nextTimerState)
+		UpdateDigestionPreyCount(aData.Pred)
+		If((FV_ColdSteelEnabled.GetValue() > 0 && (aData.Pred.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))); aData.Pred.HasKeyword(FV_ColdSteelBody))
+			FV_ColdSteelBellyQuest.ChangeColdSteelDigestFullness(aData.Pred, nextTimerState)
+		Else
+			ChangeDigestFullnessArmor(aData.Pred, nextTimerState as int)
+		EndIf
+		OnTimerTriggerDigestionSequence(aData.Pred)
 	EndIf
+
 EndFunction
 
 ; Reforms the player post-digestion.

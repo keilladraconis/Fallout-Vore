@@ -569,32 +569,6 @@ Function UpdateDigestionPreyCount(Actor akPred)
 	
 EndFunction
 
-; Almost the exact same thing as getchildren
-Function GetchildrenAsSameLevelAndCheckFirstParent(Int[] children, int iIndex, int firstParent, int level = 0)
-	int i = 0
-	if(level == 1)
-		children.Add(iIndex)
-	EndIf
-	While (i < PredPreyArray.Length)
-		if(PredPreyArray[i].ParentIndex == iIndex && PredPreyArray[i].ParentIndexCopy == firstParent)
-			; GetchildrenAsSameLevel(children,PredPreyArray[i].Index,level+1)
-		EndIf
-		i += 1
-	EndWhile
-EndFunction
-
-; Exact same thing as getchildren, but instead of returning them, helpfully throws the rest out and returns only the first.
-; Only called once.
-Int Function GetOneChild(int iIndex)
-	Int[] children = new Int[0]
-	children.Clear()
-	; Getchildren(children, iIndex)
-	if(children.Length>0)
-		Return children[0]
-	EndIf
-	Return -1
-EndFunction
-
 ; Tree sample
 ; [BranchType = 1, index = 29, Tick = 2, ParentIndex = -1, TimerState = 100, Pred = [Actor < (00000014)>], Prey = None, IsLethal = False, IsDead = False, IsPredator = False, ContainAPrey = False]
 ;     [BranchType = 1, index = 27, Tick = 1, ParentIndex = 29, TimerState = 100, Pred = [Actor < (FF0130A5)>], Prey = None, IsLethal = True, IsDead = False, IsPredator = True, ContainAPrey = False]

@@ -4,6 +4,7 @@ so that in the event of vomit or escape they can reappear at the correct locatio
 actor, or returning a list of prey actors given a predator actor.}
 
 Group ActorValues
+	ActorValue Property EnduranceAV Auto Const Mandatory
 	ActorValue Property HealthAV Auto Const Mandatory
 	ActorValue Property FV_AcidDamage Auto Const Mandatory
 	ActorValue Property FV_AcidResistance Auto Const Mandatory
@@ -212,39 +213,6 @@ float Property fCameraDistanceVomit Auto Hidden
 
 
 float PlayerSize = 1.0
-
-; Contain information about one Prey
-Struct VoreData
-; Common
-	Int BranchType          ; Identifies whether node is a predator branch (BranchTypePred) or prey branch (BranchTypePrey)
-	Int Index				; readonly KEILLA
-	Int Tick				; To create a delay between 'transfer' 'swallow' 'vomit'
-	Int ParentIndex			; Parent KEILLA
-	Int ParentIndexCopy		; Parent, readonly KEILLA
-	Int TimerState			; 100: alive in stomach, 99-0: digesting
-	Int LastIndex			; Used for the sleep/wait timers to remember the last prey that drives the digestion timer KEILLA: What the hell
-	
-; Pred
-    Actor Pred				; Current Pred
-	
-; Prey
-	Actor Prey				; Prey in the Pred
-	Bool IsLethal   		; KEILLA Wut
-	Bool IsDead				; KEILLA um, duplicate of timerstate?
-	Bool IsHumanoid			;used to determine if lumpy bellies are used KEILLA: Why?
-	Bool IsPredator			; KEILLA also why?
-	Bool HasDigested		; Used to prevent OnTimerPerformDigestion() from firing multiple times KEILLA: Duplicate of timerstate?
-	Int Slots				; Used to determine how many slots the prey use
-	
-; Other 
-	Bool ContainAPrey		; KEILLA: Voreception?
-	ObjectReference NPCBellyContainer ; This is where inventories get dumped when prey are digested
-	Int CustomVar1 ; Used for indigestion
-	Int CustomVar2 ; Unused
-	Int CustomVar3 ; Unused
-	Int ColdSteelCounter ; KEILLA: What?
-	Float DigestSpeedTime ; KEILLA: What what?
-EndStruct
 
 ; KEILLA: I believe this is for the Gat bellies.
 Struct VoreArmor
@@ -1060,28 +1028,15 @@ function OnTimerPlaySound(PreyData data)
 EndFunction
 
 ; Tracks the mortality of prey by timer ID. Many triggers for the prey to be vomited for many reasons, protection against death, and eventually AV damage to prey and in the case of escape, the pred.
-function OnTimerDecreaseTicks(int aiTimerID, VoreData data)
-	; do nothing if the prey is also a pred
-	if(data.ContainAPrey)
-		;check if pred should regurgitate nested pred
-		If(data.Pred.GetValue(FV_RegurgitateBool) == 1)
-			data.Pred.SetValue(FV_RegurgitateBool, 0)
-			OnTimerPerformVomit(data.Prey)
-			Return
-		Endif
-		StartTimer(data.DigestSpeedTime, aiTimerID)
-		Return
-	EndIf
-
-	; Oh, dead pred autovomit
+function OnTimerDecreaseTicks(int aiTimerID, PreyData data)
+	; Dead pred autovomit
 	if(data.Pred.IsDead())
 		trace(self, "Tick Pred: " + data.Pred + " IsDead: " + aiTimerID)
 		OnTimerPerformVomit(data.Prey)
 		Return
 	EndIf
 	
-	trace(self, "OnTimerDecreaseTicks() data.index: " + data.index + " data.IsDead: " + data.IsDead)
-	If(data.IsDead)
+	If(data.Prey.IsDead())
 		;if prey is dead, there's no point in calculating damage.  Go ahead and kill it and move on.
 		OnTimerPerformDigestion(data.Prey)
 		return
@@ -1102,9 +1057,6 @@ function OnTimerDecreaseTicks(int aiTimerID, VoreData data)
 				; KEILLA: This is absolutely besides the point of this function. Should be managed elsewhere.
 				PlayerRef.TranslateToRef(data.Pred, 25000)
 			Endif
-			;restart timer
-			trace(self, "OnTimerDecreaseTicks() prey is non-lethal.  Restart timer")
-			StartTimer(data.DigestSpeedTime, aiTimerID)
 		EndIf
 		Return
 	EndIf
@@ -1115,15 +1067,14 @@ function OnTimerDecreaseTicks(int aiTimerID, VoreData data)
 	currentPrey.ModValue(FV_TicksTillEscape, -1)
 	
 	; Calculate the belly acid damage.
-	Float DamageDealt = (currentPred.GetValue(FV_AcidDamage)+currentPred.GetValue(Game.GetEnduranceAV()))*(1-(currentPrey.GetValue(FV_AcidResistance)-currentPred.GetValue(FV_AcidStrengthValue))/100)
-	trace(self, "damage calculated " + DamageDealt + " prey health: " + currentPrey.GetValue(HealthAV))
-	
+	Float DamageDealt = (currentPred.GetValue(FV_AcidDamage)+currentPred.GetValue(EnduranceAV))*(1-(currentPrey.GetValue(FV_AcidResistance)-currentPred.GetValue(FV_AcidStrengthValue))/100)
+
 	; If we might kill the prey
 	If((currentPrey.GetValue(HealthAV) as float) - DamageDealt <= 0)										;Check if prey will die from damage.  If so, perform special handling
 		trace(self, "damage greater than current health of enemny")
 		If(currentPrey == PlayerRef) ; If player is the prey
 			;we kill the player but have to make sure the triggerdigestionsequence is passed early enough, to prevent regurgitation of half dead player
-			if((currentPrey.GetValue(HealthAV)) > (currentPrey.getBaseValue(HealthAV) * 0.5))
+			if(currentPrey.GetValuePercentage(HealthAV) > 0.5)
 				currentPrey.DamageValue(HealthAV, ((currentPrey.getBaseValue(HealthAV) * 0.2)))
 				Debug.Notification("Your predator enjoys feeling you struggle in their stomach.")
 				FV_FXBurp.Play(currentPred)
@@ -1183,7 +1134,7 @@ function OnTimerDecreaseTicks(int aiTimerID, VoreData data)
 		OnTimerPerformVomit(data.Prey)
 	Else
 		;restart timer					
-		StartTimer(data.DigestSpeedTime, aiTimerID)
+		; StartTimer(data.Prey.GetValue(FV_DigestionSpeed), aiTimerID)
 	EndIf
 EndFunction
 
@@ -1714,7 +1665,7 @@ Function ResetVoreMod(Bool abResetPlayer = False)
 	GotoState("")
 EndFunction
 
-bool Function trace(ScriptObject CallingObject, string asTextToPrint, int aiSeverity = 0, VoreData data = NONE) debugOnly
+bool Function trace(ScriptObject CallingObject, string asTextToPrint, int aiSeverity = 0, PreyData data = NONE) debugOnly
 	;we are sending callingObject so we can in the future route traces to different logs based on who is calling the function
 	string logName = "FalloutVore"
 	debug.OpenUserLog(logName)

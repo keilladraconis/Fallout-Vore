@@ -570,72 +570,6 @@ Function UpdateDigestionPreyCount(Actor akPred)
 	
 EndFunction
 
-;************************************************************************************
-;************************************************************************************
-; Debug functions
-
-; Print debug info
-Function PrintInfos()
-	int i = 0
-	trace(self, "          ")
-	trace(self, "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-	trace(self, "PrintInfos")
-	trace(self, "----------")
-	trace(self, "CurrentVoreIndex: " + CurrentVoreIndex)
-	
-	while i < PredPreyArray.Length
-		VoreData data = PredPreyArray[i]
-		trace(self, "    " + data)
-		; trace(self, "        GetNumberOfPrey: 		(Pred) " + GetNumberOfPrey(data.Index))
-		; trace(self, "        GetNumberOfAlivePrey: 	(Pred) " + GetNumberOfAlivePrey(data.Index))
-		if(data.Pred!=None)
-			trace(self, "        FV_CurrentAlivePrey: (Pred) " + data.Pred.GetValue(FV_CurrentAlivePrey))
-			trace(self, "        FV_CurrentPrey:      (Pred) " + data.Pred.GetValue(FV_CurrentPrey))
-		EndIf
-		if(data.Prey!=None)
-			trace(self, "        FV_CurrentAlivePrey: (Prey) " + data.Prey.GetValue(FV_CurrentAlivePrey))
-			trace(self, "        FV_CurrentPrey:      (Prey) " + data.Prey.GetValue(FV_CurrentPrey))
-			trace(self, "        FV_TicksTillEscapeStart:   (Prey) " + data.Prey.GetValue(FV_TicksTillEscapeStart))
-			trace(self, "        FV_TicksTillEscape:        (Prey) " + data.Prey.GetValue(FV_TicksTillEscape))
-		EndIf
-		
-		i += 1
-	endWhile
-
-	PrintTree()
-	trace(self, "---------------------------------------------------------")
-	trace(self, "          ")
-	
-EndFunction
-
-Function PrintTree()
-	trace(self, "          ")
-	trace(self, " -- Tree --")
-	int i = 0
-	While (i < PredPreyArray.Length)
-		if(PredPreyArray[i].ParentIndex == -1)
-			PrintTree1(PredPreyArray[i].Index, "")
-		endif
-		i += 1
-	EndWhile
-EndFunction
-
-Function PrintTree1(int Index, String s)
-	int i = PredPreyArray.FindStruct("Index", Index)
-	trace(self, s + PredPreyArray[i])
-	
-	i = 0
-	While (i < PredPreyArray.Length)
-		if(PredPreyArray[i].ParentIndex == Index)
-			PrintTree1(PredPreyArray[i].Index, s + "    ")
-		EndIf
-		i += 1
-	EndWhile
-EndFunction
-
-
-
-
 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ; Public functions
@@ -969,7 +903,6 @@ Function PerformVoreEventAccept(Actor akPred, Actor akPrey, bool bLethalFlag)
 	var[] akArgs = new var[1]
 	akArgs[0] = akPred
 	CallFunctionNoWait("PlayAcceptSounds", akArgs)
-	PrintInfos()
 EndFunction
 
 bool bPlayingAcceptSounds = false
@@ -1470,7 +1403,6 @@ function OnTimerPerformDigestion(Actor akPrey)
 	EndIf
 	
 	trace(self, "PerformDigestion - Done")
-	PrintInfos()
 EndFunction
 
 ; Updates the digestion stages on the predator AV, implements some indigestion stuff, and calls to update belly appearances.
@@ -1573,7 +1505,6 @@ Function OnTimerFinishedDigestion(PreyData aData)
 		trace(self, "[BUG] OnTimerFinishedDigestion")
 		Return
 	EndIf
-	PrintInfos()
 
 	Actor soundActor 		= aData.Pred 
 	Actor currentPred		= aData.Pred
@@ -1608,8 +1539,6 @@ Function OnTimerFinishedDigestion(PreyData aData)
 		FV_BellyContainer.Activate(PlayerRef, false) ; Auto-open belly container if you don't have nukaacid and you're in some workshop faction thing
 	EndIf
 	
-	PrintInfos()	
-	
 	if(currentPred == PlayerRef)
 		FV_VoreHud.SendTrackerUpdate()
 	Endif
@@ -1617,8 +1546,6 @@ Function OnTimerFinishedDigestion(PreyData aData)
 	If(currentPrey == PlayerRef && PlayerRef.HasPerk(FV_ReformPerk01))
 		ReformPlayer(currentPred)	;may need to add ways to keep player as last prey no matter what.  Potential for player to get lost in prey heirarchy
 	EndIf
-	
-	PrintInfos()
 	
 	;Custom event transmission
 	Var[] kArgs = new Var[4]
@@ -1748,7 +1675,6 @@ function OnTimerPerformVomit(Actor akPrey)
 	; EndIf
 	
 	trace(self, "OnTimerPerformVomit() - PerformVomit Done")
-	PrintInfos()
 EndFunction
 
 ;************************************************************************************
@@ -1906,7 +1832,6 @@ Function ResetVoreMod(Bool resetPlayer = False)
 	Actor player = 	PlayerRef
 	
 	trace(self, "          ResetVoreMod")
-	PrintInfos()
 	Utility.Wait(4 as float)																					
 	trace(self, "          CancelTimer")
 	While (i < PredPreyArray.Length)

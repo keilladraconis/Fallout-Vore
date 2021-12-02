@@ -501,14 +501,6 @@ EndFunction
 ; an array, which is constrained to 128 elements. Each element is a VoreData of BranchTypePred or BranchTypePrey.Function AddInventoryEventFilter(Form akFilter)
 ; Each element has an index pointer to its 'parent', which for a prey element is likely a predator.
 
-; set custom var 1 (Used by Indigestion)
-Function setCustomVar1(int iIndex, Int v)
-	Int i = PredPreyArray.FindStruct("Index", iIndex)
-	If(i >= 0) 
-		PredPreyArray[i].CustomVar1 = v
-	EndIf
-EndFunction
-
 ; Just scans and updates the coldsteelcounter value.
 Function UpdateColdSteelCounter(int iIndex, Int value)
 	Int i = PredPreyArray.FindStruct("Index", iIndex)

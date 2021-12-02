@@ -484,11 +484,17 @@ EndFunction
 
 PreyData Function GetDataByPrey(Actor akPrey)
 	int i = ConsumptionRegistry.FindStruct("prey", akPrey)
+	if i < 0
+		Return None
+	EndIf
 	Return ConsumptionRegistry[i]
 EndFunction
 
 PreyData Function GetDataByPred(Actor akPred)
 	int i = ConsumptionRegistry.FindStruct("pred", akPred)
+	if i < 0
+		Return None
+	EndIf
 	Return ConsumptionRegistry[i]
 EndFunction
 
@@ -1821,142 +1827,127 @@ bool ModResetting = false
 ; OR type: 'CallQuestFunction xx004c90 ResetVoreMod True'     to also do a reset of the player
 ; wait
 ; KEILLA: Can't this be called from MCM? Also this is a great summary of all the shit that is happening in here.
-Function ResetVoreMod(Bool resetPlayer = False)
+Function ResetVoreMod(Bool abResetPlayer = False)
 	If(ModResetting)
 		return
 	EndIf
 	ModResetting = true
 	GotoState("OnTimerState")	
-	int i = 0
-	Actor a = 		PlayerRef
-	Actor player = 	PlayerRef
-	
+		
 	trace(self, "          ResetVoreMod")
 	Utility.Wait(4 as float)																					
 	trace(self, "          CancelTimer")
-	While (i < PredPreyArray.Length)
-		CancelTimer(PredPreyArray[i].Index)
-		i += 1
-	EndWhile
-	
-	i = PredPreyArray.FindStruct("Prey", player)
-	if(i >= 0 || resetPlayer)
+	CancelTimer(DigestTimerID)
+
+	PreyData data = GetDataByPrey(PlayerRef)
+	if(data != NONE || abResetPlayer)
 		trace(self, "          Reset player")
-		a.setAlpha(1, False)
+		PlayerRef.setAlpha(1, False)
 		if(playerLayer)	
 			playerLayer.Reset()		
 		EndIf
-		FixCamera(a)
+		FixCamera(PlayerRef)
 		Utility.SetINIFloat("fVertibirdVanityModeMaxDist:Camera", fCameraDistanceVomit)
 		Utility.SetINIBool("bApplyCameraNodeAnimations:Camera", 1)
 
 		ClearPredPreyFaction()
-		a.setGhost(False)
-		a.MoveTo(a)																				;Move the pred to the player
-		a.EquipItem(FV_RemoveSwallowProtection, true, true)
+		PlayerRef.setGhost(False)
+		PlayerRef.MoveTo(data.Pred)		;Move the player to their pred
+		PlayerRef.EquipItem(FV_RemoveSwallowProtection, true, true)
+		Remove(PlayerRef)
 		Utility.Wait(4 as float)
 	EndIf
-	If((FV_ColdSteelEnabled.GetValue() > 0 && (a.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))) ;a.HasKeyword(FV_ColdSteelBody))
-		FV_ColdSteelBellyQuest.ResetMorphs(a)
+	If((FV_ColdSteelEnabled.GetValue() > 0 && (PlayerRef.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1)))
+		FV_ColdSteelBellyQuest.ResetMorphs(PlayerRef)
 	EndIf
-	ChangeFullnessArmor(a,0)
-	ChangeDigestFullnessArmor(a)
+	ChangeFullnessArmor(PlayerRef,0)
+	ChangeDigestFullnessArmor(PlayerRef)
 	
-	
-	a.ModValue(FV_CurrentPrey, 						0-a.GetValue(FV_CurrentPrey))
-	a.ModValue(FV_CurrentAlivePrey, 				0-a.GetValue(FV_CurrentAlivePrey))
-	a.ModValue(FV_TicksTillEscape, 					0-a.GetValue(FV_TicksTillEscape))
-	a.ModValue(FV_TicksTillEscapeStart, 			0-a.GetValue(FV_TicksTillEscapeStart))
-	a.ModValue(FV_IndigestionChanceOnNextDigest, 	0-a.GetValue(FV_IndigestionChanceOnNextDigest))
-	a.ModValue(FV_HumanPreyCount,					0-a.GetValue(FV_HumanPreyCount))
-	If(a.GetValue(FV_BlockSwallowFlag) == 2)
-		a.SetValue(FV_BlockSwallowFlag, 1)
+	PlayerRef.SetValue(FV_CurrentPrey, 0)
+	PlayerRef.SetValue(FV_CurrentAlivePrey, 0)
+	PlayerRef.SetValue(FV_TicksTillEscape, 0)
+	PlayerRef.SetValue(FV_TicksTillEscapeStart, 0)
+	PlayerRef.SetValue(FV_IndigestionChanceOnNextDigest, 0)
+	PlayerRef.SetValue(FV_HumanPreyCount, 0)
+	If(PlayerRef.GetValue(FV_BlockSwallowFlag) == 2)
+		PlayerRef.SetValue(FV_BlockSwallowFlag, 1)
 	Else
-		a.SetValue(FV_BlockSwallowFlag, 0)
+		PlayerRef.SetValue(FV_BlockSwallowFlag, 0)
 	EndIf
-	a.SetValue(FV_DigestionStage, 					0)
-	a.SetValue(FV_ReadyToDigest, 					0)
-	a.SetValue(FV_IndigestionSeverityFlag, 			0)
-	a.SetValue(FV_HasBloating, 						0)
-	If(a.HasPerk(FV_HeavyPredPlayer))
-		a.RemovePerk(FV_HeavyPredPlayer)
+	PlayerRef.SetValue(FV_DigestionStage, 0)
+	PlayerRef.SetValue(FV_ReadyToDigest, 0)
+	PlayerRef.SetValue(FV_IndigestionSeverityFlag, 0)
+	PlayerRef.SetValue(FV_HasBloating, 0)
+	If(PlayerRef.HasPerk(FV_HeavyPredPlayer))
+		PlayerRef.RemovePerk(FV_HeavyPredPlayer)
 	Endif
 	
 	trace(self, "          Reset pred and prey")
-	i=0
-	While (i < PredPreyArray.Length)
-		VoreData d = PredPreyArray[i]
-		a = d.pred
-		If(a != None && a != player)
-			a.MoveTo(player)																			
-			a.setPosition(player.getPositionX(), player.getPositionY(), player.getPositionZ())	
-			ChangeFullnessArmor(a,0)
-			ChangeDigestFullnessArmor(a)
-			If((FV_ColdSteelEnabled.GetValue() > 0 && (a.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))) ;a.HasKeyword(FV_ColdSteelBody))
-				FV_ColdSteelBellyQuest.ResetMorphs(a)
-			EndIf
-			a.ModValue(FV_CurrentPrey, 						0-a.GetValue(FV_CurrentPrey))
-			a.ModValue(FV_CurrentAlivePrey, 				0-a.GetValue(FV_CurrentAlivePrey))
-			a.ModValue(FV_TicksTillEscape, 					0-a.GetValue(FV_TicksTillEscape))
-			a.ModValue(FV_TicksTillEscapeStart, 			0-a.GetValue(FV_TicksTillEscapeStart))
-			a.ModValue(FV_IndigestionChanceOnNextDigest, 	0-a.GetValue(FV_IndigestionChanceOnNextDigest))
-			a.ModValue(FV_HumanPreyCount,					0-a.GetValue(FV_HumanPreyCount))
-			If(a.GetValue(FV_BlockSwallowFlag) == 2)
-				a.SetValue(FV_BlockSwallowFlag, 1)
-			Else
-				a.SetValue(FV_BlockSwallowFlag, 0)
-			EndIf
-			a.SetValue(FV_DigestionStage, 					0)
-			a.SetValue(FV_ReadyToDigest, 					0)
-			a.SetValue(FV_IndigestionSeverityFlag, 			0)
-			a.SetValue(FV_HasBloating,						0)
-			If(a.HasPerk(FV_HeavyPredNPC))
-				a.RemovePerk(FV_HeavyPredNPC)
-			Endif
+	int i = 0
+	While (i < ConsumptionRegistry.Length)
+		PreyData data = ConsumptionRegistry[i]
+	
+		ChangeFullnessArmor(data.Pred, 0)
+		ChangeDigestFullnessArmor(data.Pred)
+		If((FV_ColdSteelEnabled.GetValue() > 0 && (data.Pred.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))) ;data.Pred.HasKeyword(FV_ColdSteelBody))
+			FV_ColdSteelBellyQuest.ResetMorphs(data.Pred)
 		EndIf
+		data.Pred.SetValue(FV_CurrentPrey, 0)
+		data.Pred.SetValue(FV_CurrentAlivePrey, 0)
+		data.Pred.SetValue(FV_TicksTillEscape, 0)
+		data.Pred.SetValue(FV_TicksTillEscapeStart, 0)
+		data.Pred.SetValue(FV_IndigestionChanceOnNextDigest, 0)
+		data.Pred.SetValue(FV_HumanPreyCount, 0)
+		If(data.Pred.GetValue(FV_BlockSwallowFlag) == 2)
+			data.Pred.SetValue(FV_BlockSwallowFlag, 1)
+		Else
+			data.Pred.SetValue(FV_BlockSwallowFlag, 0)
+		EndIf
+		data.Pred.SetValue(FV_DigestionStage, 0)
+		data.Pred.SetValue(FV_ReadyToDigest, 0)
+		data.Pred.SetValue(FV_IndigestionSeverityFlag, 0)
+		data.Pred.SetValue(FV_HasBloating, 0)
+		If(data.Pred.HasPerk(FV_HeavyPredNPC))
+			data.Pred.RemovePerk(FV_HeavyPredNPC)
+		Endif
+	
 		
-		a = d.prey
-		If(a != None && a != player)
-			a.MoveTo(player)																			
-			a.setPosition(player.getPositionX(), player.getPositionY(), player.getPositionZ())	
-			ChangeFullnessArmor(a,0)
-			ChangeDigestFullnessArmor(a)
-			If((FV_ColdSteelEnabled.GetValue() > 0 && (a.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))) ;a.HasKeyword(FV_ColdSteelBody))
-				FV_ColdSteelBellyQuest.ResetMorphs(a)
-			EndIf
-			a.ModValue(FV_CurrentPrey, 						0-a.GetValue(FV_CurrentPrey))
-			a.ModValue(FV_CurrentAlivePrey, 				0-a.GetValue(FV_CurrentAlivePrey))
-			a.ModValue(FV_TicksTillEscape, 					0-a.GetValue(FV_TicksTillEscape))
-			a.ModValue(FV_TicksTillEscapeStart, 			0-a.GetValue(FV_TicksTillEscapeStart))
-			a.ModValue(FV_IndigestionChanceOnNextDigest, 	0-a.GetValue(FV_IndigestionChanceOnNextDigest))
-			a.ModValue(FV_HumanPreyCount,					0-a.GetValue(FV_HumanPreyCount))
-			If(a.GetValue(FV_BlockSwallowFlag) == 2)
-				a.SetValue(FV_BlockSwallowFlag, 1)
-			Else
-				a.SetValue(FV_BlockSwallowFlag, 0)
-			EndIf
-			a.SetValue(FV_DigestionStage, 					0)
-			a.SetValue(FV_ReadyToDigest, 					0)
-			a.SetValue(FV_IndigestionSeverityFlag, 			0)
-			a.SetValue(FV_HasBloating,						0)
-			;a.DispelSpell(FV_spIndigestion)
-			;a.DispelSpell(NoNameSpell) ; TODO2
-			If(a.HasPerk(FV_HeavyPredNPC))
-				a.RemovePerk(FV_HeavyPredNPC)
-			Endif
-			a.EquipItem(FV_RemoveSwallowProtection, true, true)
+		data.Prey.MoveTo(data.Pred)																			
+		data.Prey.setPosition(data.Pred.getPositionX(), data.Pred.getPositionY(), data.Pred.getPositionZ())	
+		ChangeFullnessArmor(data.Prey,0)
+		ChangeDigestFullnessArmor(data.Prey)
+		If((FV_ColdSteelEnabled.GetValue() > 0 && (data.Prey.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))) ;data.Prey.HasKeyword(FV_ColdSteelBody))
+			FV_ColdSteelBellyQuest.ResetMorphs(data.Prey)
 		EndIf
+		data.Prey.SetValue(FV_CurrentPrey, 0)
+		data.Prey.SetValue(FV_CurrentAlivePrey, 0)
+		data.Prey.SetValue(FV_TicksTillEscape, 0)
+		data.Prey.SetValue(FV_TicksTillEscapeStart, 0)
+		data.Prey.SetValue(FV_IndigestionChanceOnNextDigest, 0)
+		data.Prey.SetValue(FV_HumanPreyCount, 0)
+		If(data.Prey.GetValue(FV_BlockSwallowFlag) == 2)
+			data.Prey.SetValue(FV_BlockSwallowFlag, 1)
+		Else
+			data.Prey.SetValue(FV_BlockSwallowFlag, 0)
+		EndIf
+		data.Prey.SetValue(FV_DigestionStage, 					0)
+		data.Prey.SetValue(FV_ReadyToDigest, 					0)
+		data.Prey.SetValue(FV_IndigestionSeverityFlag, 			0)
+		data.Prey.SetValue(FV_HasBloating,						0)
+		If(data.Prey.HasPerk(FV_HeavyPredNPC))
+			data.Prey.RemovePerk(FV_HeavyPredNPC)
+		Endif
+		data.Prey.EquipItem(FV_RemoveSwallowProtection, true, true)
 		
 		i += 1
 	EndWhile
 	
-	PredPreyArray.Clear()
-	a.SetValue(FV_RegurgitateBool, 0)
+	ConsumptionRegistry.Clear()
 	FV_ManualDigestionEnabled.SetValue(0)
 	trace(self, "          Done !")
 	Debug.MessageBox("ResetVoreMod, Done !")
-	GotoState("")
 	ModResetting = false
+	GotoState("")
 EndFunction
 
 bool Function trace(ScriptObject CallingObject, string asTextToPrint, int aiSeverity = 0, VoreData data = NONE) debugOnly

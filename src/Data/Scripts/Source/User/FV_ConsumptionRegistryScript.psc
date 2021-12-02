@@ -569,119 +569,6 @@ Function UpdateDigestionPreyCount(Actor akPred)
 	
 EndFunction
 
-; Tree sample
-; [BranchType = 1, index = 29, Tick = 2, ParentIndex = -1, TimerState = 100, Pred = [Actor < (00000014)>], Prey = None, IsLethal = False, IsDead = False, IsPredator = False, ContainAPrey = False]
-;     [BranchType = 1, index = 27, Tick = 1, ParentIndex = 29, TimerState = 100, Pred = [Actor < (FF0130A5)>], Prey = None, IsLethal = True, IsDead = False, IsPredator = True, ContainAPrey = False]
-;         [BranchType = 2, index = 28, Tick = -3, ParentIndex = 27, TimerState = 100, Pred = None, Prey = [mirelurkqueenspawnscript < (FF014A57)>], IsLethal = True, IsDead = False, IsPredator = False, ContainAPrey = False]
-;     [BranchType = 2, index = 30, Tick = 0, ParentIndex = 29, TimerState = 100, Pred = None, Prey = [Actor < (0303250A)>], IsLethal = True, IsDead = False, IsPredator = False, ContainAPrey = False]
-
-; iIndex = 28, result:
-; [BranchType = 1, index = 29, Tick = 2, ParentIndex = -1, TimerState = 100, Pred = [Actor < (00000014)>], Prey = None, IsLethal = False, IsDead = False, IsPredator = False, ContainAPrey = False]
-;     [BranchType = 2, index = 28, Tick =-3, ParentIndex = 29, TimerState = 100, Pred = None, Prey = [mirelurkqueenspawnscript < (FF014A57)>], IsLethal = True, IsDead = False, IsPredator = False, ContainAPrey = False]
-;     [BranchType = 2, index = 27, Tick = 1, ParentIndex = 29, TimerState = 100, Pred = [Actor < (FF0130A5)>], Prey = None, IsLethal = True, IsDead = False, IsPredator = True, ContainAPrey = False]
-;     [BranchType = 2, index = 30, Tick = 0, ParentIndex = 29, TimerState = 100, Pred = None, Prey = [Actor < (0303250A)>], IsLethal = True, IsDead = False, IsPredator = False, ContainAPrey = False]
-;
-; return: parent or -1 if error
-; KEILLA: I don't know what the fuck this is for. It gets called exactly once in OnTimerPerformVomit, so I guess it's to bring a node to the top of the tree.
-Int Function TreeMoveUp(int iIndex)
-	trace(self, "TreeMoveUp: " + iIndex)
-	Int result = -1
-	int currentBranch = PredPreyArray.FindStruct("Index", iIndex) ; SCAN PPA
-	if(currentBranch<0)	
-		Return -1
-	EndIf
-	
-	VoreData currentBranchdata = PredPreyArray[currentBranch]
-	if(currentBranchdata.ParentIndex == -1) ; It has no parent, it's already the top of the tree, why are we here?
-		Return -1
-	EndIf
-
-	; int root = GetRoot(currentBranchdata.ParentIndex) ; SCAN PPA
-	; int root1 = GetRoot(currentBranchdata.Index) ; SCAN PPA. KEILLA: Root1 should be the same fuckin' thing as root.
-	result = currentBranchdata.ParentIndex ; KEILLA: are all assignments by reference?
-	
-	; currentBranchdata.ParentIndex = root ; KEILLA: Wat? Just puts this node up to be the first ancestor of the local root?
-	
-	Int[] children = new Int[0]
-	; Getchildren(children,iIndex) ; SCAN PPA
-	
-	if(children.Length == 0)
-		currentBranchdata.BranchType = BranchTypePrey
-	Else
-		currentBranchdata.BranchType = BranchTypePred
-	EndIf
-	
-	children.Clear()
-	; Getchildren(children,root1) ; SCAN PPA
-	; int i = PredPreyArray.FindStruct("Index", root1) ; SCAN PPA
-	
-	; if(children.Length == 0)
-	; 	PredPreyArray[i].BranchType = BranchTypePrey
-	; Else
-	; 	PredPreyArray[i].BranchType = BranchTypePred
-	; EndIf
-	
-	Return result
-EndFunction
-
-; Tree sample
-; [BranchType = 1, index = 29, Tick = 2, ParentIndex = -1, TimerState = 100, Pred = [Actor < (00000014)>], Prey = None, IsLethal = False, IsDead = False, IsPredator = False, ContainAPrey = False]
-;     [BranchType = 2, index = 28, Tick =-3, ParentIndex = 29, TimerState = 100, Pred = None, Prey = [mirelurkqueenspawnscript < (FF014A57)>], IsLethal = True, IsDead = False, IsPredator = False, ContainAPrey = False]
-;     [BranchType = 2, index = 27, Tick = 1, ParentIndex = 29, TimerState = 100, Pred = [Actor < (FF0130A5)>], Prey = None, IsLethal = True, IsDead = False, IsPredator = True, ContainAPrey = False]
-;     [BranchType = 2, index = 30, Tick = 0, ParentIndex = 29, TimerState = 100, Pred = None, Prey = [Actor < (0303250A)>], IsLethal = True, IsDead = False, IsPredator = False, ContainAPrey = False]
-
-; iRoot = 27, iIndex= 28 result:
-; [BranchType = 1, index = 29, Tick = 2, ParentIndex = -1, TimerState = 100, Pred = [Actor < (00000014)>], Prey = None, IsLethal = False, IsDead = False, IsPredator = False, ContainAPrey = False]
-;     [BranchType = 1, index = 28, Tick =-3, ParentIndex = 29, TimerState = 100, Pred = None, Prey = [mirelurkqueenspawnscript < (FF014A57)>], IsLethal = True, IsDead = False, IsPredator = False, ContainAPrey = False]
-;         [BranchType = 1, index = 27, Tick = 1, ParentIndex = 28, TimerState = 100, Pred = [Actor < (FF0130A5)>], Prey = None, IsLethal = True, IsDead = False, IsPredator = True, ContainAPrey = False]
-;     [BranchType = 2, index = 30, Tick = 0, ParentIndex = 29, TimerState = 100, Pred = None, Prey = [Actor < (0303250A)>], IsLethal = True, IsDead = False, IsPredator = False, ContainAPrey = False]
-
-; Moves the sibling iIndex of the iRoot down into the children of iRoot.
-bool Function TreeMoveDown(int iRoot, int iIndex)
-	trace(self, "TreeMoveDown: "+iRoot+ " " +iIndex)
-	int bRoot = PredPreyArray.FindStruct("index", iRoot) ; SCAN PPA
-	int bIndex= PredPreyArray.FindStruct("index", iIndex) ; SCAN PPA
-
-	Int[] children = new Int[0]
-	; GetchildrenAsSameLevel(children, PredPreyArray[bRoot].parentIndex) ; SCAN PPA
-	
-	int i = 0
-	bool found = false
-	while (i < children.Length)
-		if (children[i] == iRoot)
-			children.Remove(i)
-			i = 9999;
-		EndIf
-		i += 1;
-	EndWhile
-
-	i = 0
-	while (i < children.Length)
-		if (children[i] == iIndex)
-			found = true
-			i = 9999
-		EndIf
-		i += 1
-	EndWhile
-	
-	if (!found)
-		return false
-	EndIf
-
-	PredPreyArray[bIndex].parentIndex = iRoot
-
-	children.Clear()
-	; Getchildren(children, iRoot) ; SCAN PPA
-
-	if (children.Length != 0) ; If we did it right, then the bRoot should always become a pred branch.
-		PredPreyArray[bRoot].branchType = BranchTypePred
-	else
-		PredPreyArray[bRoot].branchType = BranchTypePrey
-	EndIf
-	return true
-
-EndFunction
-
 ; Called a few times after a vomit or transfer. Probably can just inline this if we have the data.
 Function resetTick(int iIndex)
 	Int i = PredPreyArray.FindStruct("Index", iIndex) ; Scan PPA
@@ -1884,9 +1771,6 @@ function OnTimerTransfer(int aiTimerID, int child, VoreData data)
 	Actor currentPrey = data.Prey
 	Actor currentPred = data.Pred
 	
-	; int root = GetRoot(data.Index, false)
-
-	TreeMoveDown(aiTimerID , child)
 	UpdateCurrentInStomach(currentPred, true)
 	resetTick(aiTimerID)
 	resetTick(child)	

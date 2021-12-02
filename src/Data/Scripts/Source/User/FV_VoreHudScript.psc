@@ -203,6 +203,7 @@ Function UpdateHealthBar(Int aiIndex, Actor akPrey)
 	EditLock = False
 EndFunction
 
+; TODO: This is going to be broken until this script can keep its own mapping of prey to indices.
 Function RemoveHealthBar(Int aiIndex)
 	GetEditLock()
 	

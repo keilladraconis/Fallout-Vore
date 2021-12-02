@@ -575,28 +575,6 @@ EndFunction
 ;         [BranchType = 2, index = 28, Tick = -3, ParentIndex = 27, TimerState = 100, Pred = None, Prey = [mirelurkqueenspawnscript < (FF014A57)>], IsLethal = True, IsDead = False, IsPredator = False, ContainAPrey = False]
 ;     [BranchType = 2, index = 30, Tick = 0, ParentIndex = 29, TimerState = 100, Pred = None, Prey = [Actor < (0303250A)>], IsLethal = True, IsDead = False, IsPredator = False, ContainAPrey = False]
 
-; Return all children. (Recursive, SCAN PPA a lot.)
-; iIndex = 27, return 28
-; iIndex = 29, return 27,28,30
-Function Getchildren(Int[] children, int iIndex, int level = 0)
-	int i = 0
-	if(level !=0)
-		children.Add(iIndex)
-	EndIf
-	While (i < PredPreyArray.Length)
-		if(PredPreyArray[i].ParentIndex == iIndex)
-			Getchildren(children,PredPreyArray[i].Index,level+1)
-		EndIf
-		i += 1
-	EndWhile
-EndFunction
-
-; Tree sample
-; [BranchType = 1, index = 29, Tick = 2, ParentIndex = -1, TimerState = 100, Pred = [Actor < (00000014)>], Prey = None, IsLethal = False, IsDead = False, IsPredator = False, ContainAPrey = False]
-;     [BranchType = 1, index = 27, Tick = 1, ParentIndex = 29, TimerState = 100, Pred = [Actor < (FF0130A5)>], Prey = None, IsLethal = True, IsDead = False, IsPredator = True, ContainAPrey = False]
-;         [BranchType = 2, index = 28, Tick = -3, ParentIndex = 27, TimerState = 100, Pred = None, Prey = [mirelurkqueenspawnscript < (FF014A57)>], IsLethal = True, IsDead = False, IsPredator = False, ContainAPrey = False]
-;     [BranchType = 2, index = 30, Tick = 0, ParentIndex = 29, TimerState = 100, Pred = None, Prey = [Actor < (0303250A)>], IsLethal = True, IsDead = False, IsPredator = False, ContainAPrey = False]
-
 ; Return all children. Almost the exact same thing as getchildren
 ; iIndex = 27, return 28
 ; iIndex = 29, return 27,30
@@ -632,7 +610,7 @@ EndFunction
 Int Function GetOneChild(int iIndex)
 	Int[] children = new Int[0]
 	children.Clear()
-	Getchildren(children, iIndex)
+	; Getchildren(children, iIndex)
 	if(children.Length>0)
 		Return children[0]
 	EndIf
@@ -721,7 +699,7 @@ Int Function TreeMoveUp(int iIndex)
 	currentBranchdata.ParentIndex = root ; KEILLA: Wat? Just puts this node up to be the first ancestor of the local root?
 	
 	Int[] children = new Int[0]
-	Getchildren(children,iIndex) ; SCAN PPA
+	; Getchildren(children,iIndex) ; SCAN PPA
 	
 	if(children.Length == 0)
 		currentBranchdata.BranchType = BranchTypePrey
@@ -730,7 +708,7 @@ Int Function TreeMoveUp(int iIndex)
 	EndIf
 	
 	children.Clear()
-	Getchildren(children,root1) ; SCAN PPA
+	; Getchildren(children,root1) ; SCAN PPA
 	int i = PredPreyArray.FindStruct("Index", root1) ; SCAN PPA
 	
 	if(children.Length == 0)
@@ -789,7 +767,7 @@ bool Function TreeMoveDown(int iRoot, int iIndex)
 	PredPreyArray[bIndex].parentIndex = iRoot
 
 	children.Clear()
-	Getchildren(children, iRoot) ; SCAN PPA
+	; Getchildren(children, iRoot) ; SCAN PPA
 
 	if (children.Length != 0) ; If we did it right, then the bRoot should always become a pred branch.
 		PredPreyArray[bRoot].branchType = BranchTypePred

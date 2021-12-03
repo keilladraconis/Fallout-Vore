@@ -587,7 +587,6 @@ EndFunction
 ;************************************************************************************
 ; Vore events
 
-
 ; Perform swallow and register for vore events. 
 Function PerformVoreEvent1()
 	trace(self, "PerformVoreEvent1() Processing " + SwallowBuffer.length + " Swallow buffer...")
@@ -884,23 +883,25 @@ Event OnTimer(int aiTimerID)
 	ElseIf (aiTimerID == DigestTimerID)
 		int i = 0
 		PreyData data
+		Actor pred
 		While i < ConsumptionRegistry.Length
 			data = ConsumptionRegistry[i]
+			pred = data.Pred
 			int digestionStage = data.Prey.getValue(FV_DigestionStage) as int
 			If digestionStage == 100 ; Prey is alive, taking damage.
 				OnTimerDecreaseTicks(data)
 			Else
 				; TODO: Actually, doing fullness armor this way probably leads to flippy-floppy digestion appearance.
-				If((FV_ColdSteelEnabled.GetValue() > 0 && (data.Pred.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))) 
-					FV_ColdSteelBellyQuest.ChangeColdSteelDigestFullness(data.Pred, digestionStage)
+				If((FV_ColdSteelEnabled.GetValue() > 0 && (pred.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))) 
+					FV_ColdSteelBellyQuest.ChangeColdSteelDigestFullness(pred, digestionStage)
 				Else
-					ChangeDigestFullnessArmor(data.Pred, digestionStage)
+					ChangeDigestFullnessArmor(pred, digestionStage)
 				EndIf
 				
 				If digestionStage > 0
 					OnTimerPlaySound(data)
-					data.Pred.ModValue(FV_DigestionStage, -1)
-					UpdateDigestionPreyCount(data.Pred)
+					pred.ModValue(FV_DigestionStage, -1)
+					UpdateDigestionPreyCount(pred)
 				Else
 					OnTimerFinishedDigestion(data)
 				EndIf
@@ -929,81 +930,81 @@ EndFunction
 
 ; Tracks the mortality of prey by timer ID. Many triggers for the prey to be vomited for many reasons, protection against death, and eventually AV damage to prey and in the case of escape, the pred.
 function OnTimerDecreaseTicks(PreyData data)
+	Actor prey = data.Prey
+	Actor pred = data.Pred
+
 	; Dead pred autovomit
-	if(data.Pred.IsDead())
-		OnTimerPerformVomit(data.Prey)
+	if(pred.IsDead())
+		OnTimerPerformVomit(prey)
 		Return
 	EndIf
 	
-	If(data.Prey.IsDead())
+	If(prey.IsDead())
 		;if prey is dead, there's no point in calculating damage.  Go ahead and kill it and move on.
-		OnTimerPerformDigestion(data.Prey)
+		OnTimerPerformDigestion(prey)
 		return
 	EndIf
 	
 	if(!data.IsLethal)
 		; If you set manual regurgitation, do the vomit and reset.
-		If(data.Pred.GetValue(FV_RegurgitateBool) == 1)
+		If(pred.GetValue(FV_RegurgitateBool) == 1)
 		
 			;Reset regurgetate bool
-			data.Pred.SetValue(FV_RegurgitateBool, 0)
+			pred.SetValue(FV_RegurgitateBool, 0)
 			
 			;Vomit
-			OnTimerPerformVomit(data.Prey)
+			OnTimerPerformVomit(prey)
 		Else
-			If(data.Prey == PlayerRef && PlayerRef.GetDistance(data.Pred) > 4000) 
+			If(prey == PlayerRef && PlayerRef.GetDistance(pred) > 4000) 
 				; If the player is the prey, keep moving their invisible ghost closer to the predator so they don't get too far and unload or something.
 				; KEILLA: This is absolutely besides the point of this function. Should be managed elsewhere.
-				PlayerRef.TranslateToRef(data.Pred, 25000)
+				PlayerRef.TranslateToRef(pred, 25000)
 			Endif
 		EndIf
 		Return
 	EndIf
 	
-	Actor currentPrey = data.Prey
-	Actor currentPred = data.Pred
-	
-	currentPrey.ModValue(FV_TicksTillEscape, -1)
+	prey.ModValue(FV_TicksTillEscape, -1)
 	
 	; Calculate the belly acid damage.
-	Float DamageDealt = (currentPred.GetValue(FV_AcidDamage)+currentPred.GetValue(EnduranceAV))*(1-(currentPrey.GetValue(FV_AcidResistance)-currentPred.GetValue(FV_AcidStrengthValue))/100)
+	Float DamageDealt = (pred.GetValue(FV_AcidDamage)+pred.GetValue(EnduranceAV))*(1-(prey.GetValue(FV_AcidResistance)-pred.GetValue(FV_AcidStrengthValue))/100)
 
 	; If we might kill the prey
-	If((currentPrey.GetValue(HealthAV) as float) - DamageDealt <= 0)										;Check if prey will die from damage.  If so, perform special handling
+	If((prey.GetValue(HealthAV) as float) - DamageDealt <= 0)										;Check if prey will die from damage.  If so, perform special handling
 		trace(self, "damage greater than current health of enemny")
-		If(currentPrey == PlayerRef) ; If player is the prey
+		If(prey == PlayerRef) ; If player is the prey
 			;we kill the player but have to make sure the triggerdigestionsequence is passed early enough, to prevent regurgitation of half dead player
-			if(currentPrey.GetValuePercentage(HealthAV) > 0.5)
-				currentPrey.DamageValue(HealthAV, ((currentPrey.getBaseValue(HealthAV) * 0.2)))
+			if(prey.GetValuePercentage(HealthAV) > 0.5)
+				prey.DamageValue(HealthAV, ((prey.getBaseValue(HealthAV) * 0.2)))
 				Debug.Notification("Your predator enjoys feeling you struggle in their stomach.")
-				FV_FXBurp.Play(currentPred)
+				FV_FXBurp.Play(pred)
 			else
 				Debug.Notification("You cease the futile escape attempts and succumb to your predator's stomach.")
-				PlayerDies(currentPrey)
+				PlayerDies(prey)
 				return
 			EndIf
-		ElseIf(currentPrey.HasPerk(FV_DigestInvulnerability)) ; If invulnerable to digestion, force vomit the prey
+		ElseIf(prey.HasPerk(FV_DigestInvulnerability)) ; If invulnerable to digestion, force vomit the prey
 			Var[] kArgs = new Var[2]
-			kArgs[0] = CurrentPred
-			kArgs[1] = CurrentPrey
+			kArgs[0] = pred
+			kArgs[1] = prey
 			SendCustomEvent("OnDigestProtection", kArgs)
-			OnTimerPerformVomit(data.Prey)
+			OnTimerPerformVomit(prey)
 			return
-		ElseIf(currentPrey.IsInFaction(HasBeenCompanionFaction)) ; If someone is digesting a companion
+		ElseIf(prey.IsInFaction(HasBeenCompanionFaction)) ; If someone is digesting a companion
 			If(FV_DigestCompanionProtection.GetValue()>0) ;Put companions in bleed out and then vomit them up
-				currentPrey.DamageValue(HealthAV, DamageDealt)														
-				OnTimerPerformVomit(data.Prey)
+				prey.DamageValue(HealthAV, DamageDealt)														
+				OnTimerPerformVomit(prey)
 				return
 			ElseIf(FV_KillEssentialEnabled.GetValue() == 1)
-				currentPrey.KillEssential(currentPred)
+				prey.KillEssential(pred)
 			EndIf
-		ElseIf(FV_KillEssentialEnabled.GetValue() == 1 && currentPrey.IsEssential())
-			currentPrey.KillEssential(currentPred)
+		ElseIf(FV_KillEssentialEnabled.GetValue() == 1 && prey.IsEssential())
+			prey.KillEssential(pred)
 		Else
-			currentPrey.Kill(currentPred)
+			prey.Kill(pred)
 		EndIf
 	ElseIf(data.isLethal)
-		currentPrey.DamageValue(HealthAV, DamageDealt) ;if prey was not meant to die, deal damage to it now
+		prey.DamageValue(HealthAV, DamageDealt) ;if prey was not meant to die, deal damage to it now
 	EndIf
 
 	; TODO: Broken until VoreHud can accept Prey
@@ -1013,26 +1014,26 @@ function OnTimerDecreaseTicks(PreyData data)
 	
 	Int EscapeRoll = Utility.RandomInt()
 	
-	int EscapeCheck = 12 + currentPrey.GetValue(FV_EscapeChance) as int - CurrentPred.GetValue(FV_StomachStrength) as int
+	int EscapeCheck = 12 + prey.GetValue(FV_EscapeChance) as int - pred.GetValue(FV_StomachStrength) as int
 	
 	If(!data.isLethal)	;set escape roll higher than escape chance is expected to happen to prevent accident escaping of non-lethal prey
 		EscapeRoll = 999
 	EndIf
 
 	; KEILLA: THis seems redundant with the above check about whether the data.isDead, though in this case we are checking the Actor
-	If(currentPrey.IsDead())
-		OnTimerPerformDigestion(data.Prey)
-	ElseIf((EscapeRoll < EscapeCheck && data.Tick <= 0 ) || currentPred.GetValue(FV_RegurgitateBool) == 1 || currentPrey.GetValue(FV_TicksTillEscape) <= 0)
+	If(prey.IsDead())
+		OnTimerPerformDigestion(prey)
+	ElseIf((EscapeRoll < EscapeCheck && data.Tick <= 0 ) || pred.GetValue(FV_RegurgitateBool) == 1 || prey.GetValue(FV_TicksTillEscape) <= 0)
 		;deal damage if prey is escaping
-		Float fEscapeDamage = currentPrey.GetValue(FV_EscapeDamage) as float
-		If(fEscapeDamage > 0 && currentPred.GetValue(FV_RegurgitateBool) == 0)
-			Float EscapeDamageValue = currentPred.GetBaseValue(HealthAV)*fEscapeDamage/100
-			currentPred.DamageValue(HealthAV, EscapeDamageValue)
+		Float fEscapeDamage = prey.GetValue(FV_EscapeDamage) as float
+		If(fEscapeDamage > 0 && pred.GetValue(FV_RegurgitateBool) == 0)
+			Float EscapeDamageValue = pred.GetBaseValue(HealthAV)*fEscapeDamage/100
+			pred.DamageValue(HealthAV, EscapeDamageValue)
 		EndIf
-		data.Pred.SetValue(FV_RegurgitateBool, 0)
+		pred.SetValue(FV_RegurgitateBool, 0)
 		;vomit
 		trace(self, " OnTimerDecreaseTicks() Prey escaped - EscapeCheck: " + EscapeCheck + " EscapeRoll: " + EscapeRoll)
-		OnTimerPerformVomit(data.Prey)
+		OnTimerPerformVomit(prey)
 	EndIf
 EndFunction
 
@@ -1040,9 +1041,10 @@ EndFunction
 ; Does a lot, sounds, RPG stuff, Vore mechanics, move the inventories
 function OnTimerPerformDigestion(Actor akPrey)
 	PreyData data = GetDataByPrey(akPrey)
+	Actor pred = data.Pred
 	
 	Var[] kArgs = new Var[4]
-	kArgs[0] = data.Pred
+	kArgs[0] = pred
 	kArgs[1] = 0 ; KEILLA: What is this?
 	kArgs[2] = akPrey
 	kArgs[3] = data.BellyContainer
@@ -1053,10 +1055,10 @@ function OnTimerPerformDigestion(Actor akPrey)
 	; 	FV_VoreHud.RemoveHealthBar(aiTimerID)
 	; EndIf
 
-	akPrey.Kill(data.Pred)
-	UpdateCurrentInStomach(data.Pred)
+	akPrey.Kill(pred)
+	UpdateCurrentInStomach(pred)
 	
-	int instanceID = FV_FXBurp.Play(data.Pred) 	
+	int instanceID = FV_FXBurp.Play(pred) 	
 	Sound.SetInstanceVolume(instanceID, 0.5)					
 		Sound.SetInstanceVolume(instanceID, 0.5)					
 	Sound.SetInstanceVolume(instanceID, 0.5)					
@@ -1065,22 +1067,22 @@ function OnTimerPerformDigestion(Actor akPrey)
 	; EndIf
 	
 	;Increase the chance of indigestion
-	data.Pred.ModValue(FV_IndigestionChanceOnNextDigest, CalculateIndigestionChance(data.Pred, akPrey))
+	pred.ModValue(FV_IndigestionChanceOnNextDigest, CalculateIndigestionChance(pred, akPrey))
 	
 	;Stats stuff
-	If (data.Pred == PlayerRef || data.Pred.IsInFaction(HasBeenCompanionFaction))
-		FV_ActorData.UpdateDigestCount(data.Pred, akPrey)
+	If (pred == PlayerRef || pred.IsInFaction(HasBeenCompanionFaction))
+		FV_ActorData.UpdateDigestCount(pred, akPrey)
 	EndIf
 	
 	; OH HEY, if you ate a robot, you get some fusion cells! Isn't this a good place to do that? KEILLA: It is not.
-	If(akPrey.HasKeyword(ActorTypeRobot) && data.Pred.HasPerk(FV_HighIronDiet03))		
-		data.Pred.Additem(AmmoFusionCell, akPrey.GetLevel()/2 as int, false)		
+	If(akPrey.HasKeyword(ActorTypeRobot) && pred.HasPerk(FV_HighIronDiet03))		
+		pred.Additem(AmmoFusionCell, akPrey.GetLevel()/2 as int, false)		
 	EndIf
 	
 	;Add XP
 	;CalculateVoreXP(CurrentPred, CurrentPrey)
 	If(akPrey != PlayerRef)
-		FV_ScatManager.ProcessPreyItems(akPrey, data.Pred)
+		FV_ScatManager.ProcessPreyItems(akPrey, pred)
 	EndIf
 	akPrey.AddItem(LLD_VEV_Crystals_Prey_FV_, 1, true)
 	
@@ -1094,14 +1096,14 @@ function OnTimerPerformDigestion(Actor akPrey)
 	EndIf
 	
 	;Was that the last prey in the stomach of the pred? 
-	If((data.Pred.GetValue(FV_CurrentAlivePrey) <= 0 && data.Pred != PlayerRef) || (data.Pred.GetValue(FV_CurrentAlivePrey) <= 0 && FV_ManualDigestionEnabled.GetValue() == 0))
+	If((pred.GetValue(FV_CurrentAlivePrey) <= 0 && pred != PlayerRef) || (pred.GetValue(FV_CurrentAlivePrey) <= 0 && FV_ManualDigestionEnabled.GetValue() == 0))
 		;Trigger digestion as set to auto digest
 		trace(self, "Start TriggerDigestionSequence")
-		OnTimerTriggerDigestionSequence(data.Pred)
-	ElseIf(data.Pred.GetValue(FV_CurrentAlivePrey) <= 0)
+		OnTimerTriggerDigestionSequence(pred)
+	ElseIf(pred.GetValue(FV_CurrentAlivePrey) <= 0)
 		; You do not digest while you have alive prey
-		data.Pred.SetValue(FV_ReadyToDigest, 1)
-		If(data.Pred == Game.GetPlayer())
+		pred.SetValue(FV_ReadyToDigest, 1)
+		If(pred == Game.GetPlayer())
 			FV_ReadyToDigestMessage.Show()
 		EndIf
 	EndIf
@@ -1202,51 +1204,49 @@ Function OnTimerFinishedDigestion(PreyData aData)
 		Return
 	EndIf
 
-	Actor soundActor 		= aData.Pred 
-	Actor currentPred		= aData.Pred
-	Actor currentPrey		= aData.Prey
+	Actor pred		= aData.Pred
 
-	int instanceID = FV_FXBurp.Play(aData.Pred) 	
+	int instanceID = FV_FXBurp.Play(pred) 	
 	Sound.SetInstanceVolume(instanceID, 0.5)					
 
     ;End of digestions
-    currentPred.SetValue(FV_DigestionStage, 0)
+    pred.SetValue(FV_DigestionStage, 0)
 	
 	;Only activate for the prey. Prevents crash TODO: Other methods of item retrival.
-	If(currentPred == PlayerRef)
+	If(pred == PlayerRef)
 		
 		If(FV_ScatEnabled.GetValue() == 1)
-			If(currentPred.getValue(FV_Scatready) == 0)
-				currentPred.SetValue(FV_Scatready, 1)
+			If(pred.getValue(FV_Scatready) == 0)
+				pred.SetValue(FV_Scatready, 1)
 				FV_ReadyToScatMessage.show()
 			EndIf
 		EndIf
 	;Activate belly container for player if they are not a pred and an ally has finished digestion
-	ElseIf(currentPred.IsInFaction(CurrentCompanionFaction) && FV_CompanionScat.GetValue() == 1)
-		currentPred.SetValue(FV_Scatready, 1)
-	ElseIf(FV_ScatEnabled.GetValue() == 1 && FV_NPCScatEnabled.GetValue() == 1 && !currentPred.IsInFaction(CurrentCompanionFaction))
-		FV_ScatManager.NPCScat(currentPred) ; NPCs autoscat
-	ElseIf(PlayerRef.GetValue(FV_HasHadNukaAcid) == 0 && (currentPred.IsInFaction(WorkshopNPCFaction) || currentPred.IsInFaction(WorkshopDialogueFaction) || currentPred.IsInFaction(CurrentCompanionFaction)))
+	ElseIf(pred.IsInFaction(CurrentCompanionFaction) && FV_CompanionScat.GetValue() == 1)
+		pred.SetValue(FV_Scatready, 1)
+	ElseIf(FV_ScatEnabled.GetValue() == 1 && FV_NPCScatEnabled.GetValue() == 1 && !pred.IsInFaction(CurrentCompanionFaction))
+		FV_ScatManager.NPCScat(pred) ; NPCs autoscat
+	ElseIf(PlayerRef.GetValue(FV_HasHadNukaAcid) == 0 && (pred.IsInFaction(WorkshopNPCFaction) || pred.IsInFaction(WorkshopDialogueFaction) || pred.IsInFaction(CurrentCompanionFaction)))
 		FV_BellyContainer.Activate(PlayerRef, false) ; Auto-open belly container if you don't have nukaacid and you're in some workshop faction thing
 	EndIf
 	
-	if(currentPred == PlayerRef)
+	if(pred == PlayerRef)
 		FV_VoreHud.SendTrackerUpdate()
 	Endif
 	
-	If(currentPrey == PlayerRef && PlayerRef.HasPerk(FV_ReformPerk01))
-		ReformPlayer(currentPred)	;may need to add ways to keep player as last prey no matter what.  Potential for player to get lost in prey heirarchy
+	If(aData.Prey == PlayerRef && PlayerRef.HasPerk(FV_ReformPerk01))
+		ReformPlayer(pred)	;may need to add ways to keep player as last prey no matter what.  Potential for player to get lost in prey heirarchy
 	EndIf
 	
 	;Custom event transmission
 	Var[] kArgs = new Var[4]
-	kArgs[0] = currentPred
+	kArgs[0] = pred
 	kArgs[1] = 1
 	kArgs[2] = NONE
 	kArgs[3] = aData.BellyContainer
 	SendCustomEvent("OnDigest", kArgs)
 
-	Remove(currentPrey)
+	Remove(aData.Prey)
 EndFunction
 	
 ; Reenable the player when the player's time as prey is up.
@@ -1448,6 +1448,8 @@ Function ResetVoreMod(Bool abResetPlayer = False)
 	CancelTimer(DigestTimerID)
 
 	PreyData data = GetDataByPrey(PlayerRef)
+	Actor pred = data.Pred
+	Actor prey = data.Prey
 	if(data != NONE || abResetPlayer)
 		trace(self, "          Reset player")
 		PlayerRef.setAlpha(1, False)
@@ -1460,7 +1462,7 @@ Function ResetVoreMod(Bool abResetPlayer = False)
 
 		ClearPredPreyFaction()
 		PlayerRef.setGhost(False)
-		PlayerRef.MoveTo(data.Pred)		;Move the player to their pred
+		PlayerRef.MoveTo(pred)		;Move the player to their pred
 		PlayerRef.EquipItem(FV_RemoveSwallowProtection, true, true)
 		Remove(PlayerRef)
 		Utility.Wait(4 as float)
@@ -1494,58 +1496,60 @@ Function ResetVoreMod(Bool abResetPlayer = False)
 	int i = 0
 	While (i < ConsumptionRegistry.Length)
 		data = ConsumptionRegistry[i]
+		pred = data.Pred
+		prey = data.Prey
 	
-		ChangeFullnessArmor(data.Pred, 0)
-		ChangeDigestFullnessArmor(data.Pred)
-		If((FV_ColdSteelEnabled.GetValue() > 0 && (data.Pred.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))) ;data.Pred.HasKeyword(FV_ColdSteelBody))
-			FV_ColdSteelBellyQuest.ResetMorphs(data.Pred)
+		ChangeFullnessArmor(pred, 0)
+		ChangeDigestFullnessArmor(pred)
+		If((FV_ColdSteelEnabled.GetValue() > 0 && (pred.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))) ;pred.HasKeyword(FV_ColdSteelBody))
+			FV_ColdSteelBellyQuest.ResetMorphs(pred)
 		EndIf
-		data.Pred.SetValue(FV_CurrentPrey, 0)
-		data.Pred.SetValue(FV_CurrentAlivePrey, 0)
-		data.Pred.SetValue(FV_TicksTillEscape, 0)
-		data.Pred.SetValue(FV_TicksTillEscapeStart, 0)
-		data.Pred.SetValue(FV_IndigestionChanceOnNextDigest, 0)
-		data.Pred.SetValue(FV_HumanPreyCount, 0)
-		If(data.Pred.GetValue(FV_BlockSwallowFlag) == 2)
-			data.Pred.SetValue(FV_BlockSwallowFlag, 1)
+		pred.SetValue(FV_CurrentPrey, 0)
+		pred.SetValue(FV_CurrentAlivePrey, 0)
+		pred.SetValue(FV_TicksTillEscape, 0)
+		pred.SetValue(FV_TicksTillEscapeStart, 0)
+		pred.SetValue(FV_IndigestionChanceOnNextDigest, 0)
+		pred.SetValue(FV_HumanPreyCount, 0)
+		If(pred.GetValue(FV_BlockSwallowFlag) == 2)
+			pred.SetValue(FV_BlockSwallowFlag, 1)
 		Else
-			data.Pred.SetValue(FV_BlockSwallowFlag, 0)
+			pred.SetValue(FV_BlockSwallowFlag, 0)
 		EndIf
-		data.Pred.SetValue(FV_DigestionStage, 0)
-		data.Pred.SetValue(FV_ReadyToDigest, 0)
-		data.Pred.SetValue(FV_IndigestionSeverityFlag, 0)
-		data.Pred.SetValue(FV_HasBloating, 0)
-		If(data.Pred.HasPerk(FV_HeavyPredNPC))
-			data.Pred.RemovePerk(FV_HeavyPredNPC)
+		pred.SetValue(FV_DigestionStage, 0)
+		pred.SetValue(FV_ReadyToDigest, 0)
+		pred.SetValue(FV_IndigestionSeverityFlag, 0)
+		pred.SetValue(FV_HasBloating, 0)
+		If(pred.HasPerk(FV_HeavyPredNPC))
+			pred.RemovePerk(FV_HeavyPredNPC)
 		Endif
 	
 		
-		data.Prey.MoveTo(data.Pred)																			
-		data.Prey.setPosition(data.Pred.getPositionX(), data.Pred.getPositionY(), data.Pred.getPositionZ())	
-		ChangeFullnessArmor(data.Prey,0)
-		ChangeDigestFullnessArmor(data.Prey)
-		If((FV_ColdSteelEnabled.GetValue() > 0 && (data.Prey.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))) ;data.Prey.HasKeyword(FV_ColdSteelBody))
-			FV_ColdSteelBellyQuest.ResetMorphs(data.Prey)
+		prey.MoveTo(pred)																			
+		prey.setPosition(pred.getPositionX(), pred.getPositionY(), pred.getPositionZ())	
+		ChangeFullnessArmor(prey,0)
+		ChangeDigestFullnessArmor(prey)
+		If((FV_ColdSteelEnabled.GetValue() > 0 && (prey.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))) ;prey.HasKeyword(FV_ColdSteelBody))
+			FV_ColdSteelBellyQuest.ResetMorphs(prey)
 		EndIf
-		data.Prey.SetValue(FV_CurrentPrey, 0)
-		data.Prey.SetValue(FV_CurrentAlivePrey, 0)
-		data.Prey.SetValue(FV_TicksTillEscape, 0)
-		data.Prey.SetValue(FV_TicksTillEscapeStart, 0)
-		data.Prey.SetValue(FV_IndigestionChanceOnNextDigest, 0)
-		data.Prey.SetValue(FV_HumanPreyCount, 0)
-		If(data.Prey.GetValue(FV_BlockSwallowFlag) == 2)
-			data.Prey.SetValue(FV_BlockSwallowFlag, 1)
+		prey.SetValue(FV_CurrentPrey, 0)
+		prey.SetValue(FV_CurrentAlivePrey, 0)
+		prey.SetValue(FV_TicksTillEscape, 0)
+		prey.SetValue(FV_TicksTillEscapeStart, 0)
+		prey.SetValue(FV_IndigestionChanceOnNextDigest, 0)
+		prey.SetValue(FV_HumanPreyCount, 0)
+		If(prey.GetValue(FV_BlockSwallowFlag) == 2)
+			prey.SetValue(FV_BlockSwallowFlag, 1)
 		Else
-			data.Prey.SetValue(FV_BlockSwallowFlag, 0)
+			prey.SetValue(FV_BlockSwallowFlag, 0)
 		EndIf
-		data.Prey.SetValue(FV_DigestionStage, 					0)
-		data.Prey.SetValue(FV_ReadyToDigest, 					0)
-		data.Prey.SetValue(FV_IndigestionSeverityFlag, 			0)
-		data.Prey.SetValue(FV_HasBloating,						0)
-		If(data.Prey.HasPerk(FV_HeavyPredNPC))
-			data.Prey.RemovePerk(FV_HeavyPredNPC)
+		prey.SetValue(FV_DigestionStage, 					0)
+		prey.SetValue(FV_ReadyToDigest, 					0)
+		prey.SetValue(FV_IndigestionSeverityFlag, 			0)
+		prey.SetValue(FV_HasBloating,						0)
+		If(prey.HasPerk(FV_HeavyPredNPC))
+			prey.RemovePerk(FV_HeavyPredNPC)
 		Endif
-		data.Prey.EquipItem(FV_RemoveSwallowProtection, true, true)
+		prey.EquipItem(FV_RemoveSwallowProtection, true, true)
 		
 		i += 1
 	EndWhile
@@ -1622,36 +1626,37 @@ EndFunction
 Function HandleDigestionStage(PreyData aData)
 	int DigestTicksRemaining = 0
 	int tempTimerState
+	Actor pred = aData.Pred
 	
-	If aData.Pred.GetValue(FV_CurrentAlivePrey) > 0 || !aData.IsLethal
+	If pred.GetValue(FV_CurrentAlivePrey) > 0 || !aData.IsLethal
 		;only handle preds that are in the digestin phase.  If they still have living prey, they can ride out the sleep cycle.
-		trace(self, "  HandleDigestionStage() Pred: " + aData.Pred + " FV_CurrentAlivePrey: " + aData.Pred.GetValue(FV_CurrentAlivePrey) + " IsLethal: " + aData.IsLethal)
+		trace(self, "  HandleDigestionStage() Pred: " + pred + " FV_CurrentAlivePrey: " + pred.GetValue(FV_CurrentAlivePrey) + " IsLethal: " + aData.IsLethal)
 		return
 	Endif
 	WakeUpTick = math.floor(((WakeDay - SleepWaitStartDay)*1440)/(aData.Prey.GetValue(FV_DigestionSpeed)*TimeScale.GetValue()/60)) as int
 	
-	tempTimerState = aData.Pred.GetValue(FV_DigestionStage) as int
-	trace(self, " HandleDigestionStage() Pred: " + aData.Pred + " WakeUpTick: " + WakeUpTick + " tempTimerState: " + tempTimerState)
+	tempTimerState = pred.GetValue(FV_DigestionStage) as int
+	trace(self, " HandleDigestionStage() Pred: " + pred + " WakeUpTick: " + WakeUpTick + " tempTimerState: " + tempTimerState)
 	If WakeUpTick >= tempTimerState
 		;code to finish digestion and reset pred
-		aData.Pred.SetValue(FV_DigestionStage, 0)
+		pred.SetValue(FV_DigestionStage, 0)
 		
-		If((FV_ColdSteelEnabled.GetValue() > 0 && (aData.Pred.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))); preydata.Pred.HasKeyword(FV_ColdSteelBody))
-			FV_ColdSteelBellyQuest.ChangeColdSteelDigestFullness(aData.Pred, 0.0)
+		If((FV_ColdSteelEnabled.GetValue() > 0 && (pred.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))); preydata.Pred.HasKeyword(FV_ColdSteelBody))
+			FV_ColdSteelBellyQuest.ChangeColdSteelDigestFullness(pred, 0.0)
 		Else
-			ChangeDigestFullnessArmor(aData.Pred, 0)
+			ChangeDigestFullnessArmor(pred, 0)
 		EndIf
 		OnTimerFinishedDigestion(aData)
 	Else
 		float nextTimerState = tempTimerState - WakeUpTick
-		aData.Pred.SetValue(FV_DigestionStage, nextTimerState)
-		UpdateDigestionPreyCount(aData.Pred)
-		If((FV_ColdSteelEnabled.GetValue() > 0 && (aData.Pred.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))); aData.Pred.HasKeyword(FV_ColdSteelBody))
-			FV_ColdSteelBellyQuest.ChangeColdSteelDigestFullness(aData.Pred, nextTimerState)
+		pred.SetValue(FV_DigestionStage, nextTimerState)
+		UpdateDigestionPreyCount(pred)
+		If((FV_ColdSteelEnabled.GetValue() > 0 && (pred.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))); pred.HasKeyword(FV_ColdSteelBody))
+			FV_ColdSteelBellyQuest.ChangeColdSteelDigestFullness(pred, nextTimerState)
 		Else
-			ChangeDigestFullnessArmor(aData.Pred, nextTimerState as int)
+			ChangeDigestFullnessArmor(pred, nextTimerState as int)
 		EndIf
-		OnTimerTriggerDigestionSequence(aData.Pred)
+		OnTimerTriggerDigestionSequence(pred)
 	EndIf
 
 EndFunction

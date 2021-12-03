@@ -1,0 +1,1 @@
+Copy-Item -Destination ".\src\Data\FalloutVore.esm" -Path "C:\Program Files (x86)\Steam\steamapps\common\Fallout 4\Merging\Data\FalloutVore.esm" -Force

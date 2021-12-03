@@ -49,7 +49,33 @@
                 "Unrestricted",
                 "-NoProfile",
                 "-File",
-                "${cwd}\\build.ps1"
+                "${cwd}\\script\\build.ps1"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Powershell: Checkout ESM",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-ExecutionPolicy",
+                "Unrestricted",
+                "-NoProfile",
+                "-File",
+                "${cwd}\\script\\checkout.ps1"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Powershell: Checkin ESM",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-ExecutionPolicy",
+                "Unrestricted",
+                "-NoProfile",
+                "-File",
+                "${cwd}\\script\\checkin.ps1"
             ],
             "problemMatcher": []
         }

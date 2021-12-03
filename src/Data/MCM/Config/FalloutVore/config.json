@@ -2,7 +2,7 @@
   "modName": "FalloutVore",
   "displayName": "Fallout Vore",
   "minMcmVersion": 2,
-  "pluginRequirements": ["FalloutVore.esm"],
+  "pluginRequirements": ["FalloutVore.esp"],
   "content": [
     {
 		"text": "$FVSE_MCM_Welcome",
@@ -35,7 +35,7 @@
 			"groupControl": 8,
 			"valueOptions":{
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|D30E"
+				"sourceForm": "FalloutVore.esp|D30E"
 			}
 		},
 		{
@@ -43,7 +43,7 @@
 			"groupControl": 5,
 			"valueOptions": {
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|F9A5"
+				"sourceForm": "FalloutVore.esp|F9A5"
 			}
 		},
 		{
@@ -56,7 +56,7 @@
 			"help": "$FVSE_MCM_MAN_DIG_TOG_HELP",
 			"valueOptions": {
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|F9A6"
+				"sourceForm": "FalloutVore.esp|F9A6"
 			}
 		},
 		{
@@ -66,7 +66,7 @@
 			"help": "$FVSE_MCM_CLOTH_RIP_TOG_HELP",
 			"valueOptions": {
 				"sourceType": "PropertyValueBool",
-				"sourceForm": "FalloutVore.esm|DAB6",
+				"sourceForm": "FalloutVore.esp|DAB6",
 				"propertyName": "bClothesripChance"
 			}
 		},
@@ -77,7 +77,7 @@
 			"help": "$FVSE_MCM_HVY_PRED_TOG_HELP",
 			"valueOptions": {
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|2211"
+				"sourceForm": "FalloutVore.esp|2211"
 			}
 		},
 		{
@@ -87,7 +87,7 @@
 			"help": "$FVSE_MCM_SWLW_PRKS_REQ_HELP",
 			"valueOptions": {
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|C387"
+				"sourceForm": "FalloutVore.esp|C387"
 			}
 		},
 		{
@@ -98,7 +98,7 @@
 			"help": "$FVSE_MCM_COLDSTEEL_BELLY_TOG_HELP",
 			"valueOptions": {
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|D30C"
+				"sourceForm": "FalloutVore.esp|D30C"
 			}
 		},
 		{
@@ -109,7 +109,7 @@
 			"help": "$FVSE_MCM_COLDSTEEL_MALE_TOG_HELP",
 			"valueOptions": {
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|199D"
+				"sourceForm": "FalloutVore.esp|199D"
 			}
 		},
 		{
@@ -120,7 +120,7 @@
 			"help": "$FVSE_MCM_COLDSTEEL_MAX_HELP",
 			"valueOptions": {
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|50C0"
+				"sourceForm": "FalloutVore.esp|50C0"
 			}
 		},
 		{
@@ -132,7 +132,7 @@
 				"max": 24,
 				"step": 1,
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|F9A3"
+				"sourceForm": "FalloutVore.esp|F9A3"
 			}
 		},
 		{
@@ -143,7 +143,7 @@
 			"valueOptions": {
 				"options": ["$FVSE_MCM_DEFAULT_ARROW", "$FVSE_MCM_ALT_SINGLE_ARROW"],
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|93A4"
+				"sourceForm": "FalloutVore.esp|93A4"
 				}
 		},
 		{
@@ -153,7 +153,7 @@
 			"groupCondition": 5,
 			"action": {
 				"type": "CallFunction",
-				"form": "FalloutVore.esm|DAB6",
+				"form": "FalloutVore.esp|DAB6",
 				"function": "MakePlayerPred"
 			}
 		},
@@ -168,7 +168,7 @@
 			"groupControl": 10,
 			"valueOptions": {
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|F99E"				
+				"sourceForm": "FalloutVore.esp|F99E"				
 			}
 		},
 		{
@@ -180,7 +180,7 @@
 			"valueOptions": {
 				"options": ["$FVSE_MCM_SCAT_CLASSIC", "$FVSE_MCM_SCAT_CLASSIC_BONES", "$FVSE_MCM_SCAT_BONES"],
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|B541"
+				"sourceForm": "FalloutVore.esp|B541"
 				}
 		},
 		{
@@ -191,7 +191,7 @@
 			"help": "$FVSE_MCM_SCAT_CROUCH_HELP",
 			"valueOptions": {
 				"sourceType": "PropertyValueBool",
-				"sourceForm": "FalloutVore.esm|DAB6",
+				"sourceForm": "FalloutVore.esp|DAB6",
 				"propertyName": "bCrouchToShit"
 			}
 		},
@@ -202,7 +202,7 @@
 			"groupCondition": 10,
 			"valueOptions": {
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|6C6B"			
+				"sourceForm": "FalloutVore.esp|6C6B"			
 			}
 		},
 		{
@@ -215,7 +215,7 @@
 			"help": "$FVSE_MCM_FEMALE_PRED_HELP",
 			"valueOptions": {
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|F995"				
+				"sourceForm": "FalloutVore.esp|F995"				
 			}
 		},
 		{
@@ -224,7 +224,7 @@
 			"help": "$FVSE_MCM_MALE_PRED_HELP",
 			"valueOptions": {
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|F99B"				
+				"sourceForm": "FalloutVore.esp|F99B"				
 			}
 		},
 		{
@@ -234,7 +234,7 @@
 			"help": "$FVSE_MCM_FENZY_TOG_HELP",
 			"valueOptions": {
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|1840"
+				"sourceForm": "FalloutVore.esp|1840"
 			}
 		},
 		{
@@ -249,7 +249,7 @@
 			"help": "$FVSE_MCM_CONTEXT_TOG_HELP",
 			"valueOptions": {
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|1A82"
+				"sourceForm": "FalloutVore.esp|1A82"
 			}
 		},
 		{
@@ -262,7 +262,7 @@
 				"max": 24,
 				"step": 0.1,
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|596B"
+				"sourceForm": "FalloutVore.esp|596B"
 			}
 		},
 		{
@@ -275,7 +275,7 @@
 			"help": "$FVSE_MCM_NPC_VIP_TOG_HELP",
 			"valueOptions": {
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|F99A"				
+				"sourceForm": "FalloutVore.esp|F99A"				
 			}
 		},
 		{
@@ -286,7 +286,7 @@
 			"groupCondition": 10,
 			"valueOptions": {
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|C851"
+				"sourceForm": "FalloutVore.esp|C851"
 			}
 		},
 		{
@@ -296,7 +296,7 @@
 			"help": "$$FVSE_MCM_NPC_COMP_SWAL_PROT_TOG_HELP",
 			"valueOptions": {
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|48EE"
+				"sourceForm": "FalloutVore.esp|48EE"
 			}
 		},
 		{
@@ -306,7 +306,7 @@
 			"help": "$FVSE_MCM_NPC_COMP_DIG_PROT_TOG_HELP",
 			"valueOptions": {
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|48EF"
+				"sourceForm": "FalloutVore.esp|48EF"
 			}
 		},
 		{
@@ -316,7 +316,7 @@
 			"help": "$FVSE_MCM_NPC_RAIDER_TOG_HELP",
 			"valueOptions": {
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|F991"
+				"sourceForm": "FalloutVore.esp|F991"
 			}
 		},
 		{
@@ -326,7 +326,7 @@
 			"help": "$FVSE_MCM_NPC_ROYALTY_TOG_HELP",
 			"valueOptions": {
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|27DC"
+				"sourceForm": "FalloutVore.esp|27DC"
 			}
 		},
 		{
@@ -340,7 +340,7 @@
 			"help": "$FVSE_MCM_CAM_DIST_POST_SWAL_HELP",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|F902",
+				"sourceForm": "FalloutVore.esp|F902",
 				"propertyName": "fCameraDistanceSwallow"
 			}
 		},
@@ -351,7 +351,7 @@
 			"help": "$FVSE_MCM_CAM_DIST_POST_ESC_HELP",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|F902",
+				"sourceForm": "FalloutVore.esp|F902",
 				"propertyName": "fCameraDistanceVomit"
 			}
 		},
@@ -366,7 +366,7 @@
 			"help": "$FVSE_MCM_SURV_MODE_TOG_HELP",
 			"valueOptions": {
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|382E"
+				"sourceForm": "FalloutVore.esp|382E"
 			}
 		},
 		{
@@ -416,7 +416,7 @@
 			"groupCondition": 8,
 			"valueOptions": {
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|50C7"
+				"sourceForm": "FalloutVore.esp|50C7"
 			}
 		},
 		{
@@ -426,7 +426,7 @@
 			"groupCondition": 8,
 			"action": {
 				"type": "CallFunction",
-				"form": "FalloutVore.esm|DAB6",
+				"form": "FalloutVore.esp|DAB6",
 				"function": "LevelUpPlayer"
 			}
 		},
@@ -437,7 +437,7 @@
 			"groupCondition": 8,
 			"action": {
 				"type": "CallFunction",
-				"form": "FalloutVore.esm|F902",
+				"form": "FalloutVore.esp|F902",
 				"function": "ResetVoreMod",
 				"params": ["{b}false"]
 			}
@@ -449,7 +449,7 @@
 			"groupCondition": 8,
 			"action": {
 				"type": "CallFunction",
-				"form": "FalloutVore.esm|DAB6",
+				"form": "FalloutVore.esp|DAB6",
 				"function": "ResetCamera",
 				"params": ["{b}true"]
 			}
@@ -461,7 +461,7 @@
 			"groupCondition": 8,
 			"action": {
 				"type": "CallFunction",
-				"form": "FalloutVore.esm|382C",
+				"form": "FalloutVore.esp|382C",
 				"function": "ResetVoreSurvival"
 			}
 		},
@@ -472,7 +472,7 @@
 			"groupCondition": 8,
 			"action": {
 				"type": "CallFunction",
-				"form": "FalloutVore.esm|222A",
+				"form": "FalloutVore.esp|222A",
 				"function": "DebugReset"
 			}
 		}
@@ -526,7 +526,7 @@
 			"groupControl": 7,
 			"valueOptions":{
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|D30E"
+				"sourceForm": "FalloutVore.esp|D30E"
 			}
 		},
 		{
@@ -536,7 +536,7 @@
 			"help": "$FVSE_MCM_THICC_ENABLED_HELP",
 			"valueOptions": {
 				"sourceType": "PropertyValueBool",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "WeightModEnabled"
 			}
 		},
@@ -549,7 +549,7 @@
 				"max": 100,
 				"step": 1,
 				"sourceType": "PropertyValueInt",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "MFRatio"
 			}
 		},
@@ -563,7 +563,7 @@
 				"max": 4,
 				"step": 0.25,
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "MeterRate"
 			}
 		},
@@ -577,7 +577,7 @@
 				"max": 6,
 				"step": 0.25,
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "MeterModRate"
 			}
 		},
@@ -591,7 +591,7 @@
 				"max": 10,
 				"step": 0.25,
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "BodyUpdateRate"
 			}
 		},
@@ -603,7 +603,7 @@
 			"valueOptions": {
 				"options": [-7, -6, -5, -4, -3, -2, -1, 0],
 				"sourceType": "PropertyValueInt",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "tempMinMeterDownCounter"
 			}
 		},
@@ -613,7 +613,7 @@
 			"help": "$FVSE_MCM_THICC_RESTART_TIME_HELP",
 			"action": {
 				"type": "CallFunction",
-				"form": "FalloutVore.esm|CB69",
+				"form": "FalloutVore.esp|CB69",
 				"function": "ResetTimers",
 				"params": ["All"]
 			}
@@ -625,7 +625,7 @@
 			"groupCondition": 7,
 			"action": {
 				"type": "CallFunction",
-				"form": "FalloutVore.esm|CB69",
+				"form": "FalloutVore.esp|CB69",
 				"function": "ShapeSettingReset"
 			}
 		},
@@ -636,7 +636,7 @@
 			"groupCondition": 7,
 			"action": {
 				"type": "CallFunction",
-				"form": "FalloutVore.esm|6FE3",
+				"form": "FalloutVore.esp|6FE3",
 				"function": "UnregisterThiccHUD"
 			}
 		},
@@ -651,7 +651,7 @@
 			"help": "$FVSE_MCM_THICC_PLAYER_ENABLE_HELP",
 			"valueOptions": {
 				"sourceType": "PropertyValueBool",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "bEnablePlayerWeightChange"
 				}
 		},
@@ -664,7 +664,7 @@
 				"valueOptions": {
 				"options": ["Vanilla", "Atomic Beauty", "CBBE"],
 				"sourceType": "PropertyValueInt",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "iPlayerSliderType"
 				}
 		},
@@ -674,7 +674,7 @@
 			"help": "$FVSE_MCM_THICC_STORE_HELP",
 			"action": {
 					"type": "CallFunction",
-					"form": "FalloutVore.esm|CB69",
+					"form": "FalloutVore.esp|CB69",
 					"function": "MCMStoreWeight",
 					"params": ["Player"]
 			}
@@ -686,7 +686,7 @@
 			"groupCondition": 7,
 			"action": {
 				"type": "CallFunction",
-				"form": "FalloutVore.esm|CB69",
+				"form": "FalloutVore.esp|CB69",
 				"function": "MCMWeightSet",
 				"params": ["Player", "thicc"]
 			}
@@ -698,7 +698,7 @@
 			"groupCondition": 7,
 			"action": {
 				"type": "CallFunction",
-				"form": "FalloutVore.esm|CB69",
+				"form": "FalloutVore.esp|CB69",
 				"function": "MCMWeightSet",
 				"params": ["Player", "thin"]
 			}
@@ -710,7 +710,7 @@
 			"groupCondition": 7,
 			"action": {
 				"type": "CallFunction",
-				"form": "FalloutVore.esm|CB69",
+				"form": "FalloutVore.esp|CB69",
 				"function": "MCMReset",
 				"params": ["Player"]
 			}
@@ -726,7 +726,7 @@
 			"help": "$FVSE_MCM_THICC_COMP_ENABLE_HELP",
 			"valueOptions": {
 				"sourceType": "PropertyValueBool",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "bEnableCompanionWeightChange"
 				}
 		},
@@ -739,7 +739,7 @@
 				"valueOptions": {
 				"options": ["Vanilla", "Atomic Beauty", "CBBE"],
 				"sourceType": "PropertyValueInt",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "iCompanionSliderType"
 				}
 		},
@@ -749,7 +749,7 @@
 			"help": "$FVSE_MCM_THICC_STORE_HELP",
 			"action": {
 					"type": "CallFunction",
-					"form": "FalloutVore.esm|CB69",
+					"form": "FalloutVore.esp|CB69",
 					"function": "MCMStoreWeight",
 					"params": ["Companion"]
 			}
@@ -761,7 +761,7 @@
 			"groupCondition": 7,
 			"action": {
 				"type": "CallFunction",
-				"form": "FalloutVore.esm|CB69",
+				"form": "FalloutVore.esp|CB69",
 				"function": "MCMWeightSet",
 				"params": ["Companion", "thicc"]
 			}
@@ -773,7 +773,7 @@
 			"groupCondition": 7,
 			"action": {
 				"type": "CallFunction",
-				"form": "FalloutVore.esm|CB69",
+				"form": "FalloutVore.esp|CB69",
 				"function": "MCMWeightSet",
 				"params": ["Companion", "thin"]
 			}
@@ -785,7 +785,7 @@
 			"groupCondition": 7,
 			"action": {
 				"type": "CallFunction",
-				"form": "FalloutVore.esm|CB69",
+				"form": "FalloutVore.esp|CB69",
 				"function": "MCMReset",
 				"params": ["Companion"]
 			}
@@ -802,7 +802,7 @@
 			"groupCondition": 7,
 			"action": {
 				"type": "CallFunction",
-				"form": "FalloutVore.esm|CB69",
+				"form": "FalloutVore.esp|CB69",
 				"function": "ShapeSettingReset"
 			}
 		},
@@ -816,7 +816,7 @@
 			"help": "This will set how thicc a character can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fABSlimMax"
 			}
 		},
@@ -826,7 +826,7 @@
 			"help": "This will help determine how large a character's torso can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fABTorsoLargeMax"
 			}
 		},
@@ -836,7 +836,7 @@
 			"help": "This will set how huge a character's breasts can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fABBreastHugeMax"
 			}
 		},
@@ -846,7 +846,7 @@
 			"help": "Smaller numbers set how large a character's thighs can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fABThighSlimMax"
 			}
 		},
@@ -856,7 +856,7 @@
 			"help": "This will help determine how large a character's back can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fABBackWideMax"
 			}
 		},
@@ -866,7 +866,7 @@
 			"help": "This will help determine how wide a character's hips can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fABHipsWideMax"
 			}
 		},
@@ -876,7 +876,7 @@
 			"help": "This will set how large a character's waist can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fABNarrowWaistMax"
 			}
 		},
@@ -886,7 +886,7 @@
 			"help": "This will help determine how high a character's waist can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fABWaistHeightMax"
 			}
 		},
@@ -896,7 +896,7 @@
 			"help": "This will determine the angle between a character's waist to hip.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fABWaistHeightMax"
 			}
 		},
@@ -906,7 +906,7 @@
 			"help": "This will determine how wide a character's waist can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fABWaistWideMax"
 			}
 		},
@@ -916,7 +916,7 @@
 			"help": "This will help determine how large a character's butt can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fABButtHugeMax"
 			}
 		},
@@ -926,7 +926,7 @@
 			"help": "This will help determine how large a character's belly can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fABBellySizeMax"
 			}
 		},
@@ -936,7 +936,7 @@
 			"help": "This will help determine how large a character's butt can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fABButtFlatMax"
 			}
 		},
@@ -946,7 +946,7 @@
 			"help": "This will help determine how large a character's butt can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fABButtStretchMax"
 			}
 		},
@@ -956,7 +956,7 @@
 			"help": "This will help determine how large a character's butt can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fABButtWideMax"
 			}
 		},
@@ -973,7 +973,7 @@
 			"help": "This will set how thin a character can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fABSlimMin"
 			}
 		},
@@ -983,7 +983,7 @@
 			"help": "This will set how small a character's breasts can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fABBreastMin"
 			}
 		},
@@ -993,7 +993,7 @@
 			"help": "This will help determine how large a character's torso can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fABTorsoLargeMin"
 			}
 		},
@@ -1003,7 +1003,7 @@
 			"help": "This will help determine how narrow a character's back can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fABBackWideMin"
 			}
 		},
@@ -1013,7 +1013,7 @@
 			"help": "This will help determine how trim a character's belly can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fABBellySizeMin"
 			}
 		},
@@ -1023,7 +1023,7 @@
 			"help": "This will set how slim a character's thighs can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fABThighSlimMin"
 			}
 		},
@@ -1033,7 +1033,7 @@
 			"help": "This will help determine how narrow a character's hips can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fABHipsWideMin"
 			}
 		},
@@ -1043,7 +1043,7 @@
 			"help": "This will set how slim a character's waist can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fABNarrowWaistMax"
 			}
 		},
@@ -1053,7 +1053,7 @@
 			"help": "This will help determine how high a character's waist can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fABWaistHeightMin"
 			}
 		},
@@ -1063,7 +1063,7 @@
 			"help": "This will determine the angle between a character's waist to hip.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fABWaistHeightMin"
 			}
 		},
@@ -1073,7 +1073,7 @@
 			"help": "This will help determine how narrow a character's waist can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fABWaistWideMin"
 			}
 		},
@@ -1083,7 +1083,7 @@
 			"help": "This will help determine how small a character's butt can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fABButtHugeMin"
 			}
 		},
@@ -1094,7 +1094,7 @@
 			"help": "This will help determine how small a character's butt can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fABButtFlatMin"
 			}
 		},
@@ -1104,7 +1104,7 @@
 			"help": "This will help determine how small a character's butt can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fABButtStretchMin"
 			}
 		},
@@ -1114,7 +1114,7 @@
 			"help": "This will help determine how small a character's butt can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fABButtWideMin"
 			}
 		},
@@ -1128,7 +1128,7 @@
 			"help": "This setting is part of how thicc a character can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBE7BUpperMax"
 			}
 		},
@@ -1138,7 +1138,7 @@
 			"help": "This setting is part of how thicc a character can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBE7BLowerMax"
 			}
 		},
@@ -1148,7 +1148,7 @@
 			"help": "This setting helps determine how wide a character's waist is.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEWaistMax"
 			}
 		},
@@ -1158,7 +1158,7 @@
 			"help": "This setting determines how wide a character's hips can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEHipsMax"
 			}
 		},
@@ -1168,7 +1168,7 @@
 			"help": "This setting is part of how large a character's breasts can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEBreastsSmallMax"
 			}
 		},
@@ -1178,7 +1178,7 @@
 			"help": "This setting helps determine how large a character's breasts can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEBreastsMax"
 			}
 		},
@@ -1188,7 +1188,7 @@
 			"help": "This setting helps determine how large a character's breasts can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEBreastFantasyMax"
 			}
 		},
@@ -1198,7 +1198,7 @@
 			"help": "This setting helps determine how wide a character's breasts can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEBreastWidthMax"
 			}
 		},
@@ -1208,7 +1208,7 @@
 			"help": "This setting helps determine how low a character's breasts can hang.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEPushUpMax"
 			}
 		},
@@ -1218,7 +1218,7 @@
 			"help": "This setting helps determine how perky a character's breasts are.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEBreastPerkinessMax"
 			}
 		},
@@ -1228,7 +1228,7 @@
 			"help": "This setting helps determine how thick front to back a character's chest can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEChestDepthMax"
 			}
 		},
@@ -1238,7 +1238,7 @@
 			"help": "This setting determines how large a character's calves can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBECalfMax"
 			}
 		},
@@ -1248,7 +1248,7 @@
 			"help": "This setting determines how large a character's legs can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEChubbyLegsMax"
 			}
 		},
@@ -1258,7 +1258,7 @@
 			"help": "This setting helps determine how large a character's thighs can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBESlimThighsMax"
 			}
 		},
@@ -1268,7 +1268,7 @@
 			"help": "This setting helps determine how large a character's butt can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEButtSmallMax"
 			}
 		},
@@ -1278,7 +1278,7 @@
 			"help": "This setting helps determine how large and shapely a character's butt can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEAppleCheeksMax"
 			}
 		},
@@ -1288,7 +1288,7 @@
 			"help": "This setting helps determine how large a character's butt can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEBigButtMax"
 			}
 		},
@@ -1298,7 +1298,7 @@
 			"help": "This setting helps determine how thicc a character's arms can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEChubbyArmsMax"
 			}
 		},
@@ -1308,7 +1308,7 @@
 			"help": "This setting helps determine how thicc a character's arms can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEForearmSizeMax"
 			}
 		},
@@ -1318,7 +1318,7 @@
 			"help": "This setting helps determine how thicc a character can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBESSBBW2Max"
 			}
 		},
@@ -1328,7 +1328,7 @@
 			"help": "This setting helps determine how massive a character's belly can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEGiantBellyMax"
 			}
 		},
@@ -1338,7 +1338,7 @@
 			"help": "This setting helps determine how thicc a character can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEUltKirBodyMax"
 			}
 		},
@@ -1352,7 +1352,7 @@
 			"help": "This setting is part of how thin a character can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBE7BUpperMin"
 			}
 		},
@@ -1362,7 +1362,7 @@
 			"help": "This setting is part of how thin a character can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBE7BLowerMin"
 			}
 		},
@@ -1372,7 +1372,7 @@
 			"help": "This setting helps determine narrow and thin a character's waist is.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEWaistMin"
 			}
 		},
@@ -1382,7 +1382,7 @@
 			"help": "This setting determines how narrow a character's hips can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEHipsMin"
 			}
 		},
@@ -1392,7 +1392,7 @@
 			"help": "This setting is part of how small a character's breasts can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEBreastsSmallMin"
 			}
 		},
@@ -1402,7 +1402,7 @@
 			"help": "This setting helps determine how small a character's breasts can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEBreastsMin"
 			}
 		},
@@ -1412,7 +1412,7 @@
 			"help": "This setting helps determine how small a character's breasts can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEBreastFantasyMin"
 			}
 		},
@@ -1422,7 +1422,7 @@
 			"help": "This setting helps determine how thin and narrow a character's breast can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEBreastWidthMin"
 			}
 		},
@@ -1432,7 +1432,7 @@
 			"help": "This setting helps determine how high a character's breasts can hang.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEPushUpMin"
 			}
 		},
@@ -1442,7 +1442,7 @@
 			"help": "This setting helps determine how perky a character's breasts are.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEBreastPerkinessMin"
 			}
 		},
@@ -1452,7 +1452,7 @@
 			"help": "This setting helps determine how thin front to back a character's chest can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEChestDepthMin"
 			}
 		},
@@ -1462,7 +1462,7 @@
 			"help": "This setting determines how thin a character's calves can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBECalfMin"
 			}
 		},
@@ -1472,7 +1472,7 @@
 			"help": "This setting determines how thin a character's legs can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEChubbyLegsMin"
 			}
 		},
@@ -1482,7 +1482,7 @@
 			"help": "This setting helps determine how thin a character's thighs can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBESlimThighsMin"
 			}
 		},
@@ -1492,7 +1492,7 @@
 			"help": "This setting helps determine how flat a character's butt can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEButtSmallMin"
 			}
 		},
@@ -1502,7 +1502,7 @@
 			"help": "This setting helps determine how flat a character's butt can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEAppleCheeksMin"
 			}
 		},
@@ -1512,7 +1512,7 @@
 			"help": "This setting helps determine how flat a character's butt can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEBigButtMin"
 			}
 		},
@@ -1522,7 +1522,7 @@
 			"help": "This setting helps determine how thin a character's arms can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEChubbyArmsMin"
 			}
 		},
@@ -1532,7 +1532,7 @@
 			"help": "This setting helps determine how thin a character's arms can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEForearmSizeMin"
 			}
 		},
@@ -1542,7 +1542,7 @@
 			"help": "This setting helps determine how thin a character can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBESSBBW2Min"
 			}
 		},
@@ -1552,7 +1552,7 @@
 			"help": "This setting helps determine how small a character's belly can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEGiantBellyMin"
 			}
 		},
@@ -1562,7 +1562,7 @@
 			"help": "This setting helps determine how thin a character can be.",
 			"valueOptions": {
 				"sourceType": "PropertyValueFloat",
-				"sourceForm": "FalloutVore.esm|CB69",
+				"sourceForm": "FalloutVore.esp|CB69",
 				"propertyName": "fCBBEUltKirBodyMin"
 			}
 		}
@@ -1581,7 +1581,7 @@
 			"groupControl": 9,
 			"valueOptions":{
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|D30E"
+				"sourceForm": "FalloutVore.esp|D30E"
 			}
 		},
 		{
@@ -1607,7 +1607,7 @@
 				"max": 10,
 				"step": 0.1,
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|2930"
+				"sourceForm": "FalloutVore.esp|2930"
 			}
 		},
 		{
@@ -1619,7 +1619,7 @@
 				"max": 10,
 				"step": 0.1,
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|B2B7"
+				"sourceForm": "FalloutVore.esp|B2B7"
 			}
 		},
 		{
@@ -1631,7 +1631,7 @@
 				"max": 10,
 				"step": 0.1,
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|B2B8"
+				"sourceForm": "FalloutVore.esp|B2B8"
 			}
 		},
 		{
@@ -1643,7 +1643,7 @@
 				"max": 10,
 				"step": 0.1,
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|B2B9"
+				"sourceForm": "FalloutVore.esp|B2B9"
 			}
 		},
 		{
@@ -1659,7 +1659,7 @@
 				"max": 100,
 				"step": 1,
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|3D41"
+				"sourceForm": "FalloutVore.esp|3D41"
 			}
 		},
 		{
@@ -1671,7 +1671,7 @@
 				"max": 100,
 				"step": 1,
 				"sourceType": "GlobalValue",
-				"sourceForm": "FalloutVore.esm|BAA5"
+				"sourceForm": "FalloutVore.esp|BAA5"
 			}
 		},
 		{
@@ -1681,7 +1681,7 @@
 			"groupCondition": 9,
 			"action": {
 				"type": "CallFunction",
-				"form": "FalloutVore.esm|2928",
+				"form": "FalloutVore.esp|2928",
 				"function": "ResetSAVSystem"
 			}
 		}

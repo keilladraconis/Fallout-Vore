@@ -212,7 +212,7 @@ float Property fCameraDistanceVomit Auto Hidden
 
 float PlayerSize = 1.0
 
-; KEILLA: I believe this is for the Gat bellies.
+; This is for the Gat bellies.
 Struct VoreArmor
 	Armor HumanVoreBelly
 	Armor NonHumanVoreBelly
@@ -243,13 +243,13 @@ Function RunDLCPatches()
 
 	IF Game.IsPluginInstalled("DLCCoast.esm") && !DLC03Patched
 		
-		Perk pApexPredator = Game.GetFormFromFile(0x0000F8EC, "FalloutVore.esp") as Perk Const	;GAZ: Used ofte, so cache here!
+		Perk pApexPredator = Game.GetFormFromFile(0x0000F8EC, "FalloutVore.esm") as Perk Const	;GAZ: Used ofte, so cache here!
 
 		FV_ActorDataScript:SlotData DLC03Payload = new FV_ActorDataScript:SlotData
 		DLC03Payload.ActorRace = Game.GetFormFromFile(0x000247C1, "DLCCoast.esm") as Race	;GAZ: Gulpers!
 		DLC03Payload.IndigestionChanceIncrease = 20
 		DLC03Payload.Slots = 12
-		DLC03Payload.SwallowMessageToPlay = Game.GetFormFromFile(0x0000C384, "FalloutVore.esp") as Message
+		DLC03Payload.SwallowMessageToPlay = Game.GetFormFromFile(0x0000C384, "FalloutVore.esm") as Message
 		DLC03Payload.SwallowPerkRequired = pApexPredator
 		FV_ActorData.InjectAddedInfo(DLC03Payload)
 
@@ -257,7 +257,7 @@ Function RunDLCPatches()
 		DLC03Payload.ActorRace = Game.GetFormFromFile(0x000180A8, "DLCCoast.esm") as Race	;GAZ: Hermit Crabs!
 		DLC03Payload.IndigestionChanceIncrease = 20
 		DLC03Payload.Slots = 12
-		DLC03Payload.SwallowMessageToPlay = Game.GetFormFromFile(0x0000C385, "FalloutVore.esp") as Message
+		DLC03Payload.SwallowMessageToPlay = Game.GetFormFromFile(0x0000C385, "FalloutVore.esm") as Message
 		DLC03Payload.SwallowPerkRequired = pApexPredator
 		FV_ActorData.InjectAddedInfo(DLC03Payload)
 
@@ -279,7 +279,7 @@ Function RunDLCPatches()
 		DLC03Payload.ActorRace = Game.GetFormFromFile(0x00014174, "DLCCoast.esm") as Race	;GAZ: Fog Crawlers!
 		DLC03Payload.IndigestionChanceIncrease = 20
 		DLC03Payload.Slots = 12
-		DLC03Payload.SwallowMessageToPlay = Game.GetFormFromFile(0x0000C386, "FalloutVore.esp") as Message
+		DLC03Payload.SwallowMessageToPlay = Game.GetFormFromFile(0x0000C386, "FalloutVore.esm") as Message
 		DLC03Payload.SwallowPerkRequired = pApexPredator
 		FV_ActorData.InjectAddedInfo(DLC03Payload)
 
@@ -302,13 +302,13 @@ Function RunDLCPatches()
 
 	IF Game.IsPluginInstalled("DLCNukaWorld.esm") && !DLC06Patched
 		
-		Perk pApexPredator = Game.GetFormFromFile(0x0000F8EC, "FalloutVore.esp") as Perk Const	;GAZ: Used ofte, so cache here!
+		Perk pApexPredator = Game.GetFormFromFile(0x0000F8EC, "FalloutVore.esm") as Perk Const	;GAZ: Used ofte, so cache here!
 
 		FV_ActorDataScript:SlotData DLC06Payload = new FV_ActorDataScript:SlotData
 		DLC06Payload.ActorRace = Game.GetFormFromFile(0x0003637A, "DLCNukaWorld.esm") as Race	;GAZ: Gatorclaws!
 		DLC06Payload.IndigestionChanceIncrease = 20
 		DLC06Payload.Slots = 12
-		DLC06Payload.SwallowMessageToPlay = Game.GetFormFromFile(0x0000C383, "FalloutVore.esp") as Message
+		DLC06Payload.SwallowMessageToPlay = Game.GetFormFromFile(0x0000C383, "FalloutVore.esm") as Message
 		DLC06Payload.SwallowPerkRequired = pApexPredator
 		FV_ActorData.InjectAddedInfo(DLC06Payload)
 
@@ -323,11 +323,11 @@ Function RunDLCPatches()
 		DLC06Payload.ActorRace = Game.GetFormFromFile(0x0004CBCE, "DLCNukaWorld.esm") as Race	;GAZ: Ghoulrillas!
 		DLC06Payload.IndigestionChanceIncrease = 20
 		DLC06Payload.Slots = 9
-		DLC06Payload.SwallowMessageToPlay = Game.GetFormFromFile(0x0000C383, "FalloutVore.esp") as Message
+		DLC06Payload.SwallowMessageToPlay = Game.GetFormFromFile(0x0000C383, "FalloutVore.esm") as Message
 		DLC06Payload.SwallowPerkRequired = pApexPredator
 		FV_ActorData.InjectAddedInfo(DLC06Payload)
 
-		FormList BlockedList = Game.GetFormFromFile(0x0000E1A8, "FalloutVore.esp") as FormList
+		FormList BlockedList = Game.GetFormFromFile(0x0000E1A8, "FalloutVore.esm") as FormList
 		BlockedList.AddForm(Game.GetFormFromFile(0x0000B028, "DLCNukaWorld.esm") as Race)	;GAZ: Add Ant-Swarms to the Block-List. They cause crashes when swallowed.
 
 		Debug.Notification("FalloutVore detected Nuka-World DLC and patched it.")	;GAZ: Feedback is important so the player knows it's working.

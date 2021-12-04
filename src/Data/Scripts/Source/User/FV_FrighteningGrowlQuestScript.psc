@@ -51,5 +51,5 @@ EndFunction
 
 Function SwallowDesire(Actor akVictim)
 	akVictim.MoveTo(FV_StomachCellMarker)
-	FV_ConsumptionRegistry.PerformVoreEvent(Game.GetPlayer(), akVictim, true)
+	FV_ConsumptionRegistry.Add(Game.GetPlayer(), akVictim, true)
 EndFunction

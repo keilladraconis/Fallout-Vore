@@ -14,8 +14,9 @@ ActorValue Property FV_ReadyToDigest Auto
 Event OnEffectStart(Actor akTarget, Actor akCaster)
 
 	If(akCaster.GetValue(FV_ReadyToDigest) == 1)
-		FV_ConsumptionRegistry.TriggerDigestionSequence(akCaster)
-	ElseIf(FV_ConsumptionRegistry.HasLivePrey(akCaster))
+		Actor prey = FV_ConsumptionRegistry.GetPrey(akCaster)
+		FV_ConsumptionRegistry.FinalizeDigestion(prey)
+	ElseIf(FV_ConsumptionRegistry.GetPrey(akCaster) != None)
 		FV_HaventFinishedDigestionMessage.Show()
 	Else
 		FV_NoPreyInStomachMessage.Show()

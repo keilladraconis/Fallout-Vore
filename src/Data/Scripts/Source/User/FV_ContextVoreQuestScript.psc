@@ -303,7 +303,7 @@ Function GoneLethal(Actor akPrey)
 		akPrey.SetValue(FV_ContextPreyAnnoyed, 4)
 		StartTimerGameTime(48.0, tempIndex)
 	EndIf
-	FV_ConsumptionRegistry.MakeLethal(akPrey)
+	; FV_ConsumptionRegistry.MakeLethal(akPrey)
 EndFunction
 
 Function ReleasePlayer(Actor akPred)
@@ -318,7 +318,7 @@ Function DigestPlayer()
 EndFunction
 
 Function SuspendLethal(Actor akPrey)
-	FV_ConsumptionRegistry.MakeNonLethal(akPrey)
+	; FV_ConsumptionRegistry.MakeNonLethal(akPrey)
 EndFunction
 
 int Function GetNextIndex()

@@ -142,7 +142,7 @@ Event OnEffectStart(actor akTarget, actor akCaster)
 					akTarget.setGhost(true)																		;makes player invincible to ennemy's damage	
 				EndIf	
 				;Register non lethal vore
-				FV_ConsumptionRegistry.PerformVoreEvent(akCaster, akTarget, false)
+				FV_ConsumptionRegistry.Add(akCaster, akTarget, false)
 			;Lethal vore
 			Else
 				
@@ -202,29 +202,11 @@ Event OnEffectStart(actor akTarget, actor akCaster)
 					;return
 				EndIf
 				debug.trace("SwallowScript akTarget: " + akTarget + " preyResist: " + preyResist + " akCaster: " + akCaster + " predSwallow: " + predSwallow)
-				If(preyResist > predSwallow)		 			
-					;return
-					
-				Else
-					;swallow success
-					If(akCaster == PlayerRef && !IsNonLethalVore)
-						;Make player spend Action Points
-						If(akCaster.IsSprinting() && akCaster.HasPerk(FV_DownTheHatch02))
-							;do nothing
-						Else
-							PlayerRef.EquipItem(FV_SwallowAPCost, abSilent = true)
-						EndIf
+				If(preyResist < predSwallow)			
+					int swallowedIndex = FV_ConsumptionRegistry.Add(akCaster, akTarget, true)
+					If (swallowedIndex >= 0)
+						HandleSwallowSuccess(akCaster, akTarget)
 					EndIf
-					If(akTarget != PlayerRef)		
-						akTarget.MoveTo(FV_StomachCellMarker)
-					Else
-						akTarget.setAlpha(0, false)						;makes player invisible
-						akTarget.setGhost(true)							;makes player invincible to enemy's damage	
-					EndIf
-					If(akTarget.GetValue(FV_SwallowProtectionFlag) == 0)
-						akTarget.SetValue(FV_SwallowProtectionFlag, 1)
-						FV_ConsumptionRegistry.PerformVoreEvent(akCaster, akTarget, true)
-					EndIf	
 				EndIf
 			EndIf
 		EndIf
@@ -232,3 +214,24 @@ Event OnEffectStart(actor akTarget, actor akCaster)
 	debug.trace("SwallowScript OnEffectStart end")
 	Dispel()
 EndEvent
+
+Function HandleSwallowSuccess(Actor akCaster, Actor akTarget)
+	debug.trace("HandleSwallowSuccess")
+	;swallow success
+	If(akCaster == PlayerRef && !IsNonLethalVore)
+		;Make player spend Action Points
+		If(akCaster.IsSprinting() && akCaster.HasPerk(FV_DownTheHatch02))
+			;do nothing
+		Else
+			PlayerRef.EquipItem(FV_SwallowAPCost, abSilent = true)
+		EndIf
+	EndIf
+	
+	If(akTarget != PlayerRef)		
+		akTarget.MoveTo(FV_StomachCellMarker)
+	Else
+		akTarget.setAlpha(0, false)						;makes player invisible
+		akTarget.setGhost(true)							;makes player invincible to enemy's damage	
+	EndIf
+	akTarget.SetValue(FV_SwallowProtectionFlag, 1)
+EndFunction

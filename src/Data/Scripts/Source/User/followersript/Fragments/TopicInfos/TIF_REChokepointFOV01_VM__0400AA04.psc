@@ -37,7 +37,7 @@ FV_ConsumptionRegistryScript kmyQuestA = _temp as FV_ConsumptionRegistryScript
 
 Game.GetPlayer().setAlpha(0, false)						;makes player invisible
 Game.GetPlayer().setGhost(true)
-kmyQuestA.ProcessSingleSwallow(Raider, Game.GetPlayer(), true)
+kmyQuestA.Add(Raider, Game.GetPlayer(), true)
 ;END CODE
 EndFunction
 ;END FRAGMENT

@@ -59,7 +59,7 @@ Function EventRegister()
 EndFunction
 
 ;Event functions
-Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FV_ConsumptionRegistryScript akSender, Var[] akArgs)
+Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
 	If(FV_ScatEnabled.GetValue()==1)
 		Actor akPred = akArgs[0] as Actor
 		Int DigestionEvent = akArgs[1] as Int			;event 0 is when a prey dies.  event 1 is end of digestion
@@ -69,7 +69,7 @@ Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FV_ConsumptionRegistrySc
 	EndIf
 EndEvent
 
-Event FalloutVore:FV_ConsumptionRegistryScript.OnVomit(FV_ConsumptionRegistryScript akSender, Var[] akArgs)
+Event FalloutVore:FV_ConsumptionRegistryScript.OnVomit(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
 	;Remove pred from array if no prey are present
 	Actor akPred = akArgs[0] as Actor
 	If(akPred.GetValue(FV_CurrentPrey) <= 0 && akPred.GetValue(FV_ScatReady) == 0)
@@ -368,7 +368,7 @@ ItemParse[] Function ProcessSingleItem(Actor akPrey, Actor akPred, Form afItem, 
 	If(afItem is ObjectReference)
 		checkForm = (afItem as ObjectReference).GetBaseObject()
 	EndIf
-	debug.trace("FV_ScatManagerScript ProcessSingleItem afItem: " + afItem + " checkForm: " + checkForm)
+	debug.trace("FalloutVore:FV_ScatManagerScript ProcessSingleItem afItem: " + afItem + " checkForm: " + checkForm)
 	If(lootItemsUnique.HasForm(checkForm))
 		ItemParse questParse = new ItemParse
 		questParse.object = afItem

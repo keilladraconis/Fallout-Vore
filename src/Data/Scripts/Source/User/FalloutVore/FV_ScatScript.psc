@@ -1,7 +1,7 @@
 Scriptname FalloutVore:FV_ScatScript extends activemagiceffect
 
 ;ConsumptionRegistryScript Property Manager Auto
-FV_ScatManagerScript Property FV_ScatManager Auto
+FalloutVore:FV_ScatManagerScript Property FV_ScatManager Auto
 ;ScriptObject Property game Auto
 Potion Property FV_Scatpotion Auto
 ;Spell Property ReadyForScatSpell Auto

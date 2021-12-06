@@ -12,7 +12,7 @@ Event OnInit()
 	RegisterForCustomEvent(FV_ConsumptionRegistry, "OnSwallow")
 EndEvent
 
-Event FalloutVore:FV_ConsumptionRegistryScript.OnSwallow(FV_ConsumptionRegistryScript akSender, Var[] akArgs)
+Event FalloutVore:FV_ConsumptionRegistryScript.OnSwallow(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
 	Bool LethalFlag = akArgs[1] as Bool
 	Actor Pred = akArgs[0] as Actor
 	Actor Prey = akArgs[2] as Actor

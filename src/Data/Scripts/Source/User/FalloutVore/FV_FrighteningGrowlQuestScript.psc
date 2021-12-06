@@ -18,7 +18,7 @@ Event OnInit()
 	RegisterForCustomEvent(FV_ConsumptionRegistry, "OnDigest")
 EndEvent
 
-Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FV_ConsumptionRegistryScript akSender, Var[] akArgs)
+Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
 	Actor pred = akArgs[0] as Actor
 	If(GrowlPrimed && pred == Game.GetPlayer() && pred.hasPerk(FV_FrighteningGrowl01))
 		StartGrowl(pred, akArgs[1] as Int)

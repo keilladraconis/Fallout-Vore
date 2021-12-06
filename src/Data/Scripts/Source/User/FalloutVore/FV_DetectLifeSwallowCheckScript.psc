@@ -15,7 +15,7 @@ ActorValue Property LeftMobilityCondition Auto
 ActorValue Property PerceptionCondition Auto
 ActorValue Property RightAttackCondition Auto
 ActorValue Property RightMobilityCondition Auto
-FV_ActorDataScript Property FV_ActorData Auto
+FalloutVore:FV_ActorDataScript Property FV_ActorData Auto
 Spell Property FV_DetectLifeCloakSpell Auto
 
 Float Property NoPerkDebuffLimit = 0.6 Auto

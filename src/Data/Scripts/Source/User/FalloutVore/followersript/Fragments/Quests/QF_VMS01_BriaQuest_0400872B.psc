@@ -24,14 +24,14 @@ EndFunction
 
 ;BEGIN FRAGMENT Fragment_Stage_0010_Item_00
 Function Fragment_Stage_0010_Item_00()
-;BEGIN AUTOCAST TYPE FVS01_QuestScript
+;BEGIN AUTOCAST TYPE FalloutVore:FVS01_QuestScript
 Quest __temp = self as Quest
-FVS01_QuestScript kmyQuest = __temp as FVS01_QuestScript
+FalloutVore:FVS01_QuestScript kmyQuest = __temp as FalloutVore:FVS01_QuestScript
 ;END AUTOCAST
 ;BEGIN CODE
 VMS01_Enable10.EnableNoWait()
 SetObjectiveDisplayed(10,1)
-;Remove Bria as companion and begin timer in FVS01_QuestScript
+;Remove Bria as companion and begin timer in FalloutVore:FVS01_QuestScript
 Actor BriaREF = BriaAlias.GetActorRef()
 BriaREF.DisallowCompanion(SuppressDismissMessage=True)
 
@@ -56,9 +56,9 @@ EndFunction
 
 ;BEGIN FRAGMENT Fragment_Stage_0020_Item_00
 Function Fragment_Stage_0020_Item_00()
-;BEGIN AUTOCAST TYPE FVS01_QuestScript
+;BEGIN AUTOCAST TYPE FalloutVore:FVS01_QuestScript
 Quest __temp = self as Quest
-FVS01_QuestScript kmyQuest = __temp as FVS01_QuestScript
+FalloutVore:FVS01_QuestScript kmyQuest = __temp as FalloutVore:FVS01_QuestScript
 ;END AUTOCAST
 ;BEGIN CODE
 If(isObjectiveDisplayed(10))
@@ -410,9 +410,9 @@ EndFunction
 
 ;BEGIN FRAGMENT Fragment_Stage_1000_Item_00
 Function Fragment_Stage_1000_Item_00()
-;BEGIN AUTOCAST TYPE FVS01_QuestScript
+;BEGIN AUTOCAST TYPE FalloutVore:FVS01_QuestScript
 Quest __temp = self as Quest
-FVS01_QuestScript kmyQuest = __temp as FVS01_QuestScript
+FalloutVore:FVS01_QuestScript kmyQuest = __temp as FalloutVore:FVS01_QuestScript
 ;END AUTOCAST
 ;BEGIN CODE
 ;Call function to eliminate Bria as a companion

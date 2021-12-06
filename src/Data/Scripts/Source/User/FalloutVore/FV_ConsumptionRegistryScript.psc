@@ -245,7 +245,7 @@ Function RunDLCPatches()
 		
 		Perk pApexPredator = Game.GetFormFromFile(0x0000F8EC, "FalloutVore.esm") as Perk Const	;GAZ: Used ofte, so cache here!
 
-		FV_ActorDataScript:SlotData DLC03Payload = new FV_ActorDataScript:SlotData
+		FalloutVore:FV_ActorDataScript:SlotData DLC03Payload = new FalloutVore:FV_ActorDataScript:SlotData
 		DLC03Payload.ActorRace = Game.GetFormFromFile(0x000247C1, "DLCCoast.esm") as Race	;GAZ: Gulpers!
 		DLC03Payload.IndigestionChanceIncrease = 20
 		DLC03Payload.Slots = 12
@@ -253,7 +253,7 @@ Function RunDLCPatches()
 		DLC03Payload.SwallowPerkRequired = pApexPredator
 		FV_ActorData.InjectAddedInfo(DLC03Payload)
 
-		DLC03Payload = new FV_ActorDataScript:SlotData
+		DLC03Payload = new FalloutVore:FV_ActorDataScript:SlotData
 		DLC03Payload.ActorRace = Game.GetFormFromFile(0x000180A8, "DLCCoast.esm") as Race	;GAZ: Hermit Crabs!
 		DLC03Payload.IndigestionChanceIncrease = 20
 		DLC03Payload.Slots = 12
@@ -261,21 +261,21 @@ Function RunDLCPatches()
 		DLC03Payload.SwallowPerkRequired = pApexPredator
 		FV_ActorData.InjectAddedInfo(DLC03Payload)
 
-		DLC03Payload = new FV_ActorDataScript:SlotData
+		DLC03Payload = new FalloutVore:FV_ActorDataScript:SlotData
 		DLC03Payload.ActorRace = Game.GetFormFromFile(0x0004E28E, "DLCCoast.esm") as Race	;GAZ: Small Gulpers!
 		DLC03Payload.CanAlwaysSwallow = True
 		DLC03Payload.IndigestionChanceIncrease = 5
 		DLC03Payload.Slots = 3
 		FV_ActorData.InjectAddedInfo(DLC03Payload)
 
-		DLC03Payload = new FV_ActorDataScript:SlotData
+		DLC03Payload = new FalloutVore:FV_ActorDataScript:SlotData
 		DLC03Payload.ActorRace = Game.GetFormFromFile(0x0000FEEA, "DLCCoast.esm") as Race	;GAZ: Anglers!
 		DLC03Payload.CanAlwaysSwallow = True
 		DLC03Payload.IndigestionChanceIncrease = 5
 		DLC03Payload.Slots = 4
 		FV_ActorData.InjectAddedInfo(DLC03Payload)
 
-		DLC03Payload = new FV_ActorDataScript:SlotData
+		DLC03Payload = new FalloutVore:FV_ActorDataScript:SlotData
 		DLC03Payload.ActorRace = Game.GetFormFromFile(0x00014174, "DLCCoast.esm") as Race	;GAZ: Fog Crawlers!
 		DLC03Payload.IndigestionChanceIncrease = 20
 		DLC03Payload.Slots = 12
@@ -283,13 +283,13 @@ Function RunDLCPatches()
 		DLC03Payload.SwallowPerkRequired = pApexPredator
 		FV_ActorData.InjectAddedInfo(DLC03Payload)
 
-		DLC03Payload = new FV_ActorDataScript:SlotData
+		DLC03Payload = new FalloutVore:FV_ActorDataScript:SlotData
 		DLC03Payload.ActorRace = Game.GetFormFromFile(0x0003FD66, "DLCCoast.esm") as Race	;GAZ: Rad Chickens!
 		DLC03Payload.CanAlwaysSwallow = True
 		DLC03Payload.Slots = 1
 		FV_ActorData.InjectAddedInfo(DLC03Payload)
 
-		DLC03Payload = new FV_ActorDataScript:SlotData
+		DLC03Payload = new FalloutVore:FV_ActorDataScript:SlotData
 		DLC03Payload.ActorRace = Game.GetFormFromFile(0x0003DDDE, "DLCCoast.esm") as Race	;GAZ: Rad Rabbits!
 		DLC03Payload.CanAlwaysSwallow = True
 		DLC03Payload.Slots = 1
@@ -304,7 +304,7 @@ Function RunDLCPatches()
 		
 		Perk pApexPredator = Game.GetFormFromFile(0x0000F8EC, "FalloutVore.esm") as Perk Const	;GAZ: Used ofte, so cache here!
 
-		FV_ActorDataScript:SlotData DLC06Payload = new FV_ActorDataScript:SlotData
+		FalloutVore:FV_ActorDataScript:SlotData DLC06Payload = new FalloutVore:FV_ActorDataScript:SlotData
 		DLC06Payload.ActorRace = Game.GetFormFromFile(0x0003637A, "DLCNukaWorld.esm") as Race	;GAZ: Gatorclaws!
 		DLC06Payload.IndigestionChanceIncrease = 20
 		DLC06Payload.Slots = 12
@@ -312,14 +312,14 @@ Function RunDLCPatches()
 		DLC06Payload.SwallowPerkRequired = pApexPredator
 		FV_ActorData.InjectAddedInfo(DLC06Payload)
 
-		DLC06Payload = new FV_ActorDataScript:SlotData
+		DLC06Payload = new FalloutVore:FV_ActorDataScript:SlotData
 		DLC06Payload.ActorRace = Game.GetFormFromFile(0x0000AAFE, "DLCNukaWorld.esm") as Race	;GAZ: Cave Crickets!
 		DLC06Payload.CanAlwaysSwallow = True
 		DLC06Payload.IndigestionChanceIncrease = 5
 		DLC06Payload.Slots = 2
 		FV_ActorData.InjectAddedInfo(DLC06Payload)
 
-		DLC06Payload = new FV_ActorDataScript:SlotData
+		DLC06Payload = new FalloutVore:FV_ActorDataScript:SlotData
 		DLC06Payload.ActorRace = Game.GetFormFromFile(0x0004CBCE, "DLCNukaWorld.esm") as Race	;GAZ: Ghoulrillas!
 		DLC06Payload.IndigestionChanceIncrease = 20
 		DLC06Payload.Slots = 9
@@ -859,7 +859,7 @@ Event OnTimer(int aiTimerID)
 				DigestionDamage(data)
 			Else
 				If digestionStage > 0
-					If digestionStage % 10.0 == 0
+					If digestionStage % 10 == 0
 						OnTimerPlaySound(data)
 					endif
 					prey.ModValue(FV_DigestionStage, -1)

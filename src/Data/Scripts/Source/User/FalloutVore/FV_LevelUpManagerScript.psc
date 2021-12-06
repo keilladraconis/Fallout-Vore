@@ -67,7 +67,7 @@ Event Actor.OnPlayerLoadGame(Actor akSender)
 	RegisterForCustomEvent(FV_ConsumptionRegistry, "OnDigest")	;REMOVE THIS BEFORE RELEASE
 EndEvent
 
-Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FV_ConsumptionRegistryScript akSender, Var[] akArgs)
+Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
 	int eventType = akArgs[1] as int
 	if(eventType == 0)
 		GetEditLock()
@@ -89,7 +89,7 @@ Function OnPlayerChooseLevel()
 	LevelActor(PlayerRef)
 EndFunction
 
-;Event FalloutVore:FV_ConsumptionRegistryScript.VoreLevelUp(FV_ConsumptionRegistryScript akSender, Var[] akArgs)			;akArgs[0] = CurrentPred
+;Event FalloutVore:FV_ConsumptionRegistryScript.VoreLevelUp(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)			;akArgs[0] = CurrentPred
 ;	Actor ActorToLevel = akArgs[0] as actor
 ;	FV_ConsumptionRegistry.trace(self, "Received level up event for " + ActorToLevel)
 ;	CheckTraits(ActorToLevel)

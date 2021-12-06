@@ -23,7 +23,7 @@ Event OnInit()
 	RegisterForCustomEvent(FV_ConsumptionRegistry, "OnDigest")
 EndEvent
 
-Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FV_ConsumptionRegistryScript akSender, Var[] akArgs)
+Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
 	Int DigestionEvent = akArgs[1] as Int			;event 0 is when a prey dies.  event 1 is end of digestion
 	Actor Pred = akArgs[0] as Actor
 	If(DigestionEvent == 0 && Pred == Game.GetPlayer())

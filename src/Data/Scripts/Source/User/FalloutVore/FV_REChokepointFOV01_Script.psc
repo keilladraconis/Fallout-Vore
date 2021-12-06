@@ -14,7 +14,7 @@ Function UnregisterEvents()
 	UnregisterForCustomEvent(CSRManager, "OnVomit")
 EndFunction
 
-Event FalloutVore:FV_ConsumptionRegistryScript.OnVomit(FV_ConsumptionRegistryScript akSender, Var[] akArgs)
+Event FalloutVore:FV_ConsumptionRegistryScript.OnVomit(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
 	Actor Prey = akArgs[1] as Actor
 	
 	If(Prey == Game.GetPlayer() && GetStage() != 40)

@@ -3,8 +3,8 @@ Scriptname FalloutVore:FV_VoreLevelUpScript extends activemagiceffect
 Int Property VoreSpawnLevel=0 Auto
 
 GlobalVariable Property FV_VoreLevelPoints Auto
-FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto
-FV_LevelUpManagerScript Property FV_LevelUpManager Auto
+FalloutVore:FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto
+FalloutVore:FV_LevelUpManagerScript Property FV_LevelUpManager Auto
 ActorValue Property FV_PredLevel Auto
 ActorValue Property FV_PreyLevel Auto
 ActorValue Property FV_HasHadNukaAcid Auto

@@ -6,10 +6,10 @@ Function Fragment_Begin(ObjectReference akSpeakerRef)
 Actor akSpeaker = akSpeakerRef as Actor
 ;BEGIN CODE
 Quest _temp = ConsumptionRegistry as Quest
-FV_ConsumptionRegistryScript kmyQuestA = _temp as FV_ConsumptionRegistryScript
+FalloutVore:FV_ConsumptionRegistryScript kmyQuestA = _temp as FalloutVore:FV_ConsumptionRegistryScript
 
 ;re-enable player movement so HUD will show
-kmyQuestA.EnablePlayerMovement()
+; kmyQuestA.EnablePlayerMovement() KEILLA TODO: Who is responsible for enabling player movement?
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -30,7 +30,7 @@ EndIf
 GetOwningQuest().SetStage(34)
 
 Quest _temp = ConsumptionRegistry as Quest
-FV_ConsumptionRegistryScript kmyQuestA = _temp as FV_ConsumptionRegistryScript
+FalloutVore:FV_ConsumptionRegistryScript kmyQuestA = _temp as FalloutVore:FV_ConsumptionRegistryScript
 
 ;re-enable player movement so HUD will show
 ;kmyQuestA.EnablePlayerMovement()

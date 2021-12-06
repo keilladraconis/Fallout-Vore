@@ -10,6 +10,7 @@
         <Import>src\vendor\f4se\Data\Scripts\Source\User</Import>
         <Import>src\vendor\hudframework\SCRIPTS</Import>
         <Import>src\vendor\looksmenu\Data\Scripts\Source\User</Import>
+        <Import>src\vendor\MCM</Import>
         <Import>C:\Program Files (x86)\Steam\steamapps\common\Fallout 4\Data\Scripts\Source\Base</Import>
         <Import>C:\Program Files (x86)\Steam\steamapps\common\Fallout 4\Data\Scripts\Source\User</Import>
     </Imports>

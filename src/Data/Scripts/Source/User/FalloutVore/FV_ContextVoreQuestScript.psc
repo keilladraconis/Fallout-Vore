@@ -329,13 +329,13 @@ int Function GetNextIndex()
 	return currentArrayIndex
 EndFunction
 
-Event FV_ConsumptionRegistryScript.OnDigest(FV_ConsumptionRegistryScript akSend, Var[] akArgs)
+Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FalloutVore:FV_ConsumptionRegistryScript akSend, Var[] akArgs)
 	If akArgs[1] as int == 0
 		CheckAndDelete(akArgs[2] as actor)
 	EndIf
 EndEvent
 
-Event FV_ConsumptionRegistryScript.OnVomit(FV_ConsumptionRegistryScript akSend, Var[] akArgs)
+Event FalloutVore:FV_ConsumptionRegistryScript.OnVomit(FalloutVore:FV_ConsumptionRegistryScript akSend, Var[] akArgs)
 	Actor akPred = akArgs[0] as Actor
 	Actor akPrey = akArgs[1] as Actor
 	If akPrey != NONE
@@ -389,7 +389,7 @@ Event OnTimerGameTime(int aiTimerID)
 		ContextPreyArray[i].Pred.SayCustom(FV_RevengeDialogue_Topic)
 		ContextPreyArray[i].Pred.SetValue(FV_ContextPreyAnnoyed, 5)
 		Utility.Wait(5.0)
-		FV_ConsumptionRegistry.MakeLethal(Game.GetPlayer())
+		; FV_ConsumptionRegistry.MakeLethal(Game.GetPlayer()) ; KEILLA TODO: Who makes player lethal consumption?
 		ContextPreyArray.Remove(i)
 	ElseIf i >= 0 && ContextPreyArray[i].Prey.GetValue(FV_ContextPreyAnnoyed) >= 4
 		debug.trace("Context Vore - Downgrade Prey Annoyed actor: " + ContextPreyArray[i].Prey + " from " + ContextPreyArray[i].Prey.GetValue(FV_ContextPreyAnnoyed) + " to 3")

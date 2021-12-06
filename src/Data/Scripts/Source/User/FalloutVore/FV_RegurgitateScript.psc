@@ -1,4 +1,4 @@
-Scriptname FV_RegurgitateScript extends activemagiceffect
+Scriptname FalloutVore:FV_RegurgitateScript extends activemagiceffect
 {Throw up any live prey script.}
 
 FalloutVore:FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto 

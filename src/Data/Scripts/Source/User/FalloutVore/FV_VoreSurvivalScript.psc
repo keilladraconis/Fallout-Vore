@@ -48,7 +48,7 @@ Function SetMCMVariables()
 	FoodPoolPerSlot = MCM.GetModSettingInt("FalloutVore", "iFoodPoolPerSlot:Hardcore")
 EndFunction
 
-Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FV_ConsumptionRegistryScript akSender, Var[] akArgs)			;akArgs[0] = CurrentPred [1] = digestion stage (0- start) [2] CurrentPrey
+Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)			;akArgs[0] = CurrentPred [1] = digestion stage (0- start) [2] CurrentPrey
 	
 	If(akArgs[0] as actor == PlayerRef && akArgs[1] as int == 0 && Game.GetDifficulty() == 6)		;Check for player, a prey has just died, and that HC is set to on
 		HC_Manager.trace(self, " Player has begun to digest someone and is in Survival. Giving RiskEvent and FoodPool.")

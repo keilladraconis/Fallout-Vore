@@ -28,9 +28,9 @@ EndFunction
 
 ;BEGIN FRAGMENT Fragment_Stage_0030_Item_00
 Function Fragment_Stage_0030_Item_00()
-;BEGIN AUTOCAST TYPE FV_REChokepointFOV01_Script
+;BEGIN AUTOCAST TYPE FalloutVore:FV_REChokepointFOV01_Script
 Quest __temp = self as Quest
-FV_REChokepointFOV01_Script kmyQuest = __temp as FV_REChokepointFOV01_Script
+FalloutVore:FV_REChokepointFOV01_Script kmyQuest = __temp as FalloutVore:FV_REChokepointFOV01_Script
 ;END AUTOCAST
 ;BEGIN CODE
 kmyQuest.RegisterEvents()
@@ -41,9 +41,9 @@ Actor Raider3 = VoreRaiderRandom.GetActorReference()
 
 ;disable player movement in CSR
 Quest _temp = ConsumptionRegistry as Quest
-FV_ConsumptionRegistryScript kmyQuestA = _temp as FV_ConsumptionRegistryScript
+FalloutVore:FV_ConsumptionRegistryScript kmyQuestA = _temp as FalloutVore:FV_ConsumptionRegistryScript
 
-kmyQuestA.DisablePlayerMovement()
+; kmyQuestA.DisablePlayerMovement() KEILLA: Todo. Who is responsible for disabling player movement?
 
 If(Raider3.GetValue(FV_HasHadNukaAcid) == 1)
 Raider3.SetValue(FV_TicksTillEscapePerk, 999)
@@ -91,7 +91,7 @@ REScript kmyQuest = __temp as REScript
 ;END AUTOCAST
 ;BEGIN CODE
 Quest _temp1 = self as Quest
-FV_REChokepointFOV01_Script kmyQuestA = _temp1 as FV_REChokepointFOV01_Script
+FalloutVore:FV_REChokepointFOV01_Script kmyQuestA = _temp1 as FalloutVore:FV_REChokepointFOV01_Script
 kmyQuestA.UnregisterEvents()
 
 debug.trace(self + " STOPPING")

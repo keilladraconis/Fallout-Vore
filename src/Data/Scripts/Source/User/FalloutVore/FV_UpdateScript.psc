@@ -19,7 +19,7 @@ Group Update303
 	GlobalVariable Property FV_CalculatedMaxWeight Auto
 	ActorValue Property FV_BellyCapacity Auto
 	GlobalVariable Property FV_PlayerBellyWeightPerks Auto
-	FV_PlayerCapacitySystemScript Property FV_PerkQuest Auto
+	FalloutVore:FV_PlayerCapacitySystemScript Property FV_PerkQuest Auto
 EndGroup
 
 Actor PlayerRef

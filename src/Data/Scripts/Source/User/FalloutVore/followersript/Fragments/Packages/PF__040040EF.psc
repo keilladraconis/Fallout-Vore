@@ -11,7 +11,7 @@ pCaravanLouiseCurrentStatus.SetValue(1)
 pCaravanLouiseCurrentDestination.SetValue(5)
 
 Quest __temp = pCaravanLouiseBase as Quest
-FVS01_QuestScript kmyQuest = __temp as FVS01_QuestScript
+FalloutVore:FVS01_QuestScript kmyQuest = __temp as FalloutVore:FVS01_QuestScript
 
 Debug.Trace("Finished " + self)
 kmyQuest.CaravanWaits(1)

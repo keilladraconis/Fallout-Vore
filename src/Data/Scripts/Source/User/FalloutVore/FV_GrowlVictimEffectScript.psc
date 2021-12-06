@@ -9,7 +9,7 @@ ActorValue Property FV_BellyCapacity Auto
 ActorValue Property FV_CurrentPrey Auto
 RefCollectionAlias property GrowlVictimAliasCollection auto mandatory
 Keyword Property ActorTypeHuman Auto
-FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto
+FalloutVore:FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto
 
 actor victimActor
 int startingAssistance
@@ -95,7 +95,7 @@ Function BeginGrowl(Actor akPred, Actor akPrey)
 	RegisterForHitEvent(akPrey, game.getPlayer(), abMatch = true)
 EndFunction
 
-Event FalloutVore:FV_ConsumptionRegistryScript.OnSwallow(FV_ConsumptionRegistryScript akSender, Var[] akArgs)
+Event FalloutVore:FV_ConsumptionRegistryScript.OnSwallow(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
 	If(victimActor != NONE)
 		If(Game.GetPlayer().GetValue(FV_CurrentPrey) >= Game.GetPlayer().GetValue(FV_BellyCapacity) && victimActor.GetValue(FV_GrowlTypeAV) == 3)
 			;Player just filled up.  Send this desire victim running for the hills

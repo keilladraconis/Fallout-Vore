@@ -2,7 +2,7 @@ Scriptname FalloutVore:FV_VoreshopNPCScript	Extends Actor
 
 GlobalVariable Property FV_ColdSteelEnabled Auto
 GlobalVariable Property FV_MaleColdSteelToggle Auto
-FV_ColdSteelBellyScript Property FV_ColdSteelBelly Auto
+FalloutVore:FV_ColdSteelBellyScript Property FV_ColdSteelBelly Auto
 FormList Property FV_DigestionArmorList Auto
 
 bool HasBeenChecked = false

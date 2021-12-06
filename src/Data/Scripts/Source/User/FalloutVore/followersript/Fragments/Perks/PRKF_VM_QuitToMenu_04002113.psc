@@ -5,9 +5,9 @@ Scriptname FalloutVore:followersript:Fragments:Perks:PRKF_VM_QuitToMenu_04002113
 Function Fragment_Entry_00(ObjectReference akTargetRef, Actor akActor)
 ;BEGIN CODE
 Quest temp = FV_ConsumptionRegistry as Quest
-FV_ConsumptionRegistryScript kmyQuest = temp as FV_ConsumptionRegistryScript
+FalloutVore:FV_ConsumptionRegistryScript kmyQuest = temp as FalloutVore:FV_ConsumptionRegistryScript
 
-kmyQuest.ReloadGame()
+; kmyQuest.ReloadGame() KEILLA TODO: Who is responsible for reload game?
 ;END CODE
 EndFunction
 ;END FRAGMENT

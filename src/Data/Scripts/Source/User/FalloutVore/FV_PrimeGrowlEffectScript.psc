@@ -1,6 +1,6 @@
 Scriptname FalloutVore:FV_PrimeGrowlEffectScript Extends ActiveMagicEffect
 
-FV_FrighteningGrowlQuestScript Property FV_FrighteningGrowlQuest Auto
+FalloutVore:FV_FrighteningGrowlQuestScript Property FV_FrighteningGrowlQuest Auto
 Potion Property FV_PrimeGrowl Auto
 GlobalVariable Property FV_GrowlBool Auto
 

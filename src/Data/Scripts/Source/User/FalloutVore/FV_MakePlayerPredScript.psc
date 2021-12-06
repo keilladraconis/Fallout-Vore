@@ -1,6 +1,6 @@
 Scriptname FalloutVore:FV_MakePlayerPredScript extends activemagiceffect
 
-FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto 
+FalloutVore:FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto 
 
 Event OnEffectStart(Actor akTarget, Actor akCaster)
 

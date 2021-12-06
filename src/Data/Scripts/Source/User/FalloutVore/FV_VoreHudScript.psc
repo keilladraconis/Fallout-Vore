@@ -173,7 +173,7 @@ EndFunction
 
 Function StruggleStageChange(Int aiStageID)
 	GetEditLock()
-	debug.trace("FV_VoreHudScript StruggleStageChange aiStageID: " + aiStageID)
+	debug.trace("FalloutVore:FV_VoreHudScript StruggleStageChange aiStageID: " + aiStageID)
 	hud.SendMessage(VoreHud, Command_StruggleChangeStage, aiStageID)
 	EditLock = False
 EndFunction
@@ -197,7 +197,7 @@ Function UpdateHealthBar(Int aiIndex, Actor akPrey)
 	String PreyName = akPrey.GetLeveledActorBase().GetName()
 	Float healthPercentage = akPrey.GetValue(Game.GetHealthAV())/akPrey.GetBaseValue(Game.GetHealthAV())
 	String SendMessage = aiIndex + "?" + PreyName + "?" + healthPercentage
-	debug.trace("FV_VoreHudScript UpdateHealthBar() SendMessage: " + SendMessage)
+	debug.trace("FalloutVore:FV_VoreHudScript UpdateHealthBar() SendMessage: " + SendMessage)
 	hud.SendMessageString(VoreHud, Command_UpdateHealthBar as string, SendMessage)
 	
 	EditLock = False

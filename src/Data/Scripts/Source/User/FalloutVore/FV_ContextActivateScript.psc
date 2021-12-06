@@ -1,6 +1,6 @@
 Scriptname FalloutVore:FV_ContextActivateScript extends activemagiceffect
 
-FV_ContextVoreQuestScript Property FV_ContextDialogue Auto
+FalloutVore:FV_ContextVoreQuestScript Property FV_ContextDialogue Auto
 
 GlobalVariable Property FV_ManualPreyContext Auto
 Potion Property FV_ContextPreyPotion Auto

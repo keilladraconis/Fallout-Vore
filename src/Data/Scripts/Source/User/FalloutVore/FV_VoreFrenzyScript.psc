@@ -7,8 +7,8 @@ ActorValue Property FV_PredLevel Auto
 ActorValue Property FV_PreyLevel Auto
 ActorValue property Health Auto
 ActorValue Property FV_VoreFrenzied Auto
-FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto
-FV_LevelUpManagerScript Property FV_LevelUpManager Auto
+FalloutVore:FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto
+FalloutVore:FV_LevelUpManagerScript Property FV_LevelUpManager Auto
 
 EVENT OnEffectStart(Actor akTarget, Actor akCaster)
 

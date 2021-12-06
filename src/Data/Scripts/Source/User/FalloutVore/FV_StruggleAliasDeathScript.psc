@@ -1,7 +1,7 @@
 Scriptname FalloutVore:FV_StruggleAliasDeathScript extends ReferenceAlias
 
 
-FV_PlayerStruggleScript Property FV_PlayerStruggle Auto
+FalloutVore:FV_PlayerStruggleScript Property FV_PlayerStruggle Auto
 Bool Property ShowTrace = false Auto
 
 

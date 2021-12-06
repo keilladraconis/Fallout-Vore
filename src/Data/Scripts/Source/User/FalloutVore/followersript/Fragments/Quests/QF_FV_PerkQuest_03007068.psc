@@ -33,9 +33,9 @@ EndFunction
 
 ;BEGIN FRAGMENT Fragment_Stage_0300_Item_00
 Function Fragment_Stage_0300_Item_00()
-;BEGIN AUTOCAST TYPE FV_PlayerCapacitySystemScript
+;BEGIN AUTOCAST TYPE FalloutVore:FV_PlayerCapacitySystemScript
 Quest __temp = self as Quest
-FV_PlayerCapacitySystemScript kmyQuest = __temp as FV_PlayerCapacitySystemScript
+FalloutVore:FV_PlayerCapacitySystemScript kmyQuest = __temp as FalloutVore:FV_PlayerCapacitySystemScript
 ;END AUTOCAST
 ;BEGIN CODE
 kmyQuest.UpdateWhaleRank()
@@ -45,9 +45,9 @@ EndFunction
 
 ;BEGIN FRAGMENT Fragment_Stage_0310_Item_00
 Function Fragment_Stage_0310_Item_00()
-;BEGIN AUTOCAST TYPE FV_PlayerCapacitySystemScript
+;BEGIN AUTOCAST TYPE FalloutVore:FV_PlayerCapacitySystemScript
 Quest __temp = self as Quest
-FV_PlayerCapacitySystemScript kmyQuest = __temp as FV_PlayerCapacitySystemScript
+FalloutVore:FV_PlayerCapacitySystemScript kmyQuest = __temp as FalloutVore:FV_PlayerCapacitySystemScript
 ;END AUTOCAST
 ;BEGIN CODE
 kmyQuest.UpdateWhaleRank()
@@ -57,9 +57,9 @@ EndFunction
 
 ;BEGIN FRAGMENT Fragment_Stage_0320_Item_00
 Function Fragment_Stage_0320_Item_00()
-;BEGIN AUTOCAST TYPE FV_PlayerCapacitySystemScript
+;BEGIN AUTOCAST TYPE FalloutVore:FV_PlayerCapacitySystemScript
 Quest __temp = self as Quest
-FV_PlayerCapacitySystemScript kmyQuest = __temp as FV_PlayerCapacitySystemScript
+FalloutVore:FV_PlayerCapacitySystemScript kmyQuest = __temp as FalloutVore:FV_PlayerCapacitySystemScript
 ;END AUTOCAST
 ;BEGIN CODE
 kmyQuest.UpdateWhaleRank()
@@ -71,7 +71,7 @@ EndFunction
 Function Fragment_Stage_0400_Item_00()
 ;BEGIN CODE
 FV_PlayerBellyWeightPerks.SetValue(FV_PlayerBellyWeightPerks.GetValue() + 25)
-(FV_PlayerBellyContainer as FV_PlayerBellyContainerScript).SetInventoryWeight()
+(FV_PlayerBellyContainer as FalloutVore:FV_PlayerBellyContainerScript).SetInventoryWeight()
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -80,7 +80,7 @@ EndFunction
 Function Fragment_Stage_0410_Item_00()
 ;BEGIN CODE
 FV_PlayerBellyWeightPerks.SetValue(FV_PlayerBellyWeightPerks.GetValue() + 35)
-(FV_PlayerBellyContainer as FV_PlayerBellyContainerScript).SetInventoryWeight()
+(FV_PlayerBellyContainer as FalloutVore:FV_PlayerBellyContainerScript).SetInventoryWeight()
 ;END CODE
 EndFunction
 ;END FRAGMENT

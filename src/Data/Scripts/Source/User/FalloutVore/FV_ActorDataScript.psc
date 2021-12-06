@@ -126,7 +126,7 @@ Bool Function GetIsHumanoid(Actor akPrey)
 	return false
 EndFunction
 
-;GAZ: Used to patch DLCs and maybe in the future mods. DLC is detected and patched by FV_ConsumptionRegistryScript RunDLCPatches().
+;GAZ: Used to patch DLCs and maybe in the future mods. DLC is detected and patched by FalloutVore:FV_ConsumptionRegistryScript RunDLCPatches().
 Function InjectAddedInfo(SlotData DataToInject)
 	BaseActorData.add(DataToInject)
 EndFunction

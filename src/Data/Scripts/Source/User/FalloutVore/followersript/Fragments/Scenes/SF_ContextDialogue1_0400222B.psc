@@ -3,8 +3,8 @@ Scriptname FalloutVore:followersript:Fragments:Scenes:SF_ContextDialogue1_040022
 
 ;BEGIN FRAGMENT Fragment_Phase_03_End
 Function Fragment_Phase_03_End()
-;BEGIN AUTOCAST TYPE FV_ContextVoreQuestScript
-FV_ContextVoreQuestScript kmyQuest = GetOwningQuest() as FV_ContextVoreQuestScript
+;BEGIN AUTOCAST TYPE FalloutVore:FV_ContextVoreQuestScript
+FalloutVore:FV_ContextVoreQuestScript kmyQuest = GetOwningQuest() as FalloutVore:FV_ContextVoreQuestScript
 ;END AUTOCAST
 ;BEGIN CODE
 kmyQuest.EndDialogue()

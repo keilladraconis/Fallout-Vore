@@ -93,7 +93,7 @@ Event Actor.OnPlayerLoadGame(Actor akSender)
 	SyncProperties()
 	If(!Update301)
 		If(FV_LevelUpManager == NONE)
-			FV_LevelUpManager = Game.GetFormFromFile(0x0001101A, "FalloutVore.esp") as FV_LevelUpManagerScript
+			FV_LevelUpManager = Game.GetFormFromFile(0x0001101A, "FalloutVore.esp") as FalloutVore:FV_LevelUpManagerScript
 		EndIf
 		Update301 = true
 	EndIf
@@ -126,8 +126,8 @@ Function RestoreCameraProperties()
 	Float CameraDistanceSwallow = MCM.GetModSettingFloat(sModName, "fCameraDistanceSwallow:FalloutVoreMain")
 	Float CameraDistanceVomit = MCM.GetModSettingFloat(sModName, "fCameraDistanceVomit:FalloutVoreMain")
 	
-	FV_ConsumptionRegistry.UpdateCameraSwallowDistance(CameraDistanceSwallow)
-	FV_ConsumptionRegistry.UpdateCameraVomitDistance(CameraDistanceVomit)
+	; FV_ConsumptionRegistry.UpdateCameraSwallowDistance(CameraDistanceSwallow) ; KEILLA TODO: Who is responsible for doign camera crap?
+	; FV_ConsumptionRegistry.UpdateCameraVomitDistance(CameraDistanceVomit)
 EndFunction
 
 Function EventRegistration()
@@ -235,11 +235,11 @@ Function OnMCMSettingChange(string modName, string id)
 			EndIf
 		ElseIf(id == "CameraSettingChange")
 			If FV_ConsumptionRegistry.fCameraDistanceSwallow < fCameraSwallowMin
-				FV_ConsumptionRegistry.UpdateCameraSwallowDistance(fCameraSwallowMin)
+				; FV_ConsumptionRegistry.UpdateCameraSwallowDistance(fCameraSwallowMin) KEILLA TODO: Who is responsible for camera shit?
 				MCM.RefreshMenu()
 			EndIf
 			If FV_ConsumptionRegistry.fCameraDistanceVomit < fCameraVomitMin
-				FV_ConsumptionRegistry.UpdateCameraVomitDistance(fCameraVomitMin)
+				; FV_ConsumptionRegistry.UpdateCameraVomitDistance(fCameraVomitMin) KEILLA TODO: Who is responsible for camera shit?
 				MCM.RefreshMenu()
 			EndIf
 		ElseIf(id == "HudDebugToggle")

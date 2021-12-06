@@ -20,7 +20,7 @@ Group Perks
 EndGroup
 
 Group Quests
-	FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto
+	FalloutVore:FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto
 EndGroup
 
 Group Factions

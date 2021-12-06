@@ -99,7 +99,7 @@ EncDefinition Function GetEncDefinition(keyword KeywordToFind = None, location L
 	return NONE
 EndFunction
 
-Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FV_ConsumptionRegistryScript akSend, Var[] akArgs)
+Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FalloutVore:FV_ConsumptionRegistryScript akSend, Var[] akArgs)
 	If(CompanionAlias.GetActorRef() == NONE || CompanionAlias.GetActorRef().HasKeyword(ActorTypeCreature) || CompanionAlias.GetActorRef().HasKeyword(ActorTypeAnimal))
 		FV_ConsumptionRegistry.trace(self, "SAVHandler reports companion is a Creature or a None form. Skipping dialogue event.")
 	Else
@@ -125,7 +125,7 @@ Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FV_ConsumptionRegistrySc
 	EndIf
 EndEvent
 
-Event FalloutVore:FV_ConsumptionRegistryScript.OnSwallow(FV_ConsumptionRegistryScript akSender, Var[] akArgs)
+Event FalloutVore:FV_ConsumptionRegistryScript.OnSwallow(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
 	;debug.notification("received swallow event")
 	If(CompanionAlias.GetActorRef() == NONE || CompanionAlias.GetActorRef().HasKeyword(ActorTypeCreature) || CompanionAlias.GetActorRef().HasKeyword(ActorTypeAnimal))
 		FV_ConsumptionRegistry.trace(self, "SAVHandler reports companion is a Creature or a None form. Skipping dialogue event.")

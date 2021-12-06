@@ -35,9 +35,9 @@ Actor Raider3 = VoreRaiderRandom.GetActorReference()
 
 ;disable player movement in CSR
 Quest _temp = ConsumptionRegistry as Quest
-FV_ConsumptionRegistryScript kmyQuestA = _temp as FV_ConsumptionRegistryScript
+FalloutVore:FV_ConsumptionRegistryScript kmyQuestA = _temp as FalloutVore:FV_ConsumptionRegistryScript
 
-kmyQuestA.DisablePlayerMovement()
+; kmyQuestA.DisablePlayerMovement() Todo: Who is responsible for disabling player movement?
 
 If(Raider3.GetValue(VM_HasHadNukaAcid) == 1)
 Raider3.SetValue(VM_TicksTillEscapePerk, 999)

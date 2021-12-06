@@ -58,9 +58,9 @@ Group Perks
 EndGroup
 
 Group Scripts
-	FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto Const Mandatory
+ FalloutVore:FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto Const Mandatory
 	FollowersScript Property Followers Auto Const Mandatory
-	FV_VoreHudScript Property FV_VoreHud Auto Const Mandatory
+	FalloutVore:FV_VoreHudScript Property FV_VoreHud Auto Const Mandatory
 EndGroup
 
 Group Sounds
@@ -2425,7 +2425,7 @@ EndFunction
 
 ;Begin custom events
 
-Event FalloutVore:FV_ConsumptionRegistryScript.OnSwallow(FV_ConsumptionRegistryScript akSender, Var[] akArgs)
+Event FalloutVore:FV_ConsumptionRegistryScript.OnSwallow(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
 	If(WeightModEnabled)
 		trace(self, "  Recieved a swallow event.")
 		Actor actorToCheck = akArgs[0] as Actor
@@ -2470,7 +2470,7 @@ Event FalloutVore:FV_ConsumptionRegistryScript.OnSwallow(FV_ConsumptionRegistryS
 	EndIf
 EndEvent
 
-Event FalloutVore:FV_ConsumptionRegistryScript.OnVomit(FV_ConsumptionRegistryScript akSender, Var[] akArgs)
+Event FalloutVore:FV_ConsumptionRegistryScript.OnVomit(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
 	WeightData data = RetrieveFromWeightArray(0, akArgs[0] as Actor)
 	If(data!=NONE)
 		If(data.Pred.GetValue(FV_CurrentPrey)==0)
@@ -2480,7 +2480,7 @@ Event FalloutVore:FV_ConsumptionRegistryScript.OnVomit(FV_ConsumptionRegistryScr
 	EndIf
 EndEvent
 
-Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FV_ConsumptionRegistryScript akSender, Var[] akArgs)
+Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
 	WeightData data = RetrieveFromWeightArray(0, akArgs[0] as Actor)
 	trace(self, "Recieved on digestion event.")
 	

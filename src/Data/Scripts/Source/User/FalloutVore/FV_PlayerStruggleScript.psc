@@ -31,9 +31,9 @@ String[] Property EscapeNotifications Auto
 String[] Property PredDeadNotifications Auto
 String[] Property SecondWindNotifications Auto
 
-FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto
-FV_VoreHudScript Property FV_VoreHud Auto
-FV_LevelUpManagerScript Property FV_LevelUpManager Auto
+FalloutVore:FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto
+FalloutVore:FV_VoreHudScript Property FV_VoreHud Auto
+FalloutVore:FV_LevelUpManagerScript Property FV_LevelUpManager Auto
 
 Actor ActorPred
 Actor PlayerRef
@@ -192,7 +192,7 @@ Function BeginStruggleMechanic(Actor akPred, int aiIndex)
 	;Level disparity will be used to determine the difficulty required of player struggle
 	
 	Float levelDisparity = PlayerRef.GetValue(FV_PreyLevel) + PlayerRef.GetValue(FV_EscapeChance) - akPred.GetValue(FV_PredLevel) - akPred.GetValue(FV_StomachStrength)
-	debug.trace("FV_PlayerStruggleScript BeginStruggleMechanic() " + levelDisparity + " " + PlayerRef.GetValue(FV_PreyLevel) + " " + PlayerRef.GetValue(FV_EscapeChance) + " " + akPred.GetValue(FV_PredLevel) + " " + akPred.GetValue(FV_StomachStrength))
+	debug.trace("FalloutVore:FV_PlayerStruggleScript BeginStruggleMechanic() " + levelDisparity + " " + PlayerRef.GetValue(FV_PreyLevel) + " " + PlayerRef.GetValue(FV_EscapeChance) + " " + akPred.GetValue(FV_PredLevel) + " " + akPred.GetValue(FV_StomachStrength))
 	
 	If(levelDisparity <= -37)
 		fEncounterDifficulty = 5.0
@@ -252,7 +252,7 @@ Function SetSequence()
 	int maxSequence = 4 + (((fEncounterDifficulty + 1.0)/2.0) as int)
 	While (i < maxSequence)
 		randomKey = Utility.RandomInt(0,ControlBindings.length - 1)
-		debug.trace("FV_PlayerStruggleScript SetSequence() afDifficultyRequired: " + ControlBindings[randomKey].fDifficultyRequired + " fEncounterDifficulty: " + fEncounterDifficulty)
+		debug.trace("FalloutVore:FV_PlayerStruggleScript SetSequence() afDifficultyRequired: " + ControlBindings[randomKey].fDifficultyRequired + " fEncounterDifficulty: " + fEncounterDifficulty)
 		If(ControlBindings[randomKey].fDifficultyRequired <= fEncounterDifficulty)
 			If(Game.UsingGamepad())
 				KeySequence.add(ControlBindings[randomKey].sAltKeyName)
@@ -343,7 +343,7 @@ EndFunction
 Function PlayerEscape()
 	CalculateXP(BaseXPGain, 2.0)
 	FV_PlayersPredAlias.Clear()
-	FV_ConsumptionRegistry.PlayerEscapes(iPlayerIndex)
+	; FV_ConsumptionRegistry.PlayerEscapes(iPlayerIndex) KEILLA: Todo, fix player escape?
 EndFunction
 
 Function CalculateXP(Float afXPGain = 0.0, Float afDifficultyMult = 1.0)
@@ -359,7 +359,7 @@ EndFunction
 
 Function PlayerDead()
 	FV_PlayersPredAlias.Clear()
-	FV_ConsumptionRegistry.PlayerDies(iPlayerIndex)
+	; FV_ConsumptionRegistry.PlayerDies(iPlayerIndex) KEILLA: Todo, FIx player dies?
 EndFunction
 
 Function PlayerPredDead()
@@ -372,7 +372,7 @@ Function PlayerPredDead()
 	FV_VoreHud.StruggleResult(1, 1.0)
 	SendMessage(5)
 	FV_PlayersPredAlias.Clear()
-	FV_ConsumptionRegistry.PlayerEscapes(iPlayerIndex)
+	; FV_ConsumptionRegistry.PlayerEscapes(iPlayerIndex) KEILLA: Todo, fix player pred dead?
 EndFunction
 
 ;Event OnKeyDown(int keyCode)
@@ -388,7 +388,7 @@ Event OnControlDown(string control)
 EndEvent
 
 Function ProcessControlDown()
-	debug.trace("FV_PlayerStruggleScript ProcessControlDown() Processing " + ControlString.length + " Control Items...")
+	debug.trace("FalloutVore:FV_PlayerStruggleScript ProcessControlDown() Processing " + ControlString.length + " Control Items...")
 	If(bProcessingControl)
 		return
 	EndIf
@@ -397,7 +397,7 @@ Function ProcessControlDown()
 	while ControlString.length > 0
 		ProcessSingleControl(ControlString[0])
 		ControlString.remove(0)
-		debug.trace("FV_PlayerStruggleScript ProcessControlDown() " + ControlString.length + " remaining...")
+		debug.trace("FalloutVore:FV_PlayerStruggleScript ProcessControlDown() " + ControlString.length + " remaining...")
 		utility.WaitMenuMode(0.1)
 	endwhile
 	
@@ -409,7 +409,7 @@ Function ProcessSingleControl(String asControl)
 
 		Bool isGamePadUsed = Game.UsingGamepad()
 		If(isGamePadUsed)
-			debug.trace("FV_PlayerStruggleScript OnControlDown() Converting asControl: " + asControl)
+			debug.trace("FalloutVore:FV_PlayerStruggleScript OnControlDown() Converting asControl: " + asControl)
 			If(asControl == sUp)
 				asControl = sQuickKeyUp
 			ElseIf(asControl == sDown)
@@ -424,7 +424,7 @@ Function ProcessSingleControl(String asControl)
 		If(asControl == KeySequence[iCurrentSequence])
 			iNumberCorrect += 1
 		EndIf
-		debug.trace("FV_PlayerStruggleScript OnControlDown() isGamePadUsed: " + isGamePadUsed + " asControl: " + asControl + " iCurrentSequence: " + iCurrentSequence + " KeySequence[iCurrentSequence]: " + KeySequence[iCurrentSequence])
+		debug.trace("FalloutVore:FV_PlayerStruggleScript OnControlDown() isGamePadUsed: " + isGamePadUsed + " asControl: " + asControl + " iCurrentSequence: " + iCurrentSequence + " KeySequence[iCurrentSequence]: " + KeySequence[iCurrentSequence])
 		
 		int i = -1
 		
@@ -461,21 +461,21 @@ int iCountDown = 3
 
 Event OnTimer(Int aiTimerID)
 	If(aiTimerID == iStruggleTimerID)
-		debug.trace("FV_PlayerStruggleScript Timer Expired")
+		debug.trace("FalloutVore:FV_PlayerStruggleScript Timer Expired")
 		HandleSequenceCleanUp()
 	ElseIf(aiTimerID == iStruggleDelayID || (aiTimerID == iStruggleCountDownID && iCountDown > 0))
 		;FV_VoreHud.StruggleBegin()
-		debug.trace("FV_PlayerStruggleScript Timer Begin Struggle in " + iCountDown)
+		debug.trace("FalloutVore:FV_PlayerStruggleScript Timer Begin Struggle in " + iCountDown)
 		FV_VoreHud.StrugglePushMessage("Begin Struggle in " + iCountDown as String, 1)
 		iCountDown -= 1
 		StartTimer(1.0, iStruggleCountDownID)
 	ElseIf(aiTimerID == iStruggleCountDownID && iCountDown <= 0)
-		debug.trace("FV_PlayerStruggleScript Timer Struggle begins!")
+		debug.trace("FalloutVore:FV_PlayerStruggleScript Timer Struggle begins!")
 		FV_VoreHud.StruggleStageChange(iStruggleStageBegin)
 		iCountDown = 3
 		StartTimers()
 	ElseIf(aiTimerID == iStruggleAttemptHUDdelayID)
-		debug.trace("FV_PlayerStruggleScript Timer HUD Delay Clean Up iHudDelayFlag: " + iHudDelayFlag)
+		debug.trace("FalloutVore:FV_PlayerStruggleScript Timer HUD Delay Clean Up iHudDelayFlag: " + iHudDelayFlag)
 		If(iHudDelayFlag == iDelayHudStageAlive)
 			FV_VoreHud.StruggleStageChange(iStruggleStageCleanUp)
 			StartTimer(4.0, iStruggleStartStageID)
@@ -490,7 +490,7 @@ Event OnTimer(Int aiTimerID)
 	ElseIf(aiTimerID == iStruggleStartStageID)
 		SetTimers()
 	ElseIf(aiTimerID == iSecondWindID)
-		debug.trace("FV_PlayerStruggleScript Timer Second Wind.  Reduce iLevelZeroFailed from " + iLevelZeroFailed)
+		debug.trace("FalloutVore:FV_PlayerStruggleScript Timer Second Wind.  Reduce iLevelZeroFailed from " + iLevelZeroFailed)
 		ilevelZeroFailed -= 1
 		SetTimers()
 	EndIf
@@ -499,9 +499,9 @@ EndEvent
 Function HandleSequenceCleanUp()
 	bAllowInput = false
 	int iStruggleFlag = -1
-	debug.trace("FV_PlayerStruggleScript HandleSequenceCleanUp() iNumberCorrect: " + iNumberCorrect + " KeySequence.length: " + KeySequence.length)
+	debug.trace("FalloutVore:FV_PlayerStruggleScript HandleSequenceCleanUp() iNumberCorrect: " + iNumberCorrect + " KeySequence.length: " + KeySequence.length)
 	If(iNumberCorrect != KeySequence.length)
-		debug.trace("FV_PlayerStruggleScript HandleSequenceCleanUp() Player Unsuccessfully struggled iLevel: " + iLevel + " iLevelEscape: " + iLevelEscape)
+		debug.trace("FalloutVore:FV_PlayerStruggleScript HandleSequenceCleanUp() Player Unsuccessfully struggled iLevel: " + iLevel + " iLevelEscape: " + iLevelEscape)
 		float fDamage = 0
 		;The player didn't complete the sequence in time or correctly.
 		iStruggleFlag = iStruggleStageRecededLevel
@@ -534,7 +534,7 @@ Function HandleSequenceCleanUp()
 				EndIf
 				PlayerRef.DamageValue(Health, fDamage)
 				iHudDelayFlag = iDelayHudStageAlive
-				debug.trace("FV_PlayerStruggleScript HandleSequenceCleanUp() Player was dealt " + fDamage + " damage")
+				debug.trace("FalloutVore:FV_PlayerStruggleScript HandleSequenceCleanUp() Player was dealt " + fDamage + " damage")
 			EndIf
 			If(iLevelZeroFailed < 1 && iLevel <= 0)
 				;Level is at 0, set flags to prepare killing player should they fail a second time
@@ -546,9 +546,9 @@ Function HandleSequenceCleanUp()
 	ElseIf(iNumberCorrect == KeySequence.length)
 		iLevelZeroFailed = 0	;reset level 0 tracker
 		iLevel += 1
-		debug.trace("FV_PlayerStruggleScript HandleSequenceCleanUp() Player Successfully struggled iLevel: " + iLevel + " iLevelEscape: " + iLevelEscape)
+		debug.trace("FalloutVore:FV_PlayerStruggleScript HandleSequenceCleanUp() Player Successfully struggled iLevel: " + iLevel + " iLevelEscape: " + iLevelEscape)
 		If(iLevel < iLevelEscape)
-			debug.trace("FV_PlayerStruggleScript HandleSequenceCleanUp() iLevel < iLevelEscape  Restarting Timers")
+			debug.trace("FalloutVore:FV_PlayerStruggleScript HandleSequenceCleanUp() iLevel < iLevelEscape  Restarting Timers")
 			;the player hasn't escaped
 			If(iLevelReached < iLevel)
 				;Give the player some XP for reaching a new level
@@ -562,7 +562,7 @@ Function HandleSequenceCleanUp()
 			iStruggleFlag = iStruggleStageAdvancedLevel
 		Else
 			;the player has escaped!
-			debug.trace("FV_PlayerStruggleScript HandleSequenceCleanUp() iLevel >= iLevelEscape")
+			debug.trace("FalloutVore:FV_PlayerStruggleScript HandleSequenceCleanUp() iLevel >= iLevelEscape")
 			If(bHudActive)
 				SendMessage(4)
 			Else

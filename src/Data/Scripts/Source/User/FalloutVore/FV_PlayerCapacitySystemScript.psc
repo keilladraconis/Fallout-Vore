@@ -34,8 +34,8 @@ Event OnInit()
 	RegisterForCustomEvent(FV_ConsumptionRegistry, "OnDigest")
 EndEvent
 
-Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FV_ConsumptionRegistryScript akSender, Var[] akArgs)
-	;debug.trace("FV_PlayerCapacitySystemScript Received OnDigest Event")
+Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
+	;debug.trace("FalloutVore:FV_PlayerCapacitySystemScript Received OnDigest Event")
 	Actor Sentpred = akArgs[0] as Actor
 	Int DigestType = akArgs[1] as Int
 	If(SentPred == PlayerRef && DigestType == 0)
@@ -57,7 +57,7 @@ Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FV_ConsumptionRegistrySc
 EndEvent
 
 Function ProcessCapacityTraining()
-	;debug.trace("FV_PlayerCapacitySystemScript ProcessCapacityTraining() Processing " + ProcessPrey.length + " PreyCount Items...")
+	;debug.trace("FalloutVore:FV_PlayerCapacitySystemScript ProcessCapacityTraining() Processing " + ProcessPrey.length + " PreyCount Items...")
 	If(bProcessingTraining)
 		return
 	EndIf
@@ -66,7 +66,7 @@ Function ProcessCapacityTraining()
 	while ProcessPrey.length > 0
 		ProcessSinglePrey(ProcessPrey[0].fPreySlots, ProcessPrey[0].fPlayerTotalPreyCount)
 		ProcessPrey.remove(0)
-		;debug.trace("FV_PlayerCapacitySystemScript ProcessCapacityTraining() " + ProcessPrey.length + " remaining...")
+		;debug.trace("FalloutVore:FV_PlayerCapacitySystemScript ProcessCapacityTraining() " + ProcessPrey.length + " remaining...")
 		utility.WaitMenuMode(0.1)
 	endwhile
 	
@@ -75,7 +75,7 @@ Function ProcessCapacityTraining()
 EndFunction
 
 Function ProcessCompanionCapacityTraining()
-	;debug.trace("FV_PlayerCapacitySystemScript ProcessCompanionCapacityTraining() Processing " + ProcessPrey.length + " PreyCount Items...")
+	;debug.trace("FalloutVore:FV_PlayerCapacitySystemScript ProcessCompanionCapacityTraining() Processing " + ProcessPrey.length + " PreyCount Items...")
 	If(bProcessingTraining)
 		return
 	EndIf
@@ -84,7 +84,7 @@ Function ProcessCompanionCapacityTraining()
 	while ProcessPrey.length > 0
 		ProcessCompanionSinglePrey(ProcessPrey[0].fPreySlots, ProcessPrey[0].fPlayerTotalPreyCount, ProcessPrey[0].aPred)
 		ProcessPrey.remove(0)
-		;debug.trace("FV_PlayerCapacitySystemScript ProcessCompanionCapacityTraining() " + ProcessPrey.length + " remaining...")
+		;debug.trace("FalloutVore:FV_PlayerCapacitySystemScript ProcessCompanionCapacityTraining() " + ProcessPrey.length + " remaining...")
 		utility.WaitMenuMode(0.1)
 	endwhile
 	
@@ -93,7 +93,7 @@ Function ProcessCompanionCapacityTraining()
 EndFunction
 
 Function ProcessSinglePrey(Float afSlots, Float afTotalPreyCount)
-	;debug.trace("FV_PlayerCapacitySystemScript ProcessSinglePrey() afSlots: " + afSlots + " afTotalPreyCount: " + afTotalPreyCount + " FV_PlayerMinimumCapacityTraining: " + FV_PlayerMinimumCapacityTraining.GetValue())
+	;debug.trace("FalloutVore:FV_PlayerCapacitySystemScript ProcessSinglePrey() afSlots: " + afSlots + " afTotalPreyCount: " + afTotalPreyCount + " FV_PlayerMinimumCapacityTraining: " + FV_PlayerMinimumCapacityTraining.GetValue())
 	If(afTotalPreyCount <= FV_PlayerMinimumCapacityTraining.GetValue())
 		;bail out.  The player needs to eat more
 		return
@@ -123,10 +123,10 @@ Function ProcessSinglePrey(Float afSlots, Float afTotalPreyCount)
 		FV_PlayerCapacityPoints.SetValue(NewCapacityPoints)
 		;Let the player know.  %0.1f is the format replacer, so divide by 2 to give the player an idea of how many humans they can stuff in their guts
 		
-		debug.trace("FV_PlayerCapacitySystemScript ProcessSinglePrey() Rank Up - FV_PlayerCapacityPoints: " + FV_PlayerCapacityPoints.GetValue() + " FV_BellyCapacity: " + PlayerRef.GetValue(FV_BellyCapacity))
+		debug.trace("FalloutVore:FV_PlayerCapacitySystemScript ProcessSinglePrey() Rank Up - FV_PlayerCapacityPoints: " + FV_PlayerCapacityPoints.GetValue() + " FV_BellyCapacity: " + PlayerRef.GetValue(FV_BellyCapacity))
 	Else
 		FV_PlayerCapacityPoints.SetValue(NewCapacityPoints)
-		debug.trace("FV_PlayerCapacitySystemScript ProcessSinglePrey() No Rank Up - FV_PlayerCapacityPoints: " + FV_PlayerCapacityPoints.GetValue())
+		debug.trace("FalloutVore:FV_PlayerCapacitySystemScript ProcessSinglePrey() No Rank Up - FV_PlayerCapacityPoints: " + FV_PlayerCapacityPoints.GetValue())
 	EndIf
 	
 EndFunction
@@ -180,7 +180,7 @@ Function RankUpCompanions()
 		ElseIf(PlayerRef.GetValue(FV_PredLevel) == 0)
 			Companion.SetValue(FV_BellyCapacity, Companion.GetBaseValue(FV_BellyCapacity)+1)
 		EndIf
-		debug.trace("FV_PlayerCapacitySystemScript RankUpCompanions() Actor: " + Companion + " FV_BellyCapacity: " + Companion.GetBaseValue(FV_BellyCapacity))
+		debug.trace("FalloutVore:FV_PlayerCapacitySystemScript RankUpCompanions() Actor: " + Companion + " FV_BellyCapacity: " + Companion.GetBaseValue(FV_BellyCapacity))
 		i += 1
 	EndWhile
 EndFunction

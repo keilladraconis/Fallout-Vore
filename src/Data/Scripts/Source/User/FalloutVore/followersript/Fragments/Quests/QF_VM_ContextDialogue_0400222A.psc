@@ -3,9 +3,9 @@ Scriptname FalloutVore:followersript:Fragments:Quests:QF_VM_ContextDialogue_0400
 
 ;BEGIN FRAGMENT Fragment_Stage_0010_Item_00
 Function Fragment_Stage_0010_Item_00()
-;BEGIN AUTOCAST TYPE FV_ContextVoreQuestScript
+;BEGIN AUTOCAST TYPE FalloutVore:FV_ContextVoreQuestScript
 Quest __temp = self as Quest
-FV_ContextVoreQuestScript kmyQuest = __temp as FV_ContextVoreQuestScript
+FalloutVore:FV_ContextVoreQuestScript kmyQuest = __temp as FalloutVore:FV_ContextVoreQuestScript
 ;END AUTOCAST
 ;BEGIN CODE
 kmyQuest.EndDialogue()
@@ -16,9 +16,9 @@ EndFunction
 
 ;BEGIN FRAGMENT Fragment_Stage_0012_Item_00
 Function Fragment_Stage_0012_Item_00()
-;BEGIN AUTOCAST TYPE FV_ContextVoreQuestScript
+;BEGIN AUTOCAST TYPE FalloutVore:FV_ContextVoreQuestScript
 Quest __temp = self as Quest
-FV_ContextVoreQuestScript kmyQuest = __temp as FV_ContextVoreQuestScript
+FalloutVore:FV_ContextVoreQuestScript kmyQuest = __temp as FalloutVore:FV_ContextVoreQuestScript
 ;END AUTOCAST
 ;BEGIN CODE
 ContextNPC.GetActorReference().SetValue(VM_ContextPreyAnnoyed, 3)
@@ -30,9 +30,9 @@ EndFunction
 
 ;BEGIN FRAGMENT Fragment_Stage_0020_Item_00
 Function Fragment_Stage_0020_Item_00()
-;BEGIN AUTOCAST TYPE FV_ContextVoreQuestScript
+;BEGIN AUTOCAST TYPE FalloutVore:FV_ContextVoreQuestScript
 Quest __temp = self as Quest
-FV_ContextVoreQuestScript kmyQuest = __temp as FV_ContextVoreQuestScript
+FalloutVore:FV_ContextVoreQuestScript kmyQuest = __temp as FalloutVore:FV_ContextVoreQuestScript
 ;END AUTOCAST
 ;BEGIN CODE
 VM_SwallowNonLethalSpell.cast(game.getplayer(), ContextNPC.GetActorReference())
@@ -44,9 +44,9 @@ EndFunction
 
 ;BEGIN FRAGMENT Fragment_Stage_0025_Item_00
 Function Fragment_Stage_0025_Item_00()
-;BEGIN AUTOCAST TYPE FV_ContextVoreQuestScript
+;BEGIN AUTOCAST TYPE FalloutVore:FV_ContextVoreQuestScript
 Quest __temp = self as Quest
-FV_ContextVoreQuestScript kmyQuest = __temp as FV_ContextVoreQuestScript
+FalloutVore:FV_ContextVoreQuestScript kmyQuest = __temp as FalloutVore:FV_ContextVoreQuestScript
 ;END AUTOCAST
 ;BEGIN CODE
 VM_SwallowNonLethalSpell.cast(game.getplayer(), ContextNPC.GetActorReference())
@@ -58,9 +58,9 @@ EndFunction
 
 ;BEGIN FRAGMENT Fragment_Stage_0030_Item_00
 Function Fragment_Stage_0030_Item_00()
-;BEGIN AUTOCAST TYPE FV_ContextVoreQuestScript
+;BEGIN AUTOCAST TYPE FalloutVore:FV_ContextVoreQuestScript
 Quest __temp = self as Quest
-FV_ContextVoreQuestScript kmyQuest = __temp as FV_ContextVoreQuestScript
+FalloutVore:FV_ContextVoreQuestScript kmyQuest = __temp as FalloutVore:FV_ContextVoreQuestScript
 ;END AUTOCAST
 ;BEGIN CODE
 Utility.Wait(0.5)
@@ -83,9 +83,9 @@ EndFunction
 
 ;BEGIN FRAGMENT Fragment_Stage_0035_Item_00
 Function Fragment_Stage_0035_Item_00()
-;BEGIN AUTOCAST TYPE FV_ContextVoreQuestScript
+;BEGIN AUTOCAST TYPE FalloutVore:FV_ContextVoreQuestScript
 Quest __temp = self as Quest
-FV_ContextVoreQuestScript kmyQuest = __temp as FV_ContextVoreQuestScript
+FalloutVore:FV_ContextVoreQuestScript kmyQuest = __temp as FalloutVore:FV_ContextVoreQuestScript
 ;END AUTOCAST
 ;BEGIN CODE
 Utility.Wait(0.5)
@@ -105,9 +105,9 @@ EndFunction
 
 ;BEGIN FRAGMENT Fragment_Stage_0040_Item_00
 Function Fragment_Stage_0040_Item_00()
-;BEGIN AUTOCAST TYPE FV_ContextVoreQuestScript
+;BEGIN AUTOCAST TYPE FalloutVore:FV_ContextVoreQuestScript
 Quest __temp = self as Quest
-FV_ContextVoreQuestScript kmyQuest = __temp as FV_ContextVoreQuestScript
+FalloutVore:FV_ContextVoreQuestScript kmyQuest = __temp as FalloutVore:FV_ContextVoreQuestScript
 ;END AUTOCAST
 ;BEGIN CODE
 Actor TempActor = VM_Prey.GetActorReference()
@@ -119,9 +119,9 @@ EndFunction
 
 ;BEGIN FRAGMENT Fragment_Stage_0045_Item_00
 Function Fragment_Stage_0045_Item_00()
-;BEGIN AUTOCAST TYPE FV_ContextVoreQuestScript
+;BEGIN AUTOCAST TYPE FalloutVore:FV_ContextVoreQuestScript
 Quest __temp = self as Quest
-FV_ContextVoreQuestScript kmyQuest = __temp as FV_ContextVoreQuestScript
+FalloutVore:FV_ContextVoreQuestScript kmyQuest = __temp as FalloutVore:FV_ContextVoreQuestScript
 ;END AUTOCAST
 ;BEGIN CODE
 kmyQuest.FinishedContext(Game.GetPlayer(), true, true)
@@ -134,9 +134,9 @@ EndFunction
 
 ;BEGIN FRAGMENT Fragment_Stage_0050_Item_00
 Function Fragment_Stage_0050_Item_00()
-;BEGIN AUTOCAST TYPE FV_ContextVoreQuestScript
+;BEGIN AUTOCAST TYPE FalloutVore:FV_ContextVoreQuestScript
 Quest __temp = self as Quest
-FV_ContextVoreQuestScript kmyQuest = __temp as FV_ContextVoreQuestScript
+FalloutVore:FV_ContextVoreQuestScript kmyQuest = __temp as FalloutVore:FV_ContextVoreQuestScript
 ;END AUTOCAST
 ;BEGIN CODE
 Actor TempActor = VM_Prey.GetActorReference()
@@ -148,9 +148,9 @@ EndFunction
 
 ;BEGIN FRAGMENT Fragment_Stage_0060_Item_00
 Function Fragment_Stage_0060_Item_00()
-;BEGIN AUTOCAST TYPE FV_ContextVoreQuestScript
+;BEGIN AUTOCAST TYPE FalloutVore:FV_ContextVoreQuestScript
 Quest __temp = self as Quest
-FV_ContextVoreQuestScript kmyQuest = __temp as FV_ContextVoreQuestScript
+FalloutVore:FV_ContextVoreQuestScript kmyQuest = __temp as FalloutVore:FV_ContextVoreQuestScript
 ;END AUTOCAST
 ;BEGIN CODE
 Game.GetPlayer().SetValue(VM_RegurgitateBool, 1)
@@ -232,9 +232,9 @@ EndFunction
 
 ;BEGIN FRAGMENT Fragment_Stage_0210_Item_00
 Function Fragment_Stage_0210_Item_00()
-;BEGIN AUTOCAST TYPE FV_ContextVoreQuestScript
+;BEGIN AUTOCAST TYPE FalloutVore:FV_ContextVoreQuestScript
 Quest __temp = self as Quest
-FV_ContextVoreQuestScript kmyQuest = __temp as FV_ContextVoreQuestScript
+FalloutVore:FV_ContextVoreQuestScript kmyQuest = __temp as FalloutVore:FV_ContextVoreQuestScript
 ;END AUTOCAST
 ;BEGIN CODE
 kmyquest.DigestPlayer()
@@ -246,9 +246,9 @@ EndFunction
 
 ;BEGIN FRAGMENT Fragment_Stage_1000_Item_00
 Function Fragment_Stage_1000_Item_00()
-;BEGIN AUTOCAST TYPE FV_ContextVoreQuestScript
+;BEGIN AUTOCAST TYPE FalloutVore:FV_ContextVoreQuestScript
 Quest __temp = self as Quest
-FV_ContextVoreQuestScript kmyQuest = __temp as FV_ContextVoreQuestScript
+FalloutVore:FV_ContextVoreQuestScript kmyQuest = __temp as FalloutVore:FV_ContextVoreQuestScript
 ;END AUTOCAST
 ;BEGIN CODE
 kmyQuest.DebugReset()

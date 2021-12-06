@@ -17,7 +17,7 @@ ActorValue Property FV_HasHadNukaAcid Auto
 ActorValue Property FV_SwallowStrength Auto
 Potion Property FV_RemoveWeapons Auto
 
-FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto
+FalloutVore:FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto
 
 Event OnEffectStart(actor akTarget, actor akCaster)
 	

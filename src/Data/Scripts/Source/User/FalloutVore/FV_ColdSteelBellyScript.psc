@@ -8,7 +8,7 @@ ActorValue Property FV_HumanPreyCount Auto
 ActorValue Property FV_CurrentPrey Auto
 FormList Property FV_ColdSteelArmorMaster Auto
 GlobalVariable Property FV_MaxBellySize Auto
-FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto
+FalloutVore:FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto
 
 string sCBBEGiantbelly = "Giant belly (coldsteelj)"
 string sCBBEVorePreyBelly = "Vore prey belly"

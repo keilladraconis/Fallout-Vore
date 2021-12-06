@@ -7,7 +7,7 @@ Actor akSpeaker = akSpeakerRef as Actor
 ;BEGIN CODE
 If(pCaravanLuiseCurrentStatus.GetValue()==1)
 Quest __temp = pVMS01_BriaQuest as Quest
-FVS01_QuestScript kmyQuest = __temp as FVS01_QuestScript
+FalloutVore:FVS01_QuestScript kmyQuest = __temp as FalloutVore:FVS01_QuestScript
 
 kmyQuest.AdvanceCaravan()
 EndIf

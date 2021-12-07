@@ -1,5 +1,7 @@
 Scriptname FalloutVore:FV_FalloutVoreMCMScript extends Quest
 
+import FalloutVore:FV_VoreUtilityScript
+
 ReferenceAlias Property CurrentCompanion Auto Const
 
 Group ActorValues
@@ -104,10 +106,10 @@ Function EnableOnStart()
 	bClothesripChance = MCM.GetModSettingBool(sModName, "bClothesRipEnabledOnStart:FalloutVoreMain")
 	If(bClothesripChance)
 		FV_ClothesripChance.SetValue(50)
-		FV_ConsumptionRegistry.trace(self, "Clothes ripping turned on")
+		Trace(self, "Clothes ripping turned on")
 	Else
 		FV_ClothesripChance.SetValue(0)
-		FV_ConsumptionRegistry.trace(self, "Clothes ripping turned off")
+		Trace(self, "Clothes ripping turned off")
 	EndIf
 	FV_ScatEnabled.SetValue(MCM.GetModSettingBool(sModName, "bScatEnabledOnStart:FalloutVoreMain") as float)
 	FV_FemaleVoreEnabled.SetValue(MCM.GetModSettingBool(sModName, "bFemaleVoreEnabledOnStart:FalloutVoreMain") as float)
@@ -203,7 +205,7 @@ EndFunction
 
 Function OnMCMSettingChange(string modName, string id)
 	If(modName == sModName)
-		FV_ConsumptionRegistry.trace(self, "FOVore MCM received update setting")
+		Trace(self, "FOVore MCM received update setting")
 		;If(id == "FOVoreEnable" && FV_PlayerNeedsNuka.GetValue() == 1)
 		;	debug.messagebox("Experiment Activated")
 		;	FV_PlayerNeedsNuka.SetValue(0)
@@ -215,10 +217,10 @@ Function OnMCMSettingChange(string modName, string id)
 		If(id == "ClothingToggle")
 			If(bClothesripChance)
 				FV_ClothesripChance.SetValue(50)
-				FV_ConsumptionRegistry.trace(self, "Clothes ripping turned on")
+				Trace(self, "Clothes ripping turned on")
 			Else
 				FV_ClothesripChance.SetValue(0)
-				FV_ConsumptionRegistry.trace(self, "Clothes ripping turned off")
+				Trace(self, "Clothes ripping turned off")
 			EndIf
 		ElseIf(id == "ContextVore")
 			;If(bContextVore)

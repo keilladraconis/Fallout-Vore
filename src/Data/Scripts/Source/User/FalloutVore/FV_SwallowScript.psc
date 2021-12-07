@@ -1,5 +1,8 @@
 Scriptname FalloutVore:FV_SwallowScript extends activemagiceffect
 {Enchantment applied to swallow weapon. Calcs swallow chance and performs swallow if succssesful.}
+
+import FalloutVore:FV_VoreUtilityScript
+
 Group ActorValues
 	;ActorValue Property ActionPoints Auto
 	;ActorValue Property Health Auto
@@ -201,9 +204,10 @@ Event OnEffectStart(actor akTarget, actor akCaster)
 					preyResist = predSwallow + 100.0
 					;return
 				EndIf
-				debug.trace("SwallowScript akTarget: " + akTarget + " preyResist: " + preyResist + " akCaster: " + akCaster + " predSwallow: " + predSwallow)
+				Trace(self,"SwallowScript akTarget: " + akTarget + " preyResist: " + preyResist + " akCaster: " + akCaster + " predSwallow: " + predSwallow)
 				If(preyResist < predSwallow)			
 					int swallowedIndex = FV_ConsumptionRegistry.Add(akCaster, akTarget, true)
+					Trace(self,"SwallowedIndex: " + swallowedIndex)
 					If (swallowedIndex >= 0)
 						HandleSwallowSuccess(akCaster, akTarget)
 					EndIf
@@ -211,12 +215,12 @@ Event OnEffectStart(actor akTarget, actor akCaster)
 			EndIf
 		EndIf
 	
-	debug.trace("SwallowScript OnEffectStart end")
+	Trace(self,"SwallowScript OnEffectStart end")
 	Dispel()
 EndEvent
 
 Function HandleSwallowSuccess(Actor akCaster, Actor akTarget)
-	debug.trace("HandleSwallowSuccess")
+	Trace(self,"HandleSwallowSuccess")
 	;swallow success
 	If(akCaster == PlayerRef && !IsNonLethalVore)
 		;Make player spend Action Points

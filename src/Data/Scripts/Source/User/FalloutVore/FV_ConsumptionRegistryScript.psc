@@ -3,6 +3,8 @@ Scriptname FalloutVore:FV_ConsumptionRegistryScript extends Quest
 so that in the event of vomit or escape they can reappear at the correct location. Also facilitates looking up a prey
 actor, or returning a list of prey actors given a predator actor.}
 
+import FalloutVore:FV_VoreUtilityScript
+
 Group ActorValues
 	ActorValue Property EnduranceAV Auto Const Mandatory
 	ActorValue Property HealthAV Auto Const Mandatory
@@ -223,7 +225,7 @@ EndStruct
 Event OnInit()
 	PlayerRef.AddPerk(FV_ContextVorePerk)
 	RegisterForRemoteEvent(PlayerRef, "OnPlayerLoadGame")
-	debug.trace("Fallout Vore v3.0 initialized")
+	trace(self, "Fallout Vore v3.0 initialized")
 	RegisterForPlayerSleep()
 	RegisterForPlayerWait()
 	FV_VoreSurvival.RegisterForVoreSurvival(True)
@@ -231,7 +233,7 @@ Event OnInit()
 EndEvent
 
 Event Actor.OnPlayerLoadGame(Actor akSender)
-	debug.trace("Fallout Vore v3.0 loaded")
+	trace(self, "Fallout Vore v3.0 loaded")
 	FV_VoreSurvival.RegisterForVoreSurvival(True)
 	RunDLCPatches()
 EndEvent
@@ -397,6 +399,8 @@ int Function Add(Actor akPred, Actor akPrey, Bool abIsLethal = false)
 	data.BellyContainer = bellyContainer
 	data.IsLethal = abIsLethal
 	ConsumptionRegistry.Add(data)
+	UpdateCurrentInStomach(akPred)
+
 	StartTimer(1.0, DigestTimerID) ; Start the digestion timer.
 	Return ConsumptionRegistry.Length - 1
 EndFunction
@@ -416,7 +420,7 @@ EndFunction
 Actor[] Function GetAllPrey(Actor akPred)
 	Actor[] prey = new Actor[0]
 	int i = 0
-	While i < ConsumptionRegistry.Length
+	While i < ConsumptionRegistry.Length && i < 128
 		If ConsumptionRegistry[i].pred == akPred
 			prey.Add(ConsumptionRegistry[i].prey)
 		EndIf
@@ -459,13 +463,14 @@ Function UpdateCurrentInStomach(Actor akPred = None, bool updateFullness = false
 	int alivePrey = 0
 	int humanPrey = 0
 	int i = 0
-	While (i < preys.Length)
+	While i < preys.Length && i < 128
 		If (!preys[i].isDead())
 			alivePrey += 1
 		EndIf
 		If (FV_ActorData.GetIsHumanoid(preys[i]))
 			humanPrey += 1
 		EndIf
+		i += 1
 	EndWhile
 
 	akPred.SetValue(FV_CurrentPrey, preys.Length)
@@ -473,9 +478,9 @@ Function UpdateCurrentInStomach(Actor akPred = None, bool updateFullness = false
 	akPred.SetValue(FV_HumanPreyCount, humanPrey)
 
 	; Updates the belly appearance
-	if(updateFullness)
-		ChangeFullnessArmor(akPred, preys.Length)
-	EndIf
+	; if(updateFullness)
+	; 	ChangeFullnessArmor(akPred, preys.Length)
+	; EndIf
 	
 	; Apply heavy pred perks
 	If(FV_AllowHeavyPred.GetValue() == 1)
@@ -511,7 +516,7 @@ Function UpdateDigestionPreyCount(Actor akPred)
 
 		Actor[] preys = GetAllPrey(akPred)
 		int i = 0
-		While(i < preys.Length && keepSearching)
+		While i < preys.Length && keepSearching && i < 128
 			int slotSize = FV_ActorData.EvaluateSlots(preys[i])
 			slotSize = (((slotSize/2-1) * 3) + 3) as int
 			If(slotSize < 3)
@@ -580,7 +585,7 @@ Function DropCombatOnPlayerPrey(Actor akPred, Actor akPrey)
 	PlayerRef.AddToFaction(FV_PredPreyFaction)
 	PlayerRef.StopCombatAlarm()
 	int i = 0
-	While(i < AllCombatNPC.length)
+	While i < AllCombatNPC.length && i < 128
 		AllCombatNPC[i].AddToFaction(FV_PredPreyFaction)
 		FV_PredPreyFormList.AddForm(AllCombatNPC[i])
 		AllCombatNPC[i].EvaluatePackage(true)
@@ -848,7 +853,7 @@ Event OnTimer(int aiTimerID)
 		PreyData data
 		Actor pred
 		Actor prey
-		While i < ConsumptionRegistry.Length
+		While i < ConsumptionRegistry.Length && i < 128
 			data = ConsumptionRegistry[i]
 			pred = data.Pred
 			prey = data.Prey
@@ -1090,7 +1095,7 @@ Function ChangeFullnessArmor(actor ak, Int newValue)
 	Bool[] RemoveNonHumanArmor = new Bool[VoreBellyArray.Length]
 	int i = 0
 	Int oldValue = 0
-	While(i < VoreBellyArray.Length)
+	While(i < VoreBellyArray.Length && i < 128)
 		RemoveHumanArmor[i] = ak.GetItemCount(VoreBellyArray[i].HumanVoreBelly) > 0
 		RemoveNonHumanArmor[i] = ak.GetItemCount(VoreBellyArray[i].NonHumanVoreBelly) > 0
 		If(RemoveHumanArmor[i] || RemoveNonHumanArmor[i])
@@ -1119,7 +1124,7 @@ Function ChangeFullnessArmor(actor ak, Int newValue)
 		EndIf
 	EndIf
 	i = 0
-	While(i < VoreBellyArray.Length)
+	While(i < VoreBellyArray.Length && i < 128)
 		If(RemoveHumanArmor[i])
 			ak.UnEquipItem(VoreBellyArray[i].HumanVoreBelly, true, true)
 			ak.RemoveItem(VoreBellyArray[i].HumanVoreBelly, 1, true, NONE)
@@ -1138,7 +1143,7 @@ function ChangeDigestFullnessArmor(Actor currentDigester, int item = -1) ; item 
 
 	if(item == -1)
 		int i = 1
-		While (i < DigestionArmor.Length)
+		While (i < DigestionArmor.Length && i < 128)
 			currentDigester.UnequipItem (DigestionArmor[i], true, true)
 			currentDigester.RemoveItem (DigestionArmor[i], 1, true, None)
 			i += 1
@@ -1202,7 +1207,7 @@ EndFunction
 ; Remoes actors from the PredPrey faction and resets them so they resume fighting.
 Function ClearPredPreyFaction()
 	int i = 0
-	While(i<FV_PredPreyFormList.GetSize())
+	While(i < FV_PredPreyFormList.GetSize() && i < 128)
 		If((FV_PredPreyFormList.GetAt(i) as Actor).IsInFaction(FV_PredPreyFaction))
 			(FV_PredPreyFormList.GetAt(i) as Actor).RemoveFromFaction(FV_PredPreyFaction)
 			(FV_PredPreyFormList.GetAt(i) as Actor).EvaluatePackage(true)
@@ -1282,7 +1287,7 @@ Function ResetVoreMod(Bool abResetPlayer = False)
 	
 	trace(self, "          Reset pred and prey")
 	int i = 0
-	While (i < ConsumptionRegistry.Length)
+	While (i < ConsumptionRegistry.Length && i < 128)
 		data = ConsumptionRegistry[i]
 		pred = data.Pred
 		prey = data.Prey
@@ -1350,18 +1355,6 @@ Function ResetVoreMod(Bool abResetPlayer = False)
 	GotoState("")
 EndFunction
 
-bool Function trace(ScriptObject CallingObject, string asTextToPrint, int aiSeverity = 0, PreyData data = NONE) debugOnly
-	;we are sending callingObject so we can in the future route traces to different logs based on who is calling the function
-	string logName = "FalloutVore"
-	debug.OpenUserLog(logName)
-	If(data != NONE)
-		debug.TraceUser(logName, CallingObject + ": Outputting struct information.", aiSeverity)
-		RETURN debug.TraceUser(logName, CallingObject + ": " + data, aiSeverity)
-	Else
-		RETURN debug.TraceUser(logName, CallingObject + ": " + asTextToPrint, aiSeverity)
-	EndIf
-EndFunction
-
 int WakeUpTick
 float WakeDay
 float SleepWaitStartDay
@@ -1404,7 +1397,7 @@ Function PlayerSleepWaitStop()
 	SleepWaitStopDay = Utility.GetCurrentGameTime()
 	WakeDay = Utility.GetCurrentGameTime()
 	int i = 0
-	while i < ConsumptionRegistry.Length
+	while (i < ConsumptionRegistry.Length && i < 128)
 		HandleDigestionStage(ConsumptionRegistry[i])
 		i += 1
 	EndWhile

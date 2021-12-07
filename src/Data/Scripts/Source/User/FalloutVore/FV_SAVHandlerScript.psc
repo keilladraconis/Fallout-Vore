@@ -1,5 +1,7 @@
 Scriptname FalloutVore:FV_SAVHandlerScript extends Quest Conditional
 
+import FalloutVore:FV_VoreUtilityScript
+
 ActorValue Property FV_HasHadNukaAcid Auto
 FalloutVore:FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto
 FollowersScript Property Followers Auto
@@ -101,14 +103,14 @@ EndFunction
 
 Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FalloutVore:FV_ConsumptionRegistryScript akSend, Var[] akArgs)
 	If(CompanionAlias.GetActorRef() == NONE || CompanionAlias.GetActorRef().HasKeyword(ActorTypeCreature) || CompanionAlias.GetActorRef().HasKeyword(ActorTypeAnimal))
-		FV_ConsumptionRegistry.trace(self, "SAVHandler reports companion is a Creature or a None form. Skipping dialogue event.")
+		Trace(self, "SAVHandler reports companion is a Creature or a None form. Skipping dialogue event.")
 	Else
 		Int EventType = akArgs[1] as Int
 		If(EventType == DigestEventStart && CompanionAlias != NONE)
 			Actor PredToCheck = akArgs[0] as Actor
 			Actor PreyToCheck = akArgs[2] as Actor
 			Companion = CompanionAlias.GetActorRef()
-			FV_ConsumptionRegistry.trace(self, "  SAV: Received OnDigest event. PredToCheck: " + PredToCheck + "; PreyToCheck: " + PreyToCheck)
+			Trace(self, "  SAV: Received OnDigest event. PredToCheck: " + PredToCheck + "; PreyToCheck: " + PreyToCheck)
 			If(Companion != NONE)
 				int chanceToSkip = Utility.randomint()
 				If(!Companion.IsTalking() && !PreyToCheck.HasKeyword(ActorTypeTurret) && (PreyToCheck.HasKeyword(ActorTypeDeathclaw) || chanceToSkip > FV_SkipPercentage.GetValue() as int))
@@ -128,13 +130,13 @@ EndEvent
 Event FalloutVore:FV_ConsumptionRegistryScript.OnSwallow(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
 	;debug.notification("received swallow event")
 	If(CompanionAlias.GetActorRef() == NONE || CompanionAlias.GetActorRef().HasKeyword(ActorTypeCreature) || CompanionAlias.GetActorRef().HasKeyword(ActorTypeAnimal))
-		FV_ConsumptionRegistry.trace(self, "SAVHandler reports companion is a Creature or a None form. Skipping dialogue event.")
+		Trace(self, "SAVHandler reports companion is a Creature or a None form. Skipping dialogue event.")
 	Else
 		int chanceToSkip = Utility.randomint()
 		Actor PredToCheck = akArgs[0] as Actor
 		Bool isLethal = akArgs[1] as Bool
 		Actor PreyToCheck = akArgs[2] as Actor
-		FV_ConsumptionRegistry.trace(self, "  SAV: Received OnSwallow event. PredToCheck: " + PredToCheck + "; IsLethal: " + isLethal + "; PreyToCheck: " + PreyToCheck)
+		Trace(self, "  SAV: Received OnSwallow event. PredToCheck: " + PredToCheck + "; IsLethal: " + isLethal + "; PreyToCheck: " + PreyToCheck)
 		Companion = CompanionAlias.GetActorRef()
 		If(Companion != NONE)
 			If(!Companion.IsTalking() && !PreyToCheck.HasKeyword(ActorTypeTurret) && !PreyToCheck.IsDead() && (PreyToCheck.HasKeyword(ActorTypeDeathclaw) || chanceToSkip > FV_SkipPercentage.GetValue() as int))

@@ -1,5 +1,7 @@
 Scriptname FalloutVore:FV_ColdSteelBellyScript Extends Quest
 
+import FalloutVore:FV_VoreUtilityScript
+
 Armor Property FV_ColdSteelBellySound Auto
 ActorValue Property FV_HasBloating Auto
 ActorValue Property FV_DigestionStarted Auto
@@ -19,7 +21,7 @@ Function SaveBelly(Actor akPred)
 	;If(akPred.HasKeyword(ColdSteelBody) && akPred.GetValue(FV_CurrentPrey) as int == 0)
 		Float BellySave = BodyGen.GetMorph(akPred, true, sCBBEGiantbelly, NONE)
 		akPred.SetValue(FV_GiantBelly, BellySave)
-		FV_ConsumptionRegistry.trace(self, "setting giant belly to " + akPred.GetValue(FV_GiantBelly))
+		Trace(self, "setting giant belly to " + akPred.GetValue(FV_GiantBelly))
 	;EndIf
 EndFunction
 
@@ -87,7 +89,7 @@ Bool Function ChangeColdSteelDigestFullness(Actor akPred, Float TimerState)
 		BodyGen.SetMorph(akPred, predGender, sCBBEGiantBelly, NONE, MaxTimerState * fGiantBellyMultiplier)
 		bUpdateGiantBelly = true
 	ElseIf(TimerState < MaxTimerState && TimerState > 0)
-		FV_ConsumptionRegistry.trace(self, "ChangeColdSteelDigestFullness() FV_GiantBelly: " + akPred.GetValue(FV_GiantBelly) + " TimerStateAndMult: " +TimerState*fGiantBellyMultiplier + " fUpdateGiantBelly: " + fUpdateGiantBelly + " MaxTimerState: " + MaxTimerState)
+		Trace(self, "ChangeColdSteelDigestFullness() FV_GiantBelly: " + akPred.GetValue(FV_GiantBelly) + " TimerStateAndMult: " +TimerState*fGiantBellyMultiplier + " fUpdateGiantBelly: " + fUpdateGiantBelly + " MaxTimerState: " + MaxTimerState)
 		If(akPred.GetValue(FV_DigestionStarted) as int == 0)
 			;Float tempTimerState = data.TimerState as float	
 			If(akPred.GetValue(FV_GiantBelly) as float < TimerState*fGiantBellyMultiplier)
@@ -131,7 +133,7 @@ Bool Function CheckItemForKeyword(Actor akPred)
 		ItemSearch = ListSearch.HasForm(wornItem.item)
 		i += 1
 	EndWhile
-	FV_ConsumptionRegistry.trace(self, "akPred: " + akPred + " wornItem.item: " + wornItem.item + " ItemSearch: " + ItemSearch)
+	Trace(self, "akPred: " + akPred + " wornItem.item: " + wornItem.item + " ItemSearch: " + ItemSearch)
 	return ItemSearch
 EndFunction
 

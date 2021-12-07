@@ -1,5 +1,7 @@
 Scriptname FalloutVore:FV_LevelUpManagerScript extends Quest
 
+import FalloutVore:FV_VoreUtilityScript
+
 Group Actor_Values
 	ActorValue Property FV_HasHadNukaAcid Auto
 	ActorValue Property FV_PredLevel Auto
@@ -116,7 +118,7 @@ Function RegisterLevelUpVoreMenu()
 EndFunction
 
 Function CalculateVoreXP(Actor akPred, Actor akPrey)
-	FV_ConsumptionRegistry.trace(self, "CalculateVoreXP() akPred: " + akPred + " akPrey: " + akPrey)
+	Trace(self, "CalculateVoreXP() akPred: " + akPred + " akPrey: " + akPrey)
 	Actor PredToLevel = akPred
 	float VoreLevel = akPred.GetValue(FV_PredLevel) + akPred.GetValue(FV_PreyLevel) + 13.0	;modify by 13 to bring base preyelevel to old 14 base
 	If(akPred == PlayerRef || akPred.IsInFaction(HasBeenCompanionFaction))
@@ -189,7 +191,7 @@ Function CheckLevelUp(Float afXPGain, Actor akActorToLevel, float akVoreLevel)
 	If(ActorToLevel == PlayerRef)
 		FV_VoreHud.UpdatePlayerXP((OldXP/OldLevelReq * 100) as int, (ActorToLevel.GetValue(FV_VoreXP)/LevelReq * 100) as int, newXPGain as int, levelUp as int)
 	Endif
-	FV_ConsumptionRegistry.trace(self, "Actor " + ActorToLevel + "Previous XP: " + OldXP + " newXPGain: " + newXPGain + " New XP: " + ActorToLevel.GetValue(FV_VoreXP) + " Old Level: " + OldLevel + " NewLevel: " + akVoreLevel)
+	Trace(self, "Actor " + ActorToLevel + "Previous XP: " + OldXP + " newXPGain: " + newXPGain + " New XP: " + ActorToLevel.GetValue(FV_VoreXP) + " Old Level: " + OldLevel + " NewLevel: " + akVoreLevel)
 	
 EndFunction
 
@@ -203,7 +205,7 @@ Function LevelUpNPC(Actor akPred, Int levelUp = -1)
 			akPred.ModValue(FV_PreyLevel, levelUp)
 		EndIf
 	EndIf
-	FV_ConsumptionRegistry.trace(self, "Received level up for " + akPred)
+	Trace(self, "Received level up for " + akPred)
 	CheckTraits(akPred)
 	CheckGlobal(akPred)
 	LevelActor(akPred)
@@ -280,7 +282,6 @@ Function LevelActor(Actor ActorToLevel)
 	
 	If(ActorToLevel == PlayerRef || ActiveCompanions.Find(ActorToLevel) >= 0)
 		Int i = 0
-		;FV_ConsumptionRegistry.trace(self, "  Parsed active companions for max level")			;Remove this line before release
 		Actor Companion
 		While(i < ActiveCompanions.GetCount())
 			Companion = ActiveCompanions.GetAt(i) as Actor
@@ -302,7 +303,7 @@ Function LevelActor(Actor ActorToLevel)
 		FV_spNPC_PerkCheck.Cast(ActorToLevel, ActorToLevel)
 		CheckTraits(ActorToLevel)
 	EndIf
-	FV_ConsumptionRegistry.trace(self, "Finished level up for " + ActorToLevel)
+	Trace(self, "Finished level up for " + ActorToLevel)
 EndFunction
 
 int iEditLockCount = 1

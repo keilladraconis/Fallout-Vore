@@ -1,5 +1,7 @@
 Scriptname FalloutVore:FV_PerkManagerScript extends ActiveMagicEffect
 
+import FalloutVore:FV_VoreUtilityScript
+
 Struct PerkArray
 	Perk VorePerk
 	Int VoreLevelReq = 1
@@ -33,7 +35,7 @@ EndEvent
 
 Function PerformLevelUp(Actor ActorToLevel)
 	Int i = 0
-		FV_ConsumptionRegistry.trace(self, " performing level up on: " + ActorToLevel)
+		Trace(self, " performing level up on: " + ActorToLevel)
 		int PredLevel = ActorToLevel.GetValue(FV_PredLevel) as int
 		int PreyLevel = ActorToLevel.GetValue(FV_PreyLevel) as int
 		While(i < VorePerksArray.Length)

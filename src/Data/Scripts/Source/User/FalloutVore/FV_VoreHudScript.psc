@@ -1,6 +1,7 @@
 Scriptname FalloutVore:FV_VoreHudScript extends Quest
 
 HUDFramework hud
+import FalloutVore:FV_VoreUtilityScript
 
 String Property VoreHud = "FalloutVore_hud.swf" AutoReadOnly Hidden
 
@@ -17,8 +18,6 @@ Group ExpProperties
 	Sound Property UIExperienceUpVore_FV_ Auto
 	Sound Property UILevelUpTextVore_FV_ Auto
 EndGroup
-
-
 
 Int Property Command_ThiccUpdateStats	 			= 100 AutoReadOnly Hidden
 Int Property Command_ThiccUpdateName 				= 110 AutoReadOnly Hidden
@@ -87,6 +86,7 @@ Function HUD_WidgetLoaded(string asWidget)
 EndFunction
 
 Function SendTrackerUpdate()
+	Trace(self)
 	if(hud)
 		Actor PlayerRef = Game.GetPlayer()
 		float playerprey = PlayerRef.GetValue(FV_CurrentPrey)

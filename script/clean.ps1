@@ -1,0 +1,1 @@
+Get-ChildItem . -Recurse -Include *.pex | Remove-Item

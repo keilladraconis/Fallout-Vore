@@ -54,6 +54,19 @@
             "problemMatcher": []
         },
         {
+            "label": "Powershell: Clean",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-ExecutionPolicy",
+                "Unrestricted",
+                "-NoProfile",
+                "-File",
+                "${cwd}\\script\\clean.ps1"
+            ],
+            "problemMatcher": []
+        },
+        {
             "label": "Powershell: Checkout ESM",
             "type": "shell",
             "command": "powershell",

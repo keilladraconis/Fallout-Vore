@@ -146,7 +146,6 @@ Group Scripts
 	FalloutVore:FV_ColdSteelBellyScript Property FV_ColdSteelBellyQuest Auto Const Mandatory
 	FalloutVore:FV_PlayerStruggleScript Property FV_PlayerStruggle Auto Const Mandatory
 	FalloutVore:FV_ScatManagerScript Property FV_ScatManager Auto Const Mandatory
-	FalloutVore:FV_VoreHudScript Property FV_VoreHud Auto Const Mandatory
 	FalloutVore:FV_VoreSurvivalScript Property FV_VoreSurvival Auto Const Mandatory
 EndGroup
 
@@ -194,6 +193,14 @@ CustomEvent OnSwallow
 CustomEvent OnDigest
 CustomEvent OnVomit
 CustomEvent OnDigestProtection
+
+; Triggered whenever prey is added to the ConsumptionRegistry
+; args[0] = Actor akPred
+CustomEvent OnAdd
+
+; Triggered whenever prey is removed from the ConsumptionRegistry
+; args[0] = Actor akPred
+CustomEvent OnRemove
 
 ; constants
 int GhostTimerRemovalID				= 9999999 const	; used to remove Ghost invulnerability from player
@@ -401,6 +408,9 @@ int Function Add(Actor akPred, Actor akPrey, Bool abIsLethal = false)
 	ConsumptionRegistry.Add(data)
 	UpdateCurrentInStomach(akPred)
 
+	Var[] args = new Var[1]
+	args[0] = akPred
+	SendCustomEvent("OnAdd", args)
 	StartTimer(1.0, DigestTimerID) ; Start the digestion timer.
 	Return ConsumptionRegistry.Length - 1
 EndFunction
@@ -411,7 +421,12 @@ bool Function Remove(Actor akPrey)
 	if i < 0
 		Return false
 	else
+		Actor pred = GetPred(akPrey)
 		ConsumptionRegistry.Remove(i)
+		UpdateCurrentInStomach(pred)
+		Var[] args = new Var[1]
+		args[0] = pred
+		SendCustomEvent("OnRemove", args)
 		Return true
 	Endif
 EndFunction
@@ -497,10 +512,6 @@ Function UpdateCurrentInStomach(Actor akPred = None, bool updateFullness = false
 				akPred.RemovePerk(FV_HeavyPredNPC)
 			Endif
 		Endif
-	Endif
-	
-	If akPred == PlayerRef
-		FV_VoreHud.SendTrackerUpdate() ; Just emit an event dammit
 	Endif
 EndFunction
 

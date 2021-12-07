@@ -6,7 +6,7 @@ import FalloutVore:FV_VoreUtilityScript
 String Property VoreHud = "FalloutVore_hud.swf" AutoReadOnly Hidden
 
 Group ThiccVoreProperties
-	FalloutVore:FV_WeightChangeScript Property ThiccVore Auto
+	FalloutVore:FV_WeightChangeScript Property ThiccVore Auto Const
 EndGroup
 
 Group TrackerProperties
@@ -17,6 +17,14 @@ EndGroup
 Group ExpProperties
 	Sound Property UIExperienceUpVore_FV_ Auto
 	Sound Property UILevelUpTextVore_FV_ Auto
+EndGroup
+
+Group Actors
+	Actor Property PlayerRef Auto Const Mandatory
+EndGroup
+
+Group Scripts
+	FalloutVore:FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto Const Mandatory
 EndGroup
 
 Int Property Command_ThiccUpdateStats	 			= 100 AutoReadOnly Hidden
@@ -42,18 +50,32 @@ Int Property Command_DebugToggle					= 1000 AutoReadOnly Hidden
 bool EditLock = false
 
 Event OnInit()
-	RegisterForLoad()
+	RegisterForRemoteEvent(Game.GetPlayer(), "OnPlayerLoadGame")
 	InitializeHUD()
+	RegisterForCustomEvent(FV_ConsumptionRegistry, "OnAdd")
+	RegisterForCustomEvent(FV_ConsumptionRegistry, "OnRemove")
 EndEvent
 
-Function RegisterForLoad()
-	RegisterForRemoteEvent(Game.GetPlayer(), "OnPlayerLoadGame")
-EndFunction
-
 Event Actor.OnPlayerLoadGame(Actor akSender)
-	If(!hud)
+	if (!hud)
 		InitializeHUD()
-	EndIf
+	endif
+	RegisterForCustomEvent(FV_ConsumptionRegistry, "OnAdd")
+	RegisterForCustomEvent(FV_ConsumptionRegistry, "OnRemove")
+EndEvent
+
+Event FalloutVore:FV_ConsumptionRegistryScript.OnAdd(FalloutVore:FV_ConsumptionRegistryScript akSource, Var[] akArgs)
+	Actor pred = akArgs[0] as Actor
+	if pred == PlayerRef
+		SendTrackerUpdate()	
+	endif
+EndEvent
+
+Event FalloutVore:FV_ConsumptionRegistryScript.OnRemove(FalloutVore:FV_ConsumptionRegistryScript akSource, Var[] akArgs)
+	Actor pred = akArgs[0] as Actor
+	if pred == PlayerRef
+		SendTrackerUpdate()	
+	endif
 EndEvent
 
 Function InitializeHUD()
@@ -65,14 +87,14 @@ Function HUDStart()
 	If (hud)
 		utility.wait(0.5)
 		if(!hud.IsWidgetRegistered(VoreHud))
-			debug.trace("Registering Fallout Vore HUD")
+			Trace(self, "Registering Fallout Vore HUD")
 			hud.RegisterWidget(Self, VoreHud, 0, 0, abLoadNow = True, abAutoLoad = True)
 		else
-			debug.trace("Fallout Vore HUD Registered")
+			Trace(self, "Fallout Vore HUD Registered")
 		EndIf
 		
     Else
-        debug.trace("HUDFramework is not installed!")
+        Trace(self, "HUDFramework is not installed!")
     EndIf
 EndFunction
 
@@ -86,9 +108,7 @@ Function HUD_WidgetLoaded(string asWidget)
 EndFunction
 
 Function SendTrackerUpdate()
-	Trace(self)
 	if(hud)
-		Actor PlayerRef = Game.GetPlayer()
 		float playerprey = PlayerRef.GetValue(FV_CurrentPrey)
 		float PlayerCapacity = PlayerRef.GetValue(FV_BellyCapacity)
 		float playerSex = PlayerRef.GetLeveledActorBase().GetSex() as float
@@ -142,7 +162,7 @@ Function StruggleInitialize(Float afDifficulty, String[] asKeySequence)
 	While(i < asKeySequence.length)
 		SendMessage = SendMessage + "?" + asKeySequence[i]
 		i += 1
-		;debug.trace("FV_VoreHud StruggleInitialize() i: " + i)
+		;Trace(self, "FV_VoreHud StruggleInitialize() i: " + i)
 	EndWhile
 	GetEditLock()
 	
@@ -173,7 +193,7 @@ EndFunction
 
 Function StruggleStageChange(Int aiStageID)
 	GetEditLock()
-	debug.trace("FalloutVore:FV_VoreHudScript StruggleStageChange aiStageID: " + aiStageID)
+	Trace(self, "FalloutVore:FV_VoreHudScript StruggleStageChange aiStageID: " + aiStageID)
 	hud.SendMessage(VoreHud, Command_StruggleChangeStage, aiStageID)
 	EditLock = False
 EndFunction
@@ -197,7 +217,7 @@ Function UpdateHealthBar(Int aiIndex, Actor akPrey)
 	String PreyName = akPrey.GetLeveledActorBase().GetName()
 	Float healthPercentage = akPrey.GetValue(Game.GetHealthAV())/akPrey.GetBaseValue(Game.GetHealthAV())
 	String SendMessage = aiIndex + "?" + PreyName + "?" + healthPercentage
-	debug.trace("FalloutVore:FV_VoreHudScript UpdateHealthBar() SendMessage: " + SendMessage)
+	Trace(self, "FalloutVore:FV_VoreHudScript UpdateHealthBar() SendMessage: " + SendMessage)
 	hud.SendMessageString(VoreHud, Command_UpdateHealthBar as string, SendMessage)
 	
 	EditLock = False

@@ -10,12 +10,36 @@ I am in their debt for the open source code, the many, many forum posts that I w
 
 I'm working on this mod as a service to the community, and to myself. After a long time of working on [Vore4Fallout](https://github.com/keilladraconis/Vore4Fallout) I felt it was time to try to return to the community and repair and improve this much-beloved mod.
 
-## Setup
-* Install the recommended extension, `joelday.papyrus-lang-vscode`.
-* You should have Fallout 4 and the creation kit installed to the typical Steam location. Launch each of them at least once.
+## Installation
+This mod has several dependencies.
+- [LooksMenu](https://www.nexusmods.com/fallout4/mods/12631)
+- [BodySlide](https://www.nexusmods.com/fallout4/mods/25)
+- [CBBE](https://www.nexusmods.com/fallout4/mods/15)
+- [Discrete Female Skeleton](https://www.nexusmods.com/fallout4/mods/56115)
+- [Skeletal Adjustments for CBBE](https://www.nexusmods.com/fallout4/mods/39006)
+- [True Wasteland Body](https://www.nexusmods.com/fallout4/mods/51071)
+- [Under Armor Scaling Removed](https://www.nexusmods.com/fallout4/mods/25078)
+- [Mod Configuration Menu](https://www.nexusmods.com/fallout4/mods/21497)
+- [Hud Framework](https://www.nexusmods.com/fallout4/mods/20309)
+
+And if you want physics:
+- [OCBPC](https://www.loverslab.com/files/file/18605-ocbpc-for-fallout-4/)
+- [3BBB Physics](https://www.nexusmods.com/fallout4/mods/48978)
+
+Install everything in the order listed. Then open BodySlide.
+1. Use the 'looking glass' on the 'Group Filter' box to 'Choose Groups'.
+2. Select the 'TWB Vanilla' group.
+3. At the bottom of the screen check the 'Build Morphs' box and 'Batch Build...' If you want to be nude, find and Un-Check the 'NeverNude TWB' at the bottom of the list.
+4. If you accidentally built the NeverNude, clear Group Filter...
+  4.1 If you are not using 3BBB, search 'Outfit Filter' for 'CBBE Body' and build that one body with the big 'Build' button.
+  4.2 If you are using 3BBB, search 'Outfit Filter' for 'TWB 3BBB Body' and build that one body with the big 'Build' button.
 
 ## Developing
 This mod uses an `ESM` master file and Creation Kit version control. Please [Follow The Instructions](https://www.creationkit.com/fallout4/index.php?title=Version_Control) to configure your system.
+
+### Setup
+* Install the recommended extension, `joelday.papyrus-lang-vscode`.
+* You should have Fallout 4 and the creation kit installed to the typical Steam location. Launch each of them at least once.
 
 **Windows 10 Powershell Automation**
 Launch a powershell in administrator mode: `Ctrl-X` -> "Windows Powershell (Admin)".

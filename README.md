@@ -23,7 +23,7 @@ This mod has several dependencies.
 - [Hud Framework](https://www.nexusmods.com/fallout4/mods/20309)
 
 And if you want physics:
-- [OCBPC](https://www.loverslab.com/files/file/18605-ocbpc-for-fallout-4/)
+- [OCBP](https://www.loverslab.com/files/file/18604-ocbp-for-fallout-4/)
 - [3BBB Physics](https://www.nexusmods.com/fallout4/mods/48978)
 
 Install everything in the order listed. Then open BodySlide.

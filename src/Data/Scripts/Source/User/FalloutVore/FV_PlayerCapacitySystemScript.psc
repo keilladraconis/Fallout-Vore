@@ -31,30 +31,30 @@ Event OnInit()
 	PlayerRef = Game.GetPlayer()
 	ProcessPrey = new TrainingArray[0]
 	ProcessPrey.clear()
-	RegisterForCustomEvent(FV_ConsumptionRegistry, "OnDigest")
+	; RegisterForCustomEvent(FV_ConsumptionRegistry, "OnDigest")
 EndEvent
 
-Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
-	;debug.trace("FalloutVore:FV_PlayerCapacitySystemScript Received OnDigest Event")
-	Actor Sentpred = akArgs[0] as Actor
-	Int DigestType = akArgs[1] as Int
-	If(SentPred == PlayerRef && DigestType == 0)
-		TrainingArray temp = new TrainingArray
-		temp.fPreySlots = (FV_ActorData.EvaluateSlots(akArgs[2] as Actor)) as float
-		temp.fPlayerTotalPreyCount = PlayerRef.GetValue(FV_CurrentPrey)
-		ProcessPrey.add(temp)
+; Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
+; 	;debug.trace("FalloutVore:FV_PlayerCapacitySystemScript Received OnDigest Event")
+; 	Actor Sentpred = akArgs[0] as Actor
+; 	Int DigestType = akArgs[1] as Int
+; 	If(SentPred == PlayerRef && DigestType == 0)
+; 		TrainingArray temp = new TrainingArray
+; 		temp.fPreySlots = (FV_ActorData.EvaluateSlots(akArgs[2] as Actor)) as float
+; 		temp.fPlayerTotalPreyCount = PlayerRef.GetValue(FV_CurrentPrey)
+; 		ProcessPrey.add(temp)
 		
-		CallFunctionNoWait("ProcessCapacityTraining", new var[0])
-	ElseIf(ActiveCompanions.Find(SentPred) > 0 && PlayerRef.GetValue(FV_PredLevel) == 0)
-		TrainingArray tempCompanion = new TrainingArray
-		tempCompanion.fPreySlots = (FV_ActorData.EvaluateSlots(akArgs[2] as Actor)) as float
-		tempCompanion.fPlayerTotalPreyCount = Sentpred.GetValue(FV_CurrentPrey)
-		tempCompanion.aPred = SentPred
-		ProcessPrey.add(tempCompanion)
+; 		CallFunctionNoWait("ProcessCapacityTraining", new var[0])
+; 	ElseIf(ActiveCompanions.Find(SentPred) > 0 && PlayerRef.GetValue(FV_PredLevel) == 0)
+; 		TrainingArray tempCompanion = new TrainingArray
+; 		tempCompanion.fPreySlots = (FV_ActorData.EvaluateSlots(akArgs[2] as Actor)) as float
+; 		tempCompanion.fPlayerTotalPreyCount = Sentpred.GetValue(FV_CurrentPrey)
+; 		tempCompanion.aPred = SentPred
+; 		ProcessPrey.add(tempCompanion)
 		
-		CallFunctionNoWait("ProcessCompanionCapacityTraining", new var[0])
-	EndIf
-EndEvent
+; 		CallFunctionNoWait("ProcessCompanionCapacityTraining", new var[0])
+; 	EndIf
+; EndEvent
 
 Function ProcessCapacityTraining()
 	;debug.trace("FalloutVore:FV_PlayerCapacitySystemScript ProcessCapacityTraining() Processing " + ProcessPrey.length + " PreyCount Items...")

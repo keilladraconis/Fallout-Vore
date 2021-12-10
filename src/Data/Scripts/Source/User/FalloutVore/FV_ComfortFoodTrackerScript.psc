@@ -15,18 +15,18 @@ FalloutVore:FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto
 Int iHumansEaten = 0
 
 Event OnInit()
-	RegisterForCustomEvent(FV_ConsumptionRegistry, "OnDigest")
+	; RegisterForCustomEvent(FV_ConsumptionRegistry, "OnDigest")
 	RegisterForCustomEvent(FV_ConsumptionRegistry, "OnSwallow")
 EndEvent
 
-Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
-	Int DigestionEvent = akArgs[1] as Int			;event 0 is when a prey dies.  event 1 is end of digestion
-	Actor Pred = akArgs[0] as Actor
-	If(DigestionEvent == 0 && Pred == Game.GetPlayer())
-		Actor Prey = akArgs[2] as Actor
-		ProcessComfortFood(Pred, Prey)
-	EndIf
-EndEvent
+; Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
+; 	Int DigestionEvent = akArgs[1] as Int			;event 0 is when a prey dies.  event 1 is end of digestion
+; 	Actor Pred = akArgs[0] as Actor
+; 	If(DigestionEvent == 0 && Pred == Game.GetPlayer())
+; 		Actor Prey = akArgs[2] as Actor
+; 		ProcessComfortFood(Pred, Prey)
+; 	EndIf
+; EndEvent
 
 Event FalloutVore:FV_ConsumptionRegistryScript.OnSwallow(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
 	Bool LethalFlag = akArgs[1] as Bool

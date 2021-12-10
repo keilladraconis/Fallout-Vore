@@ -3,7 +3,11 @@ Scriptname FalloutVore:FV_AudioVisual Extends Quest
 - Gut sounds and related timers
 - Gut morphs}
 
-import FalloutVore:FV_VoreUtilityScript
+Function Trace(string asFunction, string asMessage = "") Global debugOnly
+	string logName = "FalloutVore"
+	Debug.OpenUserLog(logName)
+    Debug.TraceUser(logName, "[FalloutVore:FV_AudioVisual] " + asFunction + " - " + asMessage)	
+EndFunction
 
 Group ActorValues 
     ActorValue Property FV_CurrentPrey Auto Const Mandatory
@@ -14,40 +18,41 @@ Group Keywords
 EndGroup
 
 Group Scripts 
-    FalloutVore:FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto Const Mandatory    
+    FalloutVore:FV_StomachSimScript Property FV_StomachSim Auto Const Mandatory
 EndGroup
 
+; Quest Script Setup Boilerplate
+int Version = 0
+Function Setup(int aiVersion = 1) ; Increment version as needed.
+    if Version < aiVersion
+        Actor player = Game.GetPlayer()
+        RegisterForRemoteEvent(player, "OnPlayerLoadGame")
+        RegisterForCustomEvent(FV_StomachSim, "OnStomachChange")
+        UpdateGutMorphs(player)
+        Version = aiVersion
+    EndIf
+EndFunction
+
 Event OnInit()
-    Actor player = Game.GetPlayer()
-    RegisterForRemoteEvent(player, "OnPlayerLoadGame")
-    RegisterForCustomEvent(FV_ConsumptionRegistry, "OnAdd")
-    RegisterForCustomEvent(FV_ConsumptionRegistry, "OnRemove")
-    UpdateGutMorphs(player)
+    Setup()
 EndEvent
 
 Event Actor.OnPlayerLoadGame(Actor akSender)
-    RegisterForCustomEvent(FV_ConsumptionRegistry, "OnAdd")
-    RegisterForCustomEvent(FV_ConsumptionRegistry, "OnRemove")
-    UpdateGutMorphs(Game.GetPlayer())
+    Setup()
 EndEvent
 
-Event FalloutVore:FV_ConsumptionRegistryScript.OnAdd(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
+Event FalloutVore:FV_StomachSimScript.OnStomachChange(FalloutVore:FV_StomachSimScript akSender, Var[] akArgs)
+    Trace("OnStomachChange()")
     Actor pred = akArgs[0] as Actor
-    UpdateGutMorphs(pred)
-EndEvent
-
-Event FalloutVore:FV_ConsumptionRegistryScript.OnRemove(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
-    Actor pred = akArgs[0] as Actor
-    UpdateGutMorphs(pred)
+    UpdateGutMorphs(pred)    
 EndEvent
 
 Function UpdateGutMorphs(Actor akPred)
-    float bigSoftBelly = akPred.GetValue(FV_CurrentPrey) as float
+    float bigSoftBelly = FV_StomachSim.GetBellyVolume(akPred)
     if bigSoftBelly >= 0.5
         OCBP_API.SetBoneToggle(akPred, false, "Belly_skin")
     else
         OCBP_API.SetBoneToggle(akPred, true, "Belly_skin")
-
     endif
     BodyGen.SetMorph(akPred, true, "Big Soft Belly", FV_VoreMorphKeyword, bigSoftBelly)
     BodyGen.UpdateMorphs(akPred)

@@ -394,7 +394,7 @@ EndEvent
 Function EventRegistration()
 	RegisterForCustomEvent(FV_ConsumptionRegistry, "OnSwallow")
 	RegisterForCustomEvent(FV_ConsumptionRegistry, "OnVomit")
-	RegisterForCustomEvent(FV_ConsumptionRegistry, "OnDigest")
+	; RegisterForCustomEvent(FV_ConsumptionRegistry, "OnDigest")
 	RegisterForCustomEvent(Followers, "CompanionChange")
 	RegisterForExternalEvent("OnMCMSettingChange|FalloutVore", "OnMCMSettingChange")
 	RegisterForMenuOpenCloseEvent("LooksMenu")
@@ -2480,32 +2480,32 @@ Event FalloutVore:FV_ConsumptionRegistryScript.OnVomit(FalloutVore:FV_Consumptio
 	EndIf
 EndEvent
 
-Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
-	WeightData data = RetrieveFromWeightArray(0, akArgs[0] as Actor)
-	trace(self, "Recieved on digestion event.")
+; Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
+; 	WeightData data = RetrieveFromWeightArray(0, akArgs[0] as Actor)
+; 	trace(self, "Recieved on digestion event.")
 	
-	If(data != NONE)
-		If(data.Pred.GetValue(FV_IsActivePred)==1)
-			int DigestEvent = akArgs[1] as int
-			If(DigestEvent == 0)
-				trace(self, "Prey is dead.  Adding to the fullness meter.")
-				data.isDigesting = 1													;should be set during OnSwallow event, but this is a check to ensure meter reductions do not take place
-				IncreaseFullnessMeter(data, akArgs[2] as Actor)							;hunger meter is updated and excess fat generated
-			EndIf
+; 	If(data != NONE)
+; 		If(data.Pred.GetValue(FV_IsActivePred)==1)
+; 			int DigestEvent = akArgs[1] as int
+; 			If(DigestEvent == 0)
+; 				trace(self, "Prey is dead.  Adding to the fullness meter.")
+; 				data.isDigesting = 1													;should be set during OnSwallow event, but this is a check to ensure meter reductions do not take place
+; 				IncreaseFullnessMeter(data, akArgs[2] as Actor)							;hunger meter is updated and excess fat generated
+; 			EndIf
 	
-			If(DigestEvent == 1 && data.Pred.GetValue(FV_CurrentPrey)<=0)
-				trace(self, data.PredName + " no longer digesting")
-				data.isDigesting = 0
-			EndIf
+; 			If(DigestEvent == 1 && data.Pred.GetValue(FV_CurrentPrey)<=0)
+; 				trace(self, data.PredName + " no longer digesting")
+; 				data.isDigesting = 0
+; 			EndIf
 		
-			If(DigestEvent == 3 && data.Pred.GetValue(FV_IndigestionSeverityFlag) > 0 && data.excess > 0)
-				data.excess = 0
-			EndIf
-		EndIf
-	Else
-		trace(self, " On Digest: Actor " + akArgs[0] as Actor + " was not recognized.  Digestion event ignored.")
-	EndIf
-EndEvent
+; 			If(DigestEvent == 3 && data.Pred.GetValue(FV_IndigestionSeverityFlag) > 0 && data.excess > 0)
+; 				data.excess = 0
+; 			EndIf
+; 		EndIf
+; 	Else
+; 		trace(self, " On Digest: Actor " + akArgs[0] as Actor + " was not recognized.  Digestion event ignored.")
+; 	EndIf
+; EndEvent
 
 Event FollowersScript.CompanionChange(FollowersScript akSender, Var[] akArgs)	;akArgs[0] => actor companion, akArgs[1] => bool iscompanion
 	;search array for follower.  If labeled as pred, begin timers.  Adding to array handled during successful swallow events

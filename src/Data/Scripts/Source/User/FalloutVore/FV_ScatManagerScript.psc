@@ -55,19 +55,19 @@ EndEvent
 
 Function EventRegister()
 	RegisterForCustomEvent(FV_ConsumptionRegistry, "OnVomit")
-	RegisterForCustomEvent(FV_ConsumptionRegistry, "OnDigest")
+	; RegisterForCustomEvent(FV_ConsumptionRegistry, "OnDigest")
 EndFunction
 
 ;Event functions
-Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
-	If(FV_ScatEnabled.GetValue()==1)
-		Actor akPred = akArgs[0] as Actor
-		Int DigestionEvent = akArgs[1] as Int			;event 0 is when a prey dies.  event 1 is end of digestion
-		Actor akPrey = akArgs[2] as Actor
-		ObjectReference akContainer = akArgs[3] as ObjectReference
-		ProcessPred(akPred, akPrey, akContainer, DigestionEvent)
-	EndIf
-EndEvent
+; Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
+; 	If(FV_ScatEnabled.GetValue()==1)
+; 		Actor akPred = akArgs[0] as Actor
+; 		Int DigestionEvent = akArgs[1] as Int			;event 0 is when a prey dies.  event 1 is end of digestion
+; 		Actor akPrey = akArgs[2] as Actor
+; 		ObjectReference akContainer = akArgs[3] as ObjectReference
+; 		ProcessPred(akPred, akPrey, akContainer, DigestionEvent)
+; 	EndIf
+; EndEvent
 
 Event FalloutVore:FV_ConsumptionRegistryScript.OnVomit(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
 	;Remove pred from array if no prey are present

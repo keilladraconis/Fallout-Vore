@@ -31,13 +31,13 @@ Function RegisterForVoreSurvival(Bool abRegister)
 
 	If abRegister
 		RegisterForRemoteEvent(PlayerRef, "OnPlayerLoadGame")
-		RegisterForCustomEvent(FV_ConsumptionRegistry, "OnDigest")
+		; RegisterForCustomEvent(FV_ConsumptionRegistry, "OnDigest")
 		RegisterForPlayerSleep()
 		RegisterForPlayerWait()
 		SetMCMVariables()
 	Else
 		UnregisterForRemoteEvent(PlayerRef, "OnPlayerLoadGame")
-		UnregisterForCustomEvent(FV_ConsumptionRegistry, "OnDigest")
+		; UnregisterForCustomEvent(FV_ConsumptionRegistry, "OnDigest")
 		UnregisterForPlayerSleep()
 		UnregisterForPlayerWait()
 	EndIf
@@ -48,27 +48,27 @@ Function SetMCMVariables()
 	FoodPoolPerSlot = MCM.GetModSettingInt("FalloutVore", "iFoodPoolPerSlot:Hardcore")
 EndFunction
 
-Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)			;akArgs[0] = CurrentPred [1] = digestion stage (0- start) [2] CurrentPrey
+; Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)			;akArgs[0] = CurrentPred [1] = digestion stage (0- start) [2] CurrentPrey
 	
-	If(akArgs[0] as actor == PlayerRef && akArgs[1] as int == 0 && Game.GetDifficulty() == 6)		;Check for player, a prey has just died, and that HC is set to on
-		HC_Manager.trace(self, " Player has begun to digest someone and is in Survival. Giving RiskEvent and FoodPool.")
-		If FV_VoreCoreToggle.GetValue() as Int == 1
-			HC_Manager.ModFoodPoolAndUpdateHungerEffects(FV_ActorData.EvaluateSlots(akArgs[2] as Actor)*FoodPoolPerSlot)
-			HC_Manager.HandleDiseaseRiskEvent(DiseaseRiskVoreAmount)
-		EndIf
-	ElseIf(akArgs[0] as actor == PlayerRef && akArgs[1] as int == 3 && Game.GetDifficulty() == 6)
-		If(PlayerRef.HasPerk(FV_VoreRegen03))
-			iHealthToRestore += (PlayerRef.GetBaseValue(Game.GetHealthAV())*0.1) as int
-		ElseIf(PlayerRef.HasPerk(FV_VoreRegen02))
-			iHealthToRestore += (PlayerRef.GetBaseValue(Game.GetHealthAV())*0.06) as int
-		EndIf
-		If(iHealthToRestore > 0)
-			fBaseHealthRegen = iHealthToRestore as float
-			;start timer to restore the health over 10 seconds.  Timer will add one health everytime it fires
-			StartTimer(10/fBaseHealthRegen, iRegenID)
-		EndIf
-	EndIf
-EndEvent
+; 	If(akArgs[0] as actor == PlayerRef && akArgs[1] as int == 0 && Game.GetDifficulty() == 6)		;Check for player, a prey has just died, and that HC is set to on
+; 		HC_Manager.trace(self, " Player has begun to digest someone and is in Survival. Giving RiskEvent and FoodPool.")
+; 		If FV_VoreCoreToggle.GetValue() as Int == 1
+; 			HC_Manager.ModFoodPoolAndUpdateHungerEffects(FV_ActorData.EvaluateSlots(akArgs[2] as Actor)*FoodPoolPerSlot)
+; 			HC_Manager.HandleDiseaseRiskEvent(DiseaseRiskVoreAmount)
+; 		EndIf
+; 	ElseIf(akArgs[0] as actor == PlayerRef && akArgs[1] as int == 3 && Game.GetDifficulty() == 6)
+; 		If(PlayerRef.HasPerk(FV_VoreRegen03))
+; 			iHealthToRestore += (PlayerRef.GetBaseValue(Game.GetHealthAV())*0.1) as int
+; 		ElseIf(PlayerRef.HasPerk(FV_VoreRegen02))
+; 			iHealthToRestore += (PlayerRef.GetBaseValue(Game.GetHealthAV())*0.06) as int
+; 		EndIf
+; 		If(iHealthToRestore > 0)
+; 			fBaseHealthRegen = iHealthToRestore as float
+; 			;start timer to restore the health over 10 seconds.  Timer will add one health everytime it fires
+; 			StartTimer(10/fBaseHealthRegen, iRegenID)
+; 		EndIf
+; 	EndIf
+; EndEvent
 
 Event OnPlayerWaitStart(float afWaitStartTime, float afDesiredWaitEndTime)
 	If(iHealthToRestore > 0)

@@ -1,7 +1,11 @@
 Scriptname FalloutVore:FV_VoreHudScript extends Quest
 
 HUDFramework hud
-import FalloutVore:FV_VoreUtilityScript
+Function Trace(string asFunction, string asMessage = "") Global debugOnly
+	string logName = "FalloutVore"
+	Debug.OpenUserLog(logName)
+    Debug.TraceUser(logName, "[FalloutVore:FV_VoreHudScript] " + asFunction + " - " + asMessage)	
+EndFunction
 
 String Property VoreHud = "FalloutVore_hud.swf" AutoReadOnly Hidden
 
@@ -24,7 +28,7 @@ Group Actors
 EndGroup
 
 Group Scripts
-	FalloutVore:FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto Const Mandatory
+	FalloutVore:FV_StomachSimScript Property FV_StomachSim Auto Const Mandatory
 EndGroup
 
 Int Property Command_ThiccUpdateStats	 			= 100 AutoReadOnly Hidden
@@ -49,29 +53,29 @@ Int Property Command_DebugToggle					= 1000 AutoReadOnly Hidden
 
 bool EditLock = false
 
+; Quest Script Setup Boilerplate
+int Version = 0
+Function Setup(int aiVersion = 1) ; Increment version as needed.
+    if Version < aiVersion
+        Actor player = Game.GetPlayer()
+		RegisterForRemoteEvent(Game.GetPlayer(), "OnPlayerLoadGame")
+		if (!hud)
+			InitializeHUD()
+		endif
+		RegisterForCustomEvent(FV_StomachSim, "OnStomachChange")
+        Version = aiVersion
+    EndIf
+EndFunction
+
 Event OnInit()
-	RegisterForRemoteEvent(Game.GetPlayer(), "OnPlayerLoadGame")
-	InitializeHUD()
-	RegisterForCustomEvent(FV_ConsumptionRegistry, "OnAdd")
-	RegisterForCustomEvent(FV_ConsumptionRegistry, "OnRemove")
+    Setup()
 EndEvent
 
 Event Actor.OnPlayerLoadGame(Actor akSender)
-	if (!hud)
-		InitializeHUD()
-	endif
-	RegisterForCustomEvent(FV_ConsumptionRegistry, "OnAdd")
-	RegisterForCustomEvent(FV_ConsumptionRegistry, "OnRemove")
+    Setup()
 EndEvent
 
-Event FalloutVore:FV_ConsumptionRegistryScript.OnAdd(FalloutVore:FV_ConsumptionRegistryScript akSource, Var[] akArgs)
-	Actor pred = akArgs[0] as Actor
-	if pred == PlayerRef
-		SendTrackerUpdate()	
-	endif
-EndEvent
-
-Event FalloutVore:FV_ConsumptionRegistryScript.OnRemove(FalloutVore:FV_ConsumptionRegistryScript akSource, Var[] akArgs)
+Event FalloutVore:FV_StomachSimScript.OnStomachChange(FalloutVore:FV_StomachSimScript akSender, Var[] akArgs)
 	Actor pred = akArgs[0] as Actor
 	if pred == PlayerRef
 		SendTrackerUpdate()	
@@ -87,14 +91,14 @@ Function HUDStart()
 	If (hud)
 		utility.wait(0.5)
 		if(!hud.IsWidgetRegistered(VoreHud))
-			Trace(self, "Registering Fallout Vore HUD")
+			Trace("HudStart()", "Registering Fallout Vore HUD")
 			hud.RegisterWidget(Self, VoreHud, 0, 0, abLoadNow = True, abAutoLoad = True)
 		else
-			Trace(self, "Fallout Vore HUD Registered")
+			Trace("HudStart()", "Fallout Vore HUD Registered")
 		EndIf
 		
     Else
-        Trace(self, "HUDFramework is not installed!")
+        Trace("HudStart()", "HUDFramework is not installed!")
     EndIf
 EndFunction
 
@@ -109,7 +113,7 @@ EndFunction
 
 Function SendTrackerUpdate()
 	if(hud)
-		float playerprey = PlayerRef.GetValue(FV_CurrentPrey)
+		float playerprey = Math.Ceiling(FV_StomachSim.GetBellyVolume(PlayerRef))
 		float PlayerCapacity = PlayerRef.GetValue(FV_BellyCapacity)
 		float playerSex = PlayerRef.GetLeveledActorBase().GetSex() as float
 		GetEditLock()
@@ -140,7 +144,7 @@ Function HideThiccActor(int Index)
 EndFunction
 
 Function UpdateThiccStats(int Index, float thiccPercent, float satedPercent, int hunger, Bool isPlayer = false)
-	ThiccVore.trace(self, "FV_ThiccHudScript UpdateStats() thiccPercent: " + thiccPercent + " index: " + Index + " satedPercent: " + satedPercent + " isPlayer: " + isPlayer)
+	Trace("UpdateThiccStats()", "FV_ThiccHudScript UpdateStats() thiccPercent: " + thiccPercent + " index: " + Index + " satedPercent: " + satedPercent + " isPlayer: " + isPlayer)
 	GetEditLock()
 	hunger = hunger * -1
 	hud.SendMessage(VoreHud, Command_ThiccUpdateStats, Index, satedPercent, thiccPercent, hunger, isPlayer as float)
@@ -148,7 +152,7 @@ Function UpdateThiccStats(int Index, float thiccPercent, float satedPercent, int
 EndFunction
 
 Function UpdateName(String akPredName, int index)
-	ThiccVore.trace(self, "FV_ThiccHudScript UpdateName() akPredName: " + akPredName + " index: " + Index)
+	Trace("UpdateName()", "FV_ThiccHudScript UpdateName() akPredName: " + akPredName + " index: " + Index)
 	GetEditLock()
 	String SendMessage = index + "?" + akPredName
 	hud.SendMessageString(VoreHud, Command_ThiccUpdateName as string, SendMessage)
@@ -193,7 +197,7 @@ EndFunction
 
 Function StruggleStageChange(Int aiStageID)
 	GetEditLock()
-	Trace(self, "FalloutVore:FV_VoreHudScript StruggleStageChange aiStageID: " + aiStageID)
+	Trace("StruggleStageChange()", "FalloutVore:FV_VoreHudScript StruggleStageChange aiStageID: " + aiStageID)
 	hud.SendMessage(VoreHud, Command_StruggleChangeStage, aiStageID)
 	EditLock = False
 EndFunction
@@ -217,7 +221,7 @@ Function UpdateHealthBar(Int aiIndex, Actor akPrey)
 	String PreyName = akPrey.GetLeveledActorBase().GetName()
 	Float healthPercentage = akPrey.GetValue(Game.GetHealthAV())/akPrey.GetBaseValue(Game.GetHealthAV())
 	String SendMessage = aiIndex + "?" + PreyName + "?" + healthPercentage
-	Trace(self, "FalloutVore:FV_VoreHudScript UpdateHealthBar() SendMessage: " + SendMessage)
+	Trace("UpdateHealthBar()", "FalloutVore:FV_VoreHudScript UpdateHealthBar() SendMessage: " + SendMessage)
 	hud.SendMessageString(VoreHud, Command_UpdateHealthBar as string, SendMessage)
 	
 	EditLock = False

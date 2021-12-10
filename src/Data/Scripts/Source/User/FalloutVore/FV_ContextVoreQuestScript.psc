@@ -68,7 +68,7 @@ AliasInfo[] ContextPreyArray
 
 Event OnInit()
 	RegisterForCustomEvent(FV_ConsumptionRegistry, "OnVomit")
-	RegisterForCustomEvent(FV_ConsumptionRegistry, "OnDigest")	
+	; RegisterForCustomEvent(FV_ConsumptionRegistry, "OnDigest")	
 EndEvent
 
 Function StartDialogue(Actor akNPC)
@@ -329,11 +329,11 @@ int Function GetNextIndex()
 	return currentArrayIndex
 EndFunction
 
-Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FalloutVore:FV_ConsumptionRegistryScript akSend, Var[] akArgs)
-	If akArgs[1] as int == 0
-		CheckAndDelete(akArgs[2] as actor)
-	EndIf
-EndEvent
+; Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FalloutVore:FV_ConsumptionRegistryScript akSend, Var[] akArgs)
+; 	If akArgs[1] as int == 0
+; 		CheckAndDelete(akArgs[2] as actor)
+; 	EndIf
+; EndEvent
 
 Event FalloutVore:FV_ConsumptionRegistryScript.OnVomit(FalloutVore:FV_ConsumptionRegistryScript akSend, Var[] akArgs)
 	Actor akPred = akArgs[0] as Actor

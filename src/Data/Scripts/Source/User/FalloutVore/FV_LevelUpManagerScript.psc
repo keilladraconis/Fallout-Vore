@@ -66,19 +66,19 @@ EndEvent
 Event Actor.OnPlayerLoadGame(Actor akSender)
 	RegisterLevelUpVoreMenu()
 	PlayerRef = Game.GetPlayer()								;REMOVE THIS BEFORE RELEASE
-	RegisterForCustomEvent(FV_ConsumptionRegistry, "OnDigest")	;REMOVE THIS BEFORE RELEASE
+	; RegisterForCustomEvent(FV_ConsumptionRegistry, "OnDigest")	;REMOVE THIS BEFORE RELEASE
 EndEvent
 
-Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
-	int eventType = akArgs[1] as int
-	if(eventType == 0)
-		GetEditLock()
-		Actor Pred = akArgs[0] as Actor
-		Actor Prey = akArgs[2] as Actor
-		CalculateVoreXP(Pred, Prey)
-		EditLock = false
-	EndIf
-EndEvent
+; Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
+; 	int eventType = akArgs[1] as int
+; 	if(eventType == 0)
+; 		GetEditLock()
+; 		Actor Pred = akArgs[0] as Actor
+; 		Actor Prey = akArgs[2] as Actor
+; 		CalculateVoreXP(Pred, Prey)
+; 		EditLock = false
+; 	EndIf
+; EndEvent
 
 Event FollowersScript.CompanionChange(FollowersScript akSend, Var[] akArgs)			;akArgs[0] => actor companion, akArgs[1] => bool iscompanion
 	LevelActor(akArgs[0] as Actor)
@@ -103,7 +103,7 @@ Function RegisterEvents()
 	RegisterForRemoteEvent(PlayerRef, "OnPlayerLoadGame")
 	RegisterForCustomEvent(Followers, "CompanionChange")
 	;RegisterForCustomEvent(FV_ConsumptionRegistry, "VoreLevelUp")
-	RegisterForCustomEvent(FV_ConsumptionRegistry, "OnDigest")
+	; RegisterForCustomEvent(FV_ConsumptionRegistry, "OnDigest")
 	RegisterForExternalEvent("onPlayerLevelChoice", "OnPlayerChooseLevel")
 EndFunction
 

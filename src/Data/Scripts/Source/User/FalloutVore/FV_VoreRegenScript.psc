@@ -14,15 +14,15 @@ EndGroup
 
 
 
-Event OnInit()
-	RegisterForCustomEvent(FV_ConsumptionRegistry, "OnDigest")
-EndEvent
+; Event OnInit()
+; 	RegisterForCustomEvent(FV_ConsumptionRegistry, "OnDigest")
+; EndEvent
 
-Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)			;akArgs[0] = CurrentPred, akArgs[1] = 0 - begin digestion 1 - end of digestion
-	Actor CurrentPred = akArgs[0] as actor
-	If((akArgs[1] as int) == 0)
-		If(CurrentPred.HasPerk(FV_FastMetabolism01))
-			CurrentPred.equipitem(FV_FastMetabolismRestore, false, true)
-		EndIf
-	EndIf
-EndEvent
+; Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)			;akArgs[0] = CurrentPred, akArgs[1] = 0 - begin digestion 1 - end of digestion
+; 	Actor CurrentPred = akArgs[0] as actor
+; 	If((akArgs[1] as int) == 0)
+; 		If(CurrentPred.HasPerk(FV_FastMetabolism01))
+; 			CurrentPred.equipitem(FV_FastMetabolismRestore, false, true)
+; 		EndIf
+; 	EndIf
+; EndEvent

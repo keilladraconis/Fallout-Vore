@@ -2,32 +2,43 @@ Scriptname FalloutVore:FV_SAVHandlerScript extends Quest Conditional
 
 import FalloutVore:FV_VoreUtilityScript
 
-ActorValue Property FV_HasHadNukaAcid Auto
-FalloutVore:FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto
-FollowersScript Property Followers Auto
-ReferenceAlias Property CompanionAlias Auto
-ReferenceAlias Property CompanionPrey Auto
-ReferenceAlias Property PlayerPrey Auto
-;Topic Property VM_SAV_PlayerSwallow_Scene Auto
-;Topic Property VM_SAV_CompanionSwallow_Scene Auto
-;Topic Property VM_SAV_CompanionDigest_Scene Auto
-Keyword Property ActorTypeAnimal Auto
-Keyword Property ActorTypeCreature Auto
-Keyword Property ActorTypeDeathclaw Auto
-Keyword Property ActorTypeTurret Auto
-Keyword Property FV_SAV_PlayerSwallowBN_Topic Auto
-Keyword Property FV_SAV_PlayerSwallowAN_Topic Auto
-Keyword Property FV_SAV_PlayerDigestBN_Topic Auto
-Keyword Property FV_SAV_PlayerDigestAN_Topic Auto
-Keyword Property FV_SAV_CompanionSwallow_Topic Auto
-Keyword Property FV_SAV_CompanionDigest_Topic Auto
-GlobalVariable Property FV_SkipPercentage Auto
-GlobalVariable Property FV_SAV_General Auto
-GlobalVariable Property FV_SAV_Timer_CompanionDigest Auto
-GlobalVariable Property FV_SAV_Timer_CompanionSwallow Auto
-GlobalVariable Property FV_SAV_Timer_PlayerDigest Auto
-GlobalVariable Property FV_SAV_Timer_PlayerSwallow Auto
+Group ActorValues
+	ActorValue Property FV_HasHadNukaAcid Auto Const Mandatory
+EndGroup
 
+Group Scripts
+	FalloutVore:FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto const mandatory
+	FollowersScript Property Followers Auto Const Mandatory
+	FalloutVore:FV_StomachSimScript Property FV_StomachSim Auto Const Mandatory
+EndGroup
+
+Group ReferenceAliases
+	ReferenceAlias Property CompanionAlias Auto Const Mandatory
+	ReferenceAlias Property CompanionPrey Auto Const Mandatory
+	ReferenceAlias Property PlayerPrey Auto	 Const Mandatory
+EndGroup
+
+Group Keywords
+	Keyword Property ActorTypeAnimal Auto Const Mandatory
+	Keyword Property ActorTypeCreature Auto Const Mandatory
+	Keyword Property ActorTypeDeathclaw Auto Const Mandatory
+	Keyword Property ActorTypeTurret Auto Const Mandatory
+	Keyword Property FV_SAV_PlayerSwallowBN_Topic Auto Const Mandatory
+	Keyword Property FV_SAV_PlayerSwallowAN_Topic Auto Const Mandatory
+	Keyword Property FV_SAV_PlayerDigestBN_Topic Auto Const Mandatory
+	Keyword Property FV_SAV_PlayerDigestAN_Topic Auto Const Mandatory
+	Keyword Property FV_SAV_CompanionSwallow_Topic Auto Const Mandatory
+	Keyword Property FV_SAV_CompanionDigest_Topic Auto Const Mandatory
+EndGroup
+
+Group GlobalVariables
+	GlobalVariable Property FV_SkipPercentage Auto
+	GlobalVariable Property FV_SAV_General Auto
+	GlobalVariable Property FV_SAV_Timer_CompanionDigest Auto
+	GlobalVariable Property FV_SAV_Timer_CompanionSwallow Auto
+	GlobalVariable Property FV_SAV_Timer_PlayerDigest Auto
+	GlobalVariable Property FV_SAV_Timer_PlayerSwallow Auto
+EndGroup
 
 Struct EncDefinition
 	keyword LocEncKeyword
@@ -71,7 +82,7 @@ Function EventRegistration()
 	;grabbed wholesale form thicc.  Delete events not needed
 	RegisterForCustomEvent(FV_ConsumptionRegistry, "OnSwallow")
 	;RegisterForCustomEvent(FV_ConsumptionRegistry, "OnVomit")
-	RegisterForCustomEvent(FV_ConsumptionRegistry, "OnDigest")
+	RegisterForCustomEvent(FV_StomachSim, "OnDigestFinish")
 	;RegisterForCustomEvent(Followers, "CompanionChange")
 EndFunction
 
@@ -101,28 +112,26 @@ EncDefinition Function GetEncDefinition(keyword KeywordToFind = None, location L
 	return NONE
 EndFunction
 
-Event FalloutVore:FV_ConsumptionRegistryScript.OnDigest(FalloutVore:FV_ConsumptionRegistryScript akSend, Var[] akArgs)
+Event FalloutVore:FV_StomachSimScript.OnDigestFinish(FalloutVore:FV_StomachSimScript akSender, Var[] akArgs)
 	If(CompanionAlias.GetActorRef() == NONE || CompanionAlias.GetActorRef().HasKeyword(ActorTypeCreature) || CompanionAlias.GetActorRef().HasKeyword(ActorTypeAnimal))
 		Trace(self, "SAVHandler reports companion is a Creature or a None form. Skipping dialogue event.")
-	Else
-		Int EventType = akArgs[1] as Int
-		If(EventType == DigestEventStart && CompanionAlias != NONE)
-			Actor PredToCheck = akArgs[0] as Actor
-			Actor PreyToCheck = akArgs[2] as Actor
-			Companion = CompanionAlias.GetActorRef()
-			Trace(self, "  SAV: Received OnDigest event. PredToCheck: " + PredToCheck + "; PreyToCheck: " + PreyToCheck)
-			If(Companion != NONE)
-				int chanceToSkip = Utility.randomint()
-				If(!Companion.IsTalking() && !PreyToCheck.HasKeyword(ActorTypeTurret) && (PreyToCheck.HasKeyword(ActorTypeDeathclaw) || chanceToSkip > FV_SkipPercentage.GetValue() as int))
-					If(PredToCheck == Companion)
-						CompanionPrey.ForceRefTo(PreyToCheck)
-						SetSAV_CompanionDigest(PreyToCheck)
-					ElseIf(PredToCheck == Game.GetPlayer())
-						PlayerPrey.ForceRefTo(PreyToCheck)
-						SetSAV_PlayerDigest(PreyToCheck)
-					EndIf
-				EndIf
-			EndIf
+		Return
+	EndIf
+	
+	
+	Actor predToCheck = akArgs[0] as Actor
+	Actor preyToCheck = akArgs[1] as Actor
+	Companion = CompanionAlias.GetActorRef()
+	Trace(self, "  SAV: Received OnDigest event. predToCheck: " + predToCheck + "; preyToCheck: " + preyToCheck)
+	
+	int chanceToSkip = Utility.randomint()
+	If(!Companion.IsTalking() && !preyToCheck.HasKeyword(ActorTypeTurret) && (preyToCheck.HasKeyword(ActorTypeDeathclaw) || chanceToSkip > FV_SkipPercentage.GetValue() as int))
+		If(predToCheck == Companion)
+			CompanionPrey.ForceRefTo(preyToCheck)
+			SetSAV_CompanionDigest(preyToCheck)
+		ElseIf(predToCheck == Game.GetPlayer())
+			PlayerPrey.ForceRefTo(preyToCheck)
+			SetSAV_PlayerDigest(preyToCheck)
 		EndIf
 	EndIf
 EndEvent

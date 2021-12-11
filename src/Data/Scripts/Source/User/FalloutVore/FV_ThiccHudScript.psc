@@ -1,7 +1,7 @@
 Scriptname FalloutVore:FV_ThiccHudScript extends Quest
 
 HUDFramework hud
-FalloutVore:FV_WeightChangeScript Property FV_ThiccVore Auto
+FalloutVore:FV_ThiccVoreScript Property FV_ThiccVore Auto
 
 Faction Property CurrentCompanionFaction Auto
 Faction Property HasBeenCompanionFaction Auto
@@ -88,12 +88,12 @@ EndFunction
 Function HUD_WidgetLoaded(string asWidget)
     If(asWidget == ThiccHud_Widget)
 		If(hud)
-			If(!FV_ThiccVore.WeightModEnabled)
-				debug.trace("Thicc Vore not enabled.  Thicc HUD Disabled and hidden.")
-			Else
-				FV_ThiccVore.HUDLoaded()
-			EndIf
-			debug.trace("Thicc HUD loaded")
+			; If(!FV_ThiccVore.WeightModEnabled)
+			; 	debug.trace("Thicc Vore not enabled.  Thicc HUD Disabled and hidden.")
+			; Else
+			; 	FV_ThiccVore.HUDLoaded()
+			; EndIf
+			; debug.trace("Thicc HUD loaded")
 		EndIf
     EndIf
 EndFunction

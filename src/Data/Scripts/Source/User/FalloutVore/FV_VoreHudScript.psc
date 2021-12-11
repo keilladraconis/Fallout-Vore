@@ -9,10 +9,6 @@ EndFunction
 
 String Property VoreHud = "FalloutVore_hud.swf" AutoReadOnly Hidden
 
-Group ThiccVoreProperties
-	FalloutVore:FV_WeightChangeScript Property ThiccVore Auto Const
-EndGroup
-
 Group TrackerProperties
 	ActorValue Property FV_CurrentPrey Auto
 	ActorValue Property FV_BellyCapacity Auto
@@ -106,9 +102,9 @@ Function HUD_WidgetLoaded(string asWidget)
 	If(Game.getPlayer().getvalue(FV_CurrentPrey) > 0)
 		SendTrackerUpdate()
 	EndIf
-	If(ThiccVore.WeightModEnabled)
-		ThiccVore.HUDLoaded()
-	EndIf
+	; If(ThiccVore.WeightModEnabled)
+	; 	ThiccVore.HUDLoaded()
+	; EndIf
 EndFunction
 
 Function SendTrackerUpdate()

@@ -102,8 +102,14 @@ EndStruct
 
 Stomach[] StomachMap
 
+; These two events fire on each pred's digestion step
+; args[0] = stomach.Pred
+; args[1] = stomach.Prey
+; args[2] = digestionAmount
 CustomEvent OnDigestProgress
 CustomEvent OnDigestFinish
+; Fires when the stomach volume changes
+; args[0] = akActor
 CustomEvent OnStomachChange
 
 Event OnInit()
@@ -171,10 +177,12 @@ Function RunDigestion(float afTimeElapsed, Stomach stomach)
     digestiblePreyVolume -= digestProportion * digestiblePreyVolume
 
     If (digestibleVolume <= 0)
+        digestionAmount += digestibleVolume ; On overdigestion, subtract it from digestAmount
         digestibleVolume = 0
     EndIf
 
     If (digestiblePreyVolume <= 0)
+        digestionAmount += digestiblePreyVolume ; On overdigestion, subtract it from digestAmount
         digestiblePreyVolume = 0
     EndIf
 
@@ -183,14 +191,16 @@ Function RunDigestion(float afTimeElapsed, Stomach stomach)
     stomach.DigestiblePreyVolume = digestiblePreyVolume
     SendStomachChange(stomach.Pred)
     If (digestibleVolume + digestiblePreyVolume + stomach.IndigestibleVolume <= 0)
-        Var[] args = new Var[0]
+        Var[] args = new Var[3]
         args[0] = stomach.Pred
         args[1] = stomach.Prey
+        args[2] = digestionAmount
         SendCustomEvent("OnDigestFinish", args)
     Else
-        Var[] args = new Var[0]
+        Var[] args = new Var[3]
         args[0] = stomach.Pred
         args[1] = stomach.Prey
+        args[2] = digestionAmount
         SendCustomEvent("OnDigestProgress", args)
     EndIf
 EndFunction

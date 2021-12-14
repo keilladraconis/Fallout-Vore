@@ -35,16 +35,20 @@ EndGroup
 Group Scripts
  	FalloutVore:FV_VoreHudScript Property FV_VoreHud Auto Const Mandatory
 	FalloutVore:FV_StomachSimScript Property FV_StomachSim Auto Const Mandatory
+	FalloutVore:FV_FalloutVoreScript Property FV_FalloutVore Auto Const Mandatory
 EndGroup
 
 ; Quest Script Setup Boilerplate
 int Version = 0
-Function Setup(int aiVersion = 1) ; Increment version as needed.
+Function Setup(int aiVersion = 2) ; Increment version as needed.
 	Trace("Setup()", Version)
     if Version < aiVersion
-        Actor player = Game.GetPlayer()
 		RegisterForRemoteEvent(Game.GetPlayer(), "OnPlayerLoadGame")
 		RegisterForCustomEvent(FV_StomachSim, "OnDigestProgress")
+		RegisterForCustomEvent(FV_FalloutVore, "VoreGameTick")
+		If (ThiccActors == NONE)
+			ThiccActors = new Actor[0]
+		EndIf
         Version = aiVersion
     EndIf
 EndFunction
@@ -65,6 +69,10 @@ Event FalloutVore:FV_StomachSimScript.OnDigestFinish(FalloutVore:FV_StomachSimSc
 	HandleDigestedAmount(akArgs[0] as Actor, akArgs[2] as float)
 EndEvent
 
+Event FalloutVore:FV_FalloutVoreScript.VoreGameTick(FalloutVore:FV_FalloutVoreScript akSender, Var[] akArgs)
+	LoseWeightAll(akArgs[0] as float)
+EndEvent
+
 Function HandleDigestedAmount(Actor akActor, float afAmount)
 	Trace("HandleDigestedAmount()", afAmount)
 	; This only works for female actors.
@@ -79,9 +87,50 @@ Function HandleDigestedAmount(Actor akActor, float afAmount)
 	If thiccness > 1.0
 		thiccness = 1.0
 	EndIf
+	akActor.SetValue(FV_Thiccness, thiccness)
+
+	If (ThiccActors.Find(akActor) < 0)
+		ThiccActors.Add(akActor)
+	EndIf
+
+	Var[] args = new Var[1]
+	args[0] = akActor
+	SendCustomEvent("OnThiccnessChange", args)
+EndFunction
+
+Actor[] ThiccActors
+
+; Call LoseWeight for all actors in the ThiccActors array.
+; If LoseWeight is false, actor is done losing weight and should be dropped from tracking.
+Function LoseWeightAll(float afTimeDelta)
+	int index = 0
+	While (index < ThiccActors.Length)
+		Actor item = ThiccActors[index]
+		If (LoseWeight(item, afTimeDelta))
+			index += 1
+		Else
+			ThiccActors.Remove(index)
+		EndIf
+	EndWhile	
+EndFunction
+
+; Invokes weight loss for an actor. If the actor's thiccness is <= 0, return false.
+bool Function LoseWeight(Actor akActor, float afTimeDelta)
+	bool still_thicc = true
+	If (akActor.IsDead())
+		return false ; Do nothing, and signal to stop tracking dead actors.
+	EndIf
+
+	float thiccness = akActor.GetValue(FV_Thiccness)
+	thiccness -= afTimeDelta / (3600.0 * 8.0) ; TODO: Refine the weight loss rate, this is 1.0 per 8-hour period.
+	If thiccness <= 0.0
+		thiccness = 0.0
+		still_thicc = false
+	EndIf
 
 	akActor.SetValue(FV_Thiccness, thiccness)
 	Var[] args = new Var[1]
 	args[0] = akActor
 	SendCustomEvent("OnThiccnessChange", args)
+	return still_thicc
 EndFunction

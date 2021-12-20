@@ -40,7 +40,7 @@ EndFunction
 Function AddDigestible(Actor akPred, Float afVolume)
     Stomach currentStomach = GetStomachFor(akPred, true)
     currentStomach.DigestibleVolume += afVolume
-    akPred.ModValue(FV_CurrentPrey, afVolume)
+    akPred.DamageValue(FV_BellyCapacity, afVolume)
     SendStomachChange(akPred)
 EndFunction
 
@@ -48,7 +48,7 @@ Function AddIndigestible(Actor akPred, Float afVolume)
     Trace("AddIndigestible()")
     Stomach currentStomach = GetStomachFor(akPred, true)
     currentStomach.IndigestibleVolume += afVolume
-    akPred.ModValue(FV_CurrentPrey, afVolume)
+    akPred.DamageValue(FV_BellyCapacity, afVolume)
     SendStomachChange(akPred)
 EndFunction
 
@@ -58,7 +58,7 @@ Function AddDigestiblePrey(Actor akPred, Float afVolume, Actor akPrey)
     currentStomach.DigestibleVolume += currentStomach.DigestiblePreyVolume
     currentStomach.DigestiblePreyVolume = afVolume
     currentStomach.Prey = akPrey
-    akPred.ModValue(FV_CurrentPrey, afVolume)
+    akPred.DamageValue(FV_BellyCapacity, afVolume)
     SendStomachChange(akPred)
 EndFunction
 
@@ -70,7 +70,7 @@ Function PurgeIndigestible(Actor akPred, Float afVolume, Bool abAll = false)
     Else
         currentStomach.IndigestibleVolume -= afVolume
     EndIf
-    akPred.ModValue(FV_CurrentPrey, -afVolume)
+    akPred.RestoreValue(FV_BellyCapacity, afVolume)
     SendStomachChange(akPred)
 EndFunction
 
@@ -88,7 +88,7 @@ Group Scripts
 EndGroup
 
 Group ActorValues
-    ActorValue Property FV_CurrentPrey Auto Const Mandatory
+    ActorValue Property FV_BellyCapacity Auto Const Mandatory
     ActorValue Property FV_DigestionSpeed Auto Const Mandatory
 EndGroup
 
@@ -151,13 +151,15 @@ Function RunEachDigestion(float afTimeElapsed)
     int index = 0
     While (index < StomachMap.Length && index <= 128)
         Stomach item = StomachMap[index]
-        RunDigestion(afTimeElapsed, item)
+        If (item.DigestiblePreyVolume + item.DigestibleVolume > 0)
+            RunDigestion(afTimeElapsed, item)
+        EndIf
         index += 1
     EndWhile
     
     While (index < StomachMap.Length && index <= 128)
         Stomach item = StomachMap[index]
-        If (item.DigestiblePreyVolume + item.DigestibleVolume + item.IndigestibleVolume <= 0)
+        If (item.DigestiblePreyVolume + item.DigestibleVolume <= 0)
             ; Because we remove the indexed item while looping, removal functions as advancing the index.
             StomachMap.Remove(index)
         Else
@@ -168,6 +170,7 @@ EndFunction
 
 Function RunDigestion(float afTimeElapsed, Stomach stomach)
     Trace("RunDigestion()", stomach)
+    
     float digestionAmount = afTimeElapsed * (stomach.Pred.GetValue(FV_DigestionSpeed) / 3600.0) ; Digestionspeed computed into units-per-hour.
     float digestProportion = digestionAmount / (stomach.DigestibleVolume + stomach.DigestiblePreyVolume)
     float digestibleVolume = stomach.DigestibleVolume
@@ -186,7 +189,8 @@ Function RunDigestion(float afTimeElapsed, Stomach stomach)
         digestiblePreyVolume = 0
     EndIf
 
-    stomach.Pred.SetValue(FV_CurrentPrey, Math.Floor(digestibleVolume + digestiblePreyVolume + stomach.IndigestibleVolume))
+    stomach.Pred.RestoreValue(FV_BellyCapacity, digestionAmount)
+    Trace("RunDigestion()", "FV_BellyCapacity[" + stomach.Pred + "] += " + digestionAmount)
     stomach.DigestibleVolume = digestibleVolume
     stomach.DigestiblePreyVolume = digestiblePreyVolume
     SendStomachChange(stomach.Pred)

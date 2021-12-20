@@ -10,7 +10,6 @@ Function Trace(string asFunction, string asMessage = "") Global debugOnly
 EndFunction
 
 Group ActorValues 
-    ActorValue Property FV_CurrentPrey Auto Const Mandatory
     ActorValue Property FV_Thiccness Auto Const Mandatory
 EndGroup
 
@@ -25,12 +24,17 @@ EndGroup
 
 ; Quest Script Setup Boilerplate
 int Version = 0
-Function Setup(int aiVersion = 1) ; Increment version as needed.
+Function Setup(int aiVersion = 2) ; Increment version as needed.
+    Trace("Setup()", Version)
     Actor player = Game.GetPlayer()
     if Version < aiVersion
         RegisterForRemoteEvent(player, "OnPlayerLoadGame")
         RegisterForCustomEvent(FV_StomachSim, "OnStomachChange")
         RegisterForCustomEvent(FV_ThiccVore, "OnThiccnessChange")
+        If (ThiccPresets == None)
+            ThiccPresets = new PresetSlider[0]
+        EndIf
+        LoadKeillaPreset()
         Version = aiVersion
     EndIf
     UpdateGutMorphs(player)
@@ -43,6 +47,8 @@ EndEvent
 Event Actor.OnPlayerLoadGame(Actor akSender)
     Setup()
 EndEvent
+
+; Private
 
 Event FalloutVore:FV_StomachSimScript.OnStomachChange(FalloutVore:FV_StomachSimScript akSender, Var[] akArgs)
     Trace("OnStomachChange()")
@@ -92,6 +98,48 @@ Function UpdateGutMorphs(Actor akPred)
         OCBP_API.SetBoneToggle(akPred, true, "Belly_skin")
     endif
     BodyGen.SetMorph(akPred, true, "Big Soft Belly", FV_VoreMorphKeyword, bigSoftBelly)
-    BodyGen.SetMorph(akPred, true, "BBW", FV_VoreMorphKeyword, thiccness)
+
+    int thiccStage = Math.Floor(thiccness)
+    Trace("UpdateGutMorphs()", thiccStage + " " + ThiccPresets)
+
+    int index = 0 ; Doesn't seem to work... did the presets not get loaded, or else does the morph setting not work?
+    While (index < ThiccPresets.Length && index <= 128)
+        PresetSlider slider = ThiccPresets[index]
+
+        If (thiccStage >= 0.0 && thiccStage < 1.0)
+            BodyGen.SetMorph(akPred, true, slider.Name, FV_VoreMorphKeyword, thiccness * slider.Stage1)
+        ElseIf (thiccStage >= 1.0 && thiccStage < 2.0)
+            BodyGen.SetMorph(akPred, true, slider.Name, FV_VoreMorphKeyword, slider.Stage1 + (thiccness - thiccStage) * (slider.Stage2 - slider.Stage1))
+        ElseIf (thiccStage >= 2.0 && thiccStage < 3.0)
+            BodyGen.SetMorph(akPred, true, slider.Name, FV_VoreMorphKeyword, slider.Stage2 + (thiccness - thiccStage) * (slider.Stage3 - slider.Stage2))
+        ElseIf (thiccStage >= 3.0 && thiccStage < 4.0)
+            BodyGen.SetMorph(akPred, true, slider.Name, FV_VoreMorphKeyword, slider.Stage3 + (thiccness - thiccStage) * (slider.Stage4 - slider.Stage3))
+        Else
+            BodyGen.SetMorph(akPred, true, slider.Name, FV_VoreMorphKeyword, slider.Stage4)
+        EndIf
+
+        index += 1
+    EndWhile
     BodyGen.UpdateMorphs(akPred)
+EndFunction
+
+PresetSlider[] ThiccPresets
+
+Struct PresetSlider
+    string Name
+    float Stage1
+    float Stage2
+    float Stage3
+    float Stage4
+EndStruct
+
+Function LoadKeillaPreset()
+    PresetSlider slider = new PresetSlider
+    slider.Name = "BBW"
+    slider.Stage1 = 0.0
+    slider.Stage2 = 0.0
+    slider.Stage3 = 1.0
+    slider.Stage4 = 2.0
+    ThiccPresets.Add(slider)
+    Trace("LoadKeillaPreset()", ThiccPresets)
 EndFunction

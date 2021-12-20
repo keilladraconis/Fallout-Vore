@@ -84,8 +84,8 @@ Function HandleDigestedAmount(Actor akActor, float afAmount)
 	; Then update the morphs.
 	float thiccness = akActor.GetValue(FV_Thiccness)
 	thiccness += afAmount
-	If thiccness > 1.0
-		thiccness = 1.0
+	If thiccness > 4.0
+		thiccness = 4.0
 	EndIf
 	akActor.SetValue(FV_Thiccness, thiccness)
 

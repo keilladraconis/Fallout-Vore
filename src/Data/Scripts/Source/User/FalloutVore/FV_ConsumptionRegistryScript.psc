@@ -16,7 +16,6 @@ Group ActorValues
 	ActorValue Property FV_AcidResistance Auto Const Mandatory
 	ActorValue Property FV_AcidStrengthValue Auto Const Mandatory
 	ActorValue Property FV_BlockSwallowFlag Auto Const Mandatory
-	ActorValue Property FV_CurrentPrey Auto Const Mandatory
 	ActorValue Property FV_CurrentAlivePrey Auto Const Mandatory
 	ActorValue Property FV_DigestionSpeed Auto Const Mandatory
 	ActorValue Property FV_DigestionStage Auto Const Mandatory
@@ -480,7 +479,7 @@ Function UpdateCurrentInStomach(Actor akPred = None, bool updateFullness = false
 		i += 1
 	EndWhile
 
-	akPred.SetValue(FV_CurrentPrey, preys.Length)
+	; akPred.SetValue(FV_CurrentPrey, preys.Length)
 	akPred.SetValue(FV_CurrentAlivePrey, alivePrey)
 	akPred.SetValue(FV_HumanPreyCount, humanPrey)
 
@@ -510,35 +509,35 @@ EndFunction
 
 ; Based on the CurrentPrey and DigestionStage AVs, decides how many child nodes to drop out of the buffer, and iterates through them.
 ; KEILLA: I am not sure how important this is or what it really does. Pretty much it looks cosmetic. Let's cut it for now.
-Function UpdateDigestionPreyCount(Actor akPred)
-	trace("UpdateDigestionPreyCount()", akPred)
-	int currentSize = (((akPred.GetValue(FV_CurrentPrey)/2-1) * 3) + 6) as int
-	int digestionStage = akPred.GetValue(FV_DigestionStage) as int
-	If(currentSize > digestionStage)
-		int slotsToDelete = currentSize - digestionStage
-		bool keepSearching = true
+; Function UpdateDigestionPreyCount(Actor akPred)
+; 	trace("UpdateDigestionPreyCount()", akPred)
+; 	int currentSize = (((akPred.GetValue(FV_CurrentPrey)/2-1) * 3) + 6) as int
+; 	int digestionStage = akPred.GetValue(FV_DigestionStage) as int
+; 	If(currentSize > digestionStage)
+; 		int slotsToDelete = currentSize - digestionStage
+; 		bool keepSearching = true
 
-		Actor[] preys = GetAllPrey(akPred)
-		int i = 0
-		While i < preys.Length && keepSearching && i < 128
-			int slotSize = FV_ActorData.EvaluateSlots(preys[i])
-			slotSize = (((slotSize/2-1) * 3) + 3) as int
-			If(slotSize < 3)
-				slotSize = 3	;set to be minimum of 3.  2, 2 slot prey == 9 in timerstage space.  single slot prey are leading to very low
-			Endif
-			If(slotSize <= SlotsToDelete)
-				Remove(preys[i])
-				SlotsToDelete -= slotSize
-			Else
-				keepSearching = false
-			Endif
+; 		Actor[] preys = GetAllPrey(akPred)
+; 		int i = 0
+; 		While i < preys.Length && keepSearching && i < 128
+; 			int slotSize = FV_ActorData.EvaluateSlots(preys[i])
+; 			slotSize = (((slotSize/2-1) * 3) + 3) as int
+; 			If(slotSize < 3)
+; 				slotSize = 3	;set to be minimum of 3.  2, 2 slot prey == 9 in timerstage space.  single slot prey are leading to very low
+; 			Endif
+; 			If(slotSize <= SlotsToDelete)
+; 				Remove(preys[i])
+; 				SlotsToDelete -= slotSize
+; 			Else
+; 				keepSearching = false
+; 			Endif
 				
-			i += 1
-		EndWhile
-		; UpdateCurrentInStomach(akPred)
-	Endif
+; 			i += 1
+; 		EndWhile
+; 		; UpdateCurrentInStomach(akPred)
+; 	Endif
 	
-EndFunction
+; EndFunction
 
 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -667,70 +666,70 @@ int Function ProcessSingleSwallow(Actor akPred, Actor akPrey, bool abLethalFlag)
 EndFunction
 
 ; Adds the prey to the PPA. Also performs accounting for many mod values and runs some game mechanics besides. KEILLA: Extract stuff.
-Function PerformVoreEventAccept(Actor akPred, Actor akPrey, bool bLethalFlag)
-	; Start indigestion behaviors. Extract/Delete
-	If(akPrey.HasPerk(FV_CauseIndigestion01) && bLethalFlag)
-		Int CauseIndigestion = Utility.RandomInt()
-		If(akPrey.HasPerk(FV_CauseIndigestion03))
-			akPred.SetValue(FV_IndigestionSeverityFlag, Utility.RandomInt(3,4))
-			akPred.EquipItem(FV_IndigestionEffect , true, true)
-		ElseIf(akPrey.HasPerk(FV_CauseIndigestion02) && CauseIndigestion <= 50)
-			akPred.SetValue(FV_IndigestionSeverityFlag, Utility.RandomInt(2,4))
-			akPred.EquipItem(FV_IndigestionEffect , true, true)
-		ElseIf(CauseIndigestion <= 20)
-			akPred.SetValue(FV_IndigestionSeverityFlag, Utility.RandomInt(1,4))
-			akPred.EquipItem(FV_IndigestionEffect , true, true)
-		EndIf
-	EndIf
-	;Chance of clothes ripping off
-	; KEILLA: Extract to visuals/audios scripts.
-	If(FV_ClothesRipChance.GetValue() > Utility.RandomInt())
+; Function PerformVoreEventAccept(Actor akPred, Actor akPrey, bool bLethalFlag)
+; 	; Start indigestion behaviors. Extract/Delete
+; 	If(akPrey.HasPerk(FV_CauseIndigestion01) && bLethalFlag)
+; 		Int CauseIndigestion = Utility.RandomInt()
+; 		If(akPrey.HasPerk(FV_CauseIndigestion03))
+; 			akPred.SetValue(FV_IndigestionSeverityFlag, Utility.RandomInt(3,4))
+; 			akPred.EquipItem(FV_IndigestionEffect , true, true)
+; 		ElseIf(akPrey.HasPerk(FV_CauseIndigestion02) && CauseIndigestion <= 50)
+; 			akPred.SetValue(FV_IndigestionSeverityFlag, Utility.RandomInt(2,4))
+; 			akPred.EquipItem(FV_IndigestionEffect , true, true)
+; 		ElseIf(CauseIndigestion <= 20)
+; 			akPred.SetValue(FV_IndigestionSeverityFlag, Utility.RandomInt(1,4))
+; 			akPred.EquipItem(FV_IndigestionEffect , true, true)
+; 		EndIf
+; 	EndIf
+; 	;Chance of clothes ripping off
+; 	; KEILLA: Extract to visuals/audios scripts.
+; 	If(FV_ClothesRipChance.GetValue() > Utility.RandomInt())
 	
-		;Unequip (3 is the body slot for normal cloths)
-		akPred.UnequipItemSlot(3)
+; 		;Unequip (3 is the body slot for normal cloths)
+; 		akPred.UnequipItemSlot(3)
 		
-		;Show clothes rip message
-		FV_ClothesRipMessage.Show()
+; 		;Show clothes rip message
+; 		FV_ClothesRipMessage.Show()
 	
-		;Sound of ripping
-		FV_FXClothesRip.Play(akPred) ;GAZ: Don't use PlayAndWaits, this stalls the system.
-	EndIf
+; 		;Sound of ripping
+; 		FV_FXClothesRip.Play(akPred) ;GAZ: Don't use PlayAndWaits, this stalls the system.
+; 	EndIf
 	
-	;Add prey to the prey array
-	int PreyIndex = Add(akPred, akPrey)
+; 	;Add prey to the prey array
+; 	int PreyIndex = Add(akPred, akPrey)
 	
-	;Reset manual digestion
-	If(akPred.GetValue(FV_ReadyToDigest) == 1)
-		akPred.SetValue(FV_ReadyToDigest, 0)
-	Endif
+; 	;Reset manual digestion
+; 	If(akPred.GetValue(FV_ReadyToDigest) == 1)
+; 		akPred.SetValue(FV_ReadyToDigest, 0)
+; 	Endif
 	
-	;Mod tracking values
-	; UpdateCurrentInStomach(akPred)
+; 	;Mod tracking values
+; 	; UpdateCurrentInStomach(akPred)
 	
-	akPrey.ModValue(FV_TicksTillEscapeStart, akPred.GetValue(FV_Entrapment))
-	akPrey.ModValue(FV_TicksTillEscape, akPrey.GetValue(FV_TicksTillEscapeStart))
+; 	akPrey.ModValue(FV_TicksTillEscapeStart, akPred.GetValue(FV_Entrapment))
+; 	akPrey.ModValue(FV_TicksTillEscape, akPrey.GetValue(FV_TicksTillEscapeStart))
 	
-	; TODO: broken until VoreHud can accept actors
-	; If(akPred == PlayerRef)
-		; FV_VoreHud.UpdateHealthBar(PreyIndex, akPrey) 
-	; EndIf
+; 	; TODO: broken until VoreHud can accept actors
+; 	; If(akPred == PlayerRef)
+; 		; FV_VoreHud.UpdateHealthBar(PreyIndex, akPrey) 
+; 	; EndIf
 
-	;Start vore timer
-	If akPrey.IsDead()
-		akPrey.SetValue(FV_DigestionStage, 99)
-	ElseIf akPrey == PlayerRef && bLethalFlag
-		FV_PlayerStruggle.BeginStruggleMechanic(akPred, preyIndex)
-	Else
-		trace("PerformVoreEventAccept()", "Start vore timer: " + PreyIndex)
-		StartTimer(DigestionSpeed, DigestTimerID)
-	EndIf
-	ChangeFullnessArmor(akPred, akPred.GetValue(FV_CurrentPrey) as int)
+; 	;Start vore timer
+; 	If akPrey.IsDead()
+; 		akPrey.SetValue(FV_DigestionStage, 99)
+; 	ElseIf akPrey == PlayerRef && bLethalFlag
+; 		FV_PlayerStruggle.BeginStruggleMechanic(akPred, preyIndex)
+; 	Else
+; 		trace("PerformVoreEventAccept()", "Start vore timer: " + PreyIndex)
+; 		StartTimer(DigestionSpeed, DigestTimerID)
+; 	EndIf
+; 	ChangeFullnessArmor(akPred, akPred.GetValue(FV_CurrentPrey) as int)
 	
-	;Play swallow success audio
-	var[] akArgs = new var[1]
-	akArgs[0] = akPred
-	CallFunctionNoWait("PlayAcceptSounds", akArgs)
-EndFunction
+; 	;Play swallow success audio
+; 	var[] akArgs = new var[1]
+; 	akArgs[0] = akPred
+; 	CallFunctionNoWait("PlayAcceptSounds", akArgs)
+; EndFunction
 
 bool bPlayingAcceptSounds = false
 int iPlayerSoundID = -1
@@ -1023,53 +1022,53 @@ EndFunction
 ; Others
 
 ; Update Fullness Armor
-Function ChangeFullnessArmor(actor ak, Int newValue)
-	Bool UseColdSteel = false
-	Bool[] RemoveHumanArmor = new Bool[VoreBellyArray.Length]
-	Bool[] RemoveNonHumanArmor = new Bool[VoreBellyArray.Length]
-	int i = 0
-	Int oldValue = 0
-	While(i < VoreBellyArray.Length && i < 128)
-		RemoveHumanArmor[i] = ak.GetItemCount(VoreBellyArray[i].HumanVoreBelly) > 0
-		RemoveNonHumanArmor[i] = ak.GetItemCount(VoreBellyArray[i].NonHumanVoreBelly) > 0
-		If(RemoveHumanArmor[i] || RemoveNonHumanArmor[i])
-			oldValue = VoreBellyArray[i].PreyCount
-		EndIf
-		i += 1
-	EndWhile
+; Function ChangeFullnessArmor(actor ak, Int newValue)
+; 	Bool UseColdSteel = false
+; 	Bool[] RemoveHumanArmor = new Bool[VoreBellyArray.Length]
+; 	Bool[] RemoveNonHumanArmor = new Bool[VoreBellyArray.Length]
+; 	int i = 0
+; 	Int oldValue = 0
+; 	While(i < VoreBellyArray.Length && i < 128)
+; 		RemoveHumanArmor[i] = ak.GetItemCount(VoreBellyArray[i].HumanVoreBelly) > 0
+; 		RemoveNonHumanArmor[i] = ak.GetItemCount(VoreBellyArray[i].NonHumanVoreBelly) > 0
+; 		If(RemoveHumanArmor[i] || RemoveNonHumanArmor[i])
+; 			oldValue = VoreBellyArray[i].PreyCount
+; 		EndIf
+; 		i += 1
+; 	EndWhile
 
-	trace("ChangeFullnessArmor()", ": " + ak + " From: " + oldValue + " To: " + newValue)
+; 	trace("ChangeFullnessArmor()", ": " + ak + " From: " + oldValue + " To: " + newValue)
 
-	If((FV_ColdSteelEnabled.GetValue() > 0 && (ak.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))) ;ak.HasKeyword(FV_ColdSteelBody))
-		UseColdSteel = FV_ColdSteelBellyQuest.ChangeColdSteelFullness(ak, newValue)
-	EndIf
+; 	If((FV_ColdSteelEnabled.GetValue() > 0 && (ak.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))) ;ak.HasKeyword(FV_ColdSteelBody))
+; 		UseColdSteel = FV_ColdSteelBellyQuest.ChangeColdSteelFullness(ak, newValue)
+; 	EndIf
 	
-	If(!UseColdSteel && newValue > 0)
-		If(ak.GetValue(FV_HumanPreyCount) >= ak.GetValue(FV_CurrentPrey)/2)
-			If(!RemoveHumanArmor[newValue - 1])
-				ak.EquipItem(VoreBellyArray[newValue - 1].HumanVoreBelly, true, true)
-			EndIf
-			RemoveHumanArmor[newValue - 1] = false
-		Else
-			If(!RemoveNonHumanArmor[newValue - 1])
-				ak.EquipItem(VoreBellyArray[newValue - 1].NonHumanVoreBelly, true, true)
-			EndIf
-			RemoveNonHumanArmor[newValue - 1] = false
-		EndIf
-	EndIf
-	i = 0
-	While(i < VoreBellyArray.Length && i < 128)
-		If(RemoveHumanArmor[i])
-			ak.UnEquipItem(VoreBellyArray[i].HumanVoreBelly, true, true)
-			ak.RemoveItem(VoreBellyArray[i].HumanVoreBelly, 1, true, NONE)
-		EndIf
-		If(RemoveNonHumanArmor[i])
-			ak.UnEquipItem(VoreBellyArray[i].NonHumanVoreBelly, true, true)
-			ak.RemoveItem(VoreBellyArray[i].NonHumanVoreBelly, 1, true, NONE)
-		EndIf
-		i += 1
-	EndWhile
-EndFunction
+; 	If(!UseColdSteel && newValue > 0)
+; 		If(ak.GetValue(FV_HumanPreyCount) >= ak.GetValue(FV_CurrentPrey)/2)
+; 			If(!RemoveHumanArmor[newValue - 1])
+; 				ak.EquipItem(VoreBellyArray[newValue - 1].HumanVoreBelly, true, true)
+; 			EndIf
+; 			RemoveHumanArmor[newValue - 1] = false
+; 		Else
+; 			If(!RemoveNonHumanArmor[newValue - 1])
+; 				ak.EquipItem(VoreBellyArray[newValue - 1].NonHumanVoreBelly, true, true)
+; 			EndIf
+; 			RemoveNonHumanArmor[newValue - 1] = false
+; 		EndIf
+; 	EndIf
+; 	i = 0
+; 	While(i < VoreBellyArray.Length && i < 128)
+; 		If(RemoveHumanArmor[i])
+; 			ak.UnEquipItem(VoreBellyArray[i].HumanVoreBelly, true, true)
+; 			ak.RemoveItem(VoreBellyArray[i].HumanVoreBelly, 1, true, NONE)
+; 		EndIf
+; 		If(RemoveNonHumanArmor[i])
+; 			ak.UnEquipItem(VoreBellyArray[i].NonHumanVoreBelly, true, true)
+; 			ak.RemoveItem(VoreBellyArray[i].NonHumanVoreBelly, 1, true, NONE)
+; 		EndIf
+; 		i += 1
+; 	EndWhile
+; EndFunction
 
 ; Change digest fullness armor
 function ChangeDigestFullnessArmor(Actor currentDigester, int item = -1) ; item 0 - 99 or -1 to remove laa
@@ -1197,10 +1196,10 @@ Function ResetVoreMod(Bool abResetPlayer = False)
 	If((FV_ColdSteelEnabled.GetValue() > 0 && (PlayerRef.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1)))
 		FV_ColdSteelBellyQuest.ResetMorphs(PlayerRef)
 	EndIf
-	ChangeFullnessArmor(PlayerRef,0)
+	; ChangeFullnessArmor(PlayerRef,0)
 	ChangeDigestFullnessArmor(PlayerRef)
 	
-	PlayerRef.SetValue(FV_CurrentPrey, 0)
+	; PlayerRef.SetValue(FV_CurrentPrey, 0)
 	PlayerRef.SetValue(FV_CurrentAlivePrey, 0)
 	PlayerRef.SetValue(FV_TicksTillEscape, 0)
 	PlayerRef.SetValue(FV_TicksTillEscapeStart, 0)
@@ -1226,12 +1225,12 @@ Function ResetVoreMod(Bool abResetPlayer = False)
 		pred = data.Pred
 		prey = data.Prey
 	
-		ChangeFullnessArmor(pred, 0)
+		; ChangeFullnessArmor(pred, 0)
 		ChangeDigestFullnessArmor(pred)
 		If((FV_ColdSteelEnabled.GetValue() > 0 && (pred.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))) ;pred.HasKeyword(FV_ColdSteelBody))
 			FV_ColdSteelBellyQuest.ResetMorphs(pred)
 		EndIf
-		pred.SetValue(FV_CurrentPrey, 0)
+		; pred.SetValue(FV_CurrentPrey, 0)
 		pred.SetValue(FV_CurrentAlivePrey, 0)
 		pred.SetValue(FV_TicksTillEscape, 0)
 		pred.SetValue(FV_TicksTillEscapeStart, 0)
@@ -1253,12 +1252,12 @@ Function ResetVoreMod(Bool abResetPlayer = False)
 		
 		prey.MoveTo(pred)																			
 		prey.setPosition(pred.getPositionX(), pred.getPositionY(), pred.getPositionZ())	
-		ChangeFullnessArmor(prey,0)
+		; ChangeFullnessArmor(prey,0)
 		ChangeDigestFullnessArmor(prey)
 		If((FV_ColdSteelEnabled.GetValue() > 0 && (prey.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))) ;prey.HasKeyword(FV_ColdSteelBody))
 			FV_ColdSteelBellyQuest.ResetMorphs(prey)
 		EndIf
-		prey.SetValue(FV_CurrentPrey, 0)
+		; prey.SetValue(FV_CurrentPrey, 0)
 		prey.SetValue(FV_CurrentAlivePrey, 0)
 		prey.SetValue(FV_TicksTillEscape, 0)
 		prey.SetValue(FV_TicksTillEscapeStart, 0)

@@ -92,6 +92,7 @@ EndFunction
 Event OnEffectStart(actor akPrey, actor akPred)
 	int startVore = 0
 	If(akPred.GetValue(FV_BlockSwallowFlag) != 0)
+		Trace("Effect: BlockSwallowFlag")
 		Dispel()
 		Return
 	EndIf
@@ -99,16 +100,19 @@ Event OnEffectStart(actor akPrey, actor akPred)
 	;GAZ: Remove this at some point, the coprophage crowd enjoyed when we did this for Devourment Refactor.
 	;Block preds from swallowing scat piles
 	If(akPrey.GetActorBase() == FV_ScatLootCorpse)
+		Trace("Effect: ScatLoot")
 		Dispel()
 		Return
 	EndIf
 
 	If(akPrey.IsInFaction(CurrentCompanionFaction) && FV_SwallowCompanionProtection.GetValue() > 0 && akPred == PlayerRef)
+		Trace("Effect: CompanionProtection")
 		Dispel()
 		Return
 	EndIf
 
-	If(akPred.GetValue(FV_BellyCapacity) < akPred.GetValue(FV_CurrentPrey) + FV_ActorData.EvaluateSlots(akPrey))
+	If(Math.Floor(akPred.GetValue(FV_BellyCapacity)) < FV_ActorData.EvaluateSlots(akPrey))
+		Trace("Effect: Belly Capacity", "[" + akPred + "]" +  akPred.GetValue(FV_BellyCapacity) + " < " + FV_ActorData.EvaluateSlots(akPrey))
 		Dispel()
 		Return
 	EndIf
@@ -117,11 +121,13 @@ Event OnEffectStart(actor akPrey, actor akPred)
 		If(akPred == PlayerRef)
 			FV_CannotSwallowPowerArmorMessage.Show()
 		EndIf
+		Trace("Effect: PowerArmor")
 		Dispel()
 		Return
 	EndIf
 
 	If(!FV_ActorData.GetCanSwallow(akPred, akPrey))
+		Trace("Effect: Cannot Swallow")
 		Dispel()
 		Return
 	EndIf
@@ -130,6 +136,7 @@ Event OnEffectStart(actor akPrey, actor akPred)
 	int i = 0
 	While(i < FV_RaceSwallowBlock.GetSize() && i <= 128)
 		If(akPrey.GetRace() == FV_RaceSwallowBlock.GetAt(i) as Race)
+			Trace("Effect: RaceSwallowBlock")
 			Dispel()
 			Return
 		EndIf
@@ -156,6 +163,6 @@ Event OnEffectStart(actor akPrey, actor akPred)
 	If(preyResist < predSwallow)			
 		int swallowedIndex = FV_ConsumptionRegistry.ProcessSingleSwallow(akPred, akPrey, !IsNonLethalVore)
 	EndIf
-	Trace("OnEffectStart", "Finished.")
+	Trace("Effect: Swallow")
 	Dispel()
 EndEvent

@@ -10,7 +10,7 @@ EndFunction
 String Property VoreHud = "FalloutVore_hud.swf" AutoReadOnly Hidden
 
 Group TrackerProperties
-	ActorValue Property FV_CurrentPrey Auto
+	; ActorValue Property FV_CurrentPrey Auto
 	ActorValue Property FV_BellyCapacity Auto
 EndGroup
 
@@ -99,7 +99,7 @@ Function HUDStart()
 EndFunction
 
 Function HUD_WidgetLoaded(string asWidget)
-	If(Game.getPlayer().getvalue(FV_CurrentPrey) > 0)
+	If(PlayerRef.getvalue(FV_BellyCapacity) < PlayerRef.GetBaseValue(FV_BellyCapacity))
 		SendTrackerUpdate()
 	EndIf
 	; If(ThiccVore.WeightModEnabled)
@@ -110,7 +110,7 @@ EndFunction
 Function SendTrackerUpdate()
 	if(hud)
 		float playerprey = Math.Ceiling(FV_StomachSim.GetBellyVolume(PlayerRef))
-		float PlayerCapacity = PlayerRef.GetValue(FV_BellyCapacity)
+		float PlayerCapacity = PlayerRef.GetBaseValue(FV_BellyCapacity)
 		float playerSex = PlayerRef.GetLeveledActorBase().GetSex() as float
 		GetEditLock()
 		hud.sendmessage(VoreHud, Command_TrackerUpdateProperties, playerprey, PlayerCapacity, playerSex)

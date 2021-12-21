@@ -37,7 +37,7 @@ Function Setup(int aiVersion = 2) ; Increment version as needed.
         LoadKeillaPreset()
         Version = aiVersion
     EndIf
-    UpdateGutMorphs(player)
+    UpdateMorphs(player)
 EndFunction
 
 Event OnInit()
@@ -51,18 +51,18 @@ EndEvent
 ; Private
 
 Event FalloutVore:FV_StomachSimScript.OnStomachChange(FalloutVore:FV_StomachSimScript akSender, Var[] akArgs)
-    Trace("OnStomachChange()")
     Actor pred = akArgs[0] as Actor
-    UpdateGutMorphs(pred)    
+    Trace("OnStomachChange()", pred)
+    UpdateMorphs(pred)    
 EndEvent
 
 Event FalloutVore:FV_ThiccVoreScript.OnThiccnessChange(FalloutVore:FV_ThiccVoreScript akSender, Var[] akArgs)
-    Trace("OnThiccnessChange()")
     Actor pred = akArgs[0] as Actor
-    UpdateGutMorphs(pred)
+    Trace("OnThiccnessChange()", pred)
+    UpdateMorphs(pred)
 EndEvent
 
-Function UpdateGutMorphs(Actor akPred)
+Function UpdateMorphs(Actor akPred)
     float bigSoftBelly = FV_StomachSim.GetBellyVolume(akPred)
     float thiccness = akPred.GetValue(FV_Thiccness)
     ; Thiccness DumbBones - TODO: Make this and the threshold MCM configurable.
@@ -100,7 +100,7 @@ Function UpdateGutMorphs(Actor akPred)
     BodyGen.SetMorph(akPred, true, "Big Soft Belly", FV_VoreMorphKeyword, bigSoftBelly)
 
     int thiccStage = Math.Floor(thiccness)
-    Trace("UpdateGutMorphs()", thiccStage + " " + ThiccPresets)
+    Trace("UpdateGutMorphs()", akPred + " " + thiccStage)
 
     int index = 0 ; Doesn't seem to work... did the presets not get loaded, or else does the morph setting not work?
     While (index < ThiccPresets.Length && index <= 128)
@@ -134,11 +134,118 @@ Struct PresetSlider
 EndStruct
 
 Function LoadKeillaPreset()
-    PresetSlider slider = new PresetSlider
+    PresetSlider slider
+    ; THICC settings
+    slider = new PresetSlider
+    slider.Name = "Breasts"
+    slider.Stage1 = 1.0
+    slider.Stage2 = 1.0
+    slider.Stage3 = 1.0
+    slider.Stage4 = 1.0
+    ThiccPresets.Add(slider)
+
+    slider = new PresetSlider
+    slider.Name = "Butt"
+    slider.Stage1 = 1.0
+    slider.Stage2 = 1.0
+    slider.Stage3 = 1.0
+    slider.Stage4 = 1.0
+    ThiccPresets.Add(slider)
+
+    slider = new PresetSlider
+    slider.Name = "RoundAss"
+    slider.Stage1 = 1.0
+    slider.Stage2 = 1.0
+    slider.Stage3 = 1.0
+    slider.Stage4 = 1.0
+    ThiccPresets.Add(slider)
+
+    slider = new PresetSlider
+    slider.Name = "Thighs"
+    slider.Stage1 = 1.0
+    slider.Stage2 = 1.0
+    slider.Stage3 = 1.0
+    slider.Stage4 = 1.0
+    ThiccPresets.Add(slider)
+
+    slider = new PresetSlider
+    slider.Name = "Belly Thicc"
+    slider.Stage1 = 1.0
+    slider.Stage2 = 1.0
+    slider.Stage3 = 1.0
+    slider.Stage4 = 1.0
+    ThiccPresets.Add(slider)
+
+    slider = new PresetSlider
+    slider.Name = "Thicc Knees"
+    slider.Stage1 = 1.0
+    slider.Stage2 = 1.0
+    slider.Stage3 = 1.0
+    slider.Stage4 = 1.0
+    ThiccPresets.Add(slider)
+
+    slider = new PresetSlider
+    slider.Name = "ChubbyArms"
+    slider.Stage1 = 1.0
+    slider.Stage2 = 1.0
+    slider.Stage3 = 1.0
+    slider.Stage4 = 1.0
+    ThiccPresets.Add(slider)
+    
+    ; BBW
+    slider = new PresetSlider
     slider.Name = "BBW"
+    slider.Stage1 = 0.0
+    slider.Stage2 = 0.5
+    slider.Stage3 = 1.0
+    slider.Stage4 = 2.0
+    ThiccPresets.Add(slider)
+
+    slider = new PresetSlider
+    slider.Name = "BreastsNewSH"
+    slider.Stage1 = 0.0
+    slider.Stage2 = -1.0
+    slider.Stage3 = -2.0
+    slider.Stage4 = -2.0
+    ThiccPresets.Add(slider)
+
+    slider = new PresetSlider
+    slider.Name = "BreastTopSlope"
+    slider.Stage1 = 0.0
+    slider.Stage2 = 1.0
+    slider.Stage3 = 2.0
+    slider.Stage4 = 2.0
+    ThiccPresets.Add(slider)
+
+    slider = new PresetSlider
+    slider.Name = "BreastGravity2"
     slider.Stage1 = 0.0
     slider.Stage2 = 0.0
     slider.Stage3 = 1.0
+    slider.Stage4 = 1.0
+    ThiccPresets.Add(slider)
+
+    slider = new PresetSlider
+    slider.Name = "NipBGone"
+    slider.Stage1 = 0.0
+    slider.Stage2 = 1.0
+    slider.Stage3 = 2.0
+    slider.Stage4 = 2.0
+    ThiccPresets.Add(slider)
+
+    slider = new PresetSlider
+    slider.Name = "BreastsSmall"
+    slider.Stage1 = 0.0
+    slider.Stage2 = 0.0
+    slider.Stage3 = 0.0
+    slider.Stage4 = 2.0
+    ThiccPresets.Add(slider)
+
+    slider = new PresetSlider
+    slider.Name = "BreastsSmall2"
+    slider.Stage1 = 0.0
+    slider.Stage2 = 0.0
+    slider.Stage3 = 0.0
     slider.Stage4 = 2.0
     ThiccPresets.Add(slider)
     Trace("LoadKeillaPreset()", ThiccPresets)

@@ -62,14 +62,19 @@ Event Actor.OnPlayerLoadGame(Actor akSender)
 EndEvent
 
 Event FalloutVore:FV_StomachSimScript.OnDigestProgress(FalloutVore:FV_StomachSimScript akSender, Var[] akArgs)
-	HandleDigestedAmount(akArgs[0] as Actor, akArgs[2] as float)
+	Actor pred = akArgs[0] as Actor
+	Trace("OnDigestProgress()", pred)
+	HandleDigestedAmount(pred, akArgs[2] as float)
 EndEvent
 
 Event FalloutVore:FV_StomachSimScript.OnDigestFinish(FalloutVore:FV_StomachSimScript akSender, Var[] akArgs)
-	HandleDigestedAmount(akArgs[0] as Actor, akArgs[2] as float)
+	Actor pred = akArgs[0] as Actor
+	Trace("OnDigestFinish()", pred)
+	HandleDigestedAmount(pred, akArgs[2] as float)
 EndEvent
 
 Event FalloutVore:FV_FalloutVoreScript.VoreGameTick(FalloutVore:FV_FalloutVoreScript akSender, Var[] akArgs)
+	Trace("VoreGameTick()")
 	LoseWeightAll(akArgs[0] as float)
 EndEvent
 

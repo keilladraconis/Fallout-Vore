@@ -170,8 +170,11 @@ EndFunction
 
 Function RunDigestion(float afTimeElapsed, Stomach stomach)
     Trace("RunDigestion()", stomach)
-    
-    float digestionAmount = afTimeElapsed * (stomach.Pred.GetValue(FV_DigestionSpeed) / 3600.0) ; Digestionspeed computed into units-per-hour.
+    float digestionSpeed = stomach.Pred.GetValue(FV_DigestionSpeed)
+    If (digestionSpeed == 0.0)
+        digestionSpeed = 1.0 ; Some actors have no digestion speed. Default to 1 unit per hour.
+    EndIf
+    float digestionAmount = afTimeElapsed * (digestionSpeed / 3600.0) ; Digestionspeed computed into units-per-hour.
     float digestProportion = digestionAmount / (stomach.DigestibleVolume + stomach.DigestiblePreyVolume)
     float digestibleVolume = stomach.DigestibleVolume
     float digestiblePreyVolume = stomach.DigestiblePreyVolume
@@ -210,7 +213,7 @@ Function RunDigestion(float afTimeElapsed, Stomach stomach)
 EndFunction
 
 Function SendStomachChange(Actor akActor)
-    Trace("SendStomachChange()")
+    Trace("SendStomachChange()", akActor)
     Var[] args = new Var[1]
     args[0] = akActor
     SendCustomEvent("OnStomachChange", args)

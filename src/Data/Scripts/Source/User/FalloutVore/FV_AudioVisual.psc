@@ -24,7 +24,7 @@ EndGroup
 
 ; Quest Script Setup Boilerplate
 int Version = 0
-Function Setup(int aiVersion = 2) ; Increment version as needed.
+Function Setup(int aiVersion = 3) ; Increment version as needed.
     Trace("Setup()", Version)
     Actor player = Game.GetPlayer()
     if Version < aiVersion
@@ -37,7 +37,7 @@ Function Setup(int aiVersion = 2) ; Increment version as needed.
         LoadKeillaPreset()
         Version = aiVersion
     EndIf
-    UpdateMorphs(player)
+    EnqueueUpdateMorphs(player)
 EndFunction
 
 Event OnInit()
@@ -51,19 +51,91 @@ EndEvent
 ; Private
 
 Event FalloutVore:FV_StomachSimScript.OnStomachChange(FalloutVore:FV_StomachSimScript akSender, Var[] akArgs)
+    GotoState("UpdatingMorphs")
     Actor pred = akArgs[0] as Actor
     Trace("OnStomachChange()", pred)
-    UpdateMorphs(pred)    
+    EnqueueUpdateMorphs(pred)
+    StartTimer(0.1)
 EndEvent
 
 Event FalloutVore:FV_ThiccVoreScript.OnThiccnessChange(FalloutVore:FV_ThiccVoreScript akSender, Var[] akArgs)
+    GotoState("UpdatingMorphs")
     Actor pred = akArgs[0] as Actor
     Trace("OnThiccnessChange()", pred)
-    UpdateMorphs(pred)
+    EnqueueUpdateMorphs(pred)        
+    StartTimer(0.1)
 EndEvent
 
-Function UpdateMorphs(Actor akPred)
-    float bigSoftBelly = FV_StomachSim.GetBellyVolume(akPred)
+Event OnTimer(int aiTimerID)
+    ; Does nothing
+EndEvent
+
+State UpdatingMorphs
+    Event FalloutVore:FV_StomachSimScript.OnStomachChange(FalloutVore:FV_StomachSimScript akSender, Var[] akArgs)
+        Actor pred = akArgs[0] as Actor
+        Trace("OnStomachChange() [UpdatingMorphs]", pred)
+        EnqueueUpdateMorphs(pred)        
+    EndEvent
+    
+    Event FalloutVore:FV_ThiccVoreScript.OnThiccnessChange(FalloutVore:FV_ThiccVoreScript akSender, Var[] akArgs)
+        Actor pred = akArgs[0] as Actor
+        Trace("OnThiccnessChange() [UpdatingMorphs]", pred)
+        EnqueueUpdateMorphs(pred)        
+    EndEvent
+
+    Event OnTimer(int aiTimerID)
+        GetUpdateMorphsLock()
+        If (UpdateMorphsQueue.Length == 0)
+            UpdateMorphsLock = false
+            GotoState("")
+            Trace("OnTimer()", "Queue is empty")
+            Return None
+        EndIf
+        Actor pred = UpdateMorphsQueue[0]
+        UpdateMorphsLock = false
+        UpdateMorphs_OnTimer(pred)
+        UpdateMorphsQueue.Remove(0)
+        StartTimer(0.1)
+    EndEvent
+EndState
+
+Actor[] UpdateMorphsQueue
+int UpdateMorphsLockWait
+bool UpdateMorphsLock = false
+
+Function GetUpdateMorphsLock()
+    UpdateMorphsLockWait += 1
+    While (UpdateMorphsLock)
+        Trace("GetUpdateMorphsLock()", "Lock Wait:" + UpdateMorphsLockWait)
+        Utility.Wait(0.1 * UpdateMorphsLockWait)
+    EndWhile
+    UpdateMorphsLock = true
+    UpdateMorphsLockWait -= 1
+EndFunction
+
+; Updates all morphs for the given actor. 
+; Very thread unsafe, so we queue updates and lock this function to a single thread.
+Function EnqueueUpdateMorphs(Actor akPred)
+    GetUpdateMorphsLock()
+    If (UpdateMorphsQueue == None)
+        UpdateMorphsQueue = new Actor[0]
+    EndIf
+    If (UpdateMorphsQueue.Find(akPred) >= 0)
+        Trace("EnqueueUpdateMorphs()", "Pred already queued:" + akPred)
+        UpdateMorphsLock = false
+        Return
+    Else
+        Trace("EnqueueUpdateMorphs()", akPred)
+        UpdateMorphsQueue.Add(akPred)
+    EndIf
+    UpdateMorphsLock = false
+EndFunction
+
+; Runs on a timer to ensure that only one is running at a time.
+Function UpdateMorphs_OnTimer(Actor akPred)
+    Trace("UpdateMorphs_1()", akPred)
+
+    float bigSoftBelly = FV_StomachSim.GetBellyVolume(akPred) ; External!
     float thiccness = akPred.GetValue(FV_Thiccness)
     ; Thiccness DumbBones - TODO: Make this and the threshold MCM configurable.
     If (thiccness >= 0.5)
@@ -100,8 +172,6 @@ Function UpdateMorphs(Actor akPred)
     BodyGen.SetMorph(akPred, true, "Big Soft Belly", FV_VoreMorphKeyword, bigSoftBelly)
 
     int thiccStage = Math.Floor(thiccness)
-    Trace("UpdateGutMorphs()", akPred + " " + thiccStage)
-
     int index = 0 ; Doesn't seem to work... did the presets not get loaded, or else does the morph setting not work?
     While (index < ThiccPresets.Length && index <= 128)
         PresetSlider slider = ThiccPresets[index]
@@ -121,6 +191,7 @@ Function UpdateMorphs(Actor akPred)
         index += 1
     EndWhile
     BodyGen.UpdateMorphs(akPred)
+    Trace("UpdateMorphs_1() Finished", akPred)
 EndFunction
 
 PresetSlider[] ThiccPresets

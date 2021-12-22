@@ -41,7 +41,6 @@ EndGroup
 ; Quest Script Setup Boilerplate
 int Version = 0
 Function Setup(int aiVersion = 2) ; Increment version as needed.
-	Trace("Setup()", Version)
     if Version < aiVersion
 		RegisterForRemoteEvent(Game.GetPlayer(), "OnPlayerLoadGame")
 		RegisterForCustomEvent(FV_StomachSim, "OnDigestProgress")
@@ -63,23 +62,23 @@ EndEvent
 
 Event FalloutVore:FV_StomachSimScript.OnDigestProgress(FalloutVore:FV_StomachSimScript akSender, Var[] akArgs)
 	Actor pred = akArgs[0] as Actor
-	Trace("OnDigestProgress()", pred)
+	; Trace("OnDigestProgress()", pred)
 	HandleDigestedAmount(pred, akArgs[2] as float)
 EndEvent
 
 Event FalloutVore:FV_StomachSimScript.OnDigestFinish(FalloutVore:FV_StomachSimScript akSender, Var[] akArgs)
 	Actor pred = akArgs[0] as Actor
-	Trace("OnDigestFinish()", pred)
+	; Trace("OnDigestFinish()", pred)
 	HandleDigestedAmount(pred, akArgs[2] as float)
 EndEvent
 
 Event FalloutVore:FV_FalloutVoreScript.VoreGameTick(FalloutVore:FV_FalloutVoreScript akSender, Var[] akArgs)
-	Trace("VoreGameTick()")
+	; Trace("VoreGameTick()")
 	LoseWeightAll(akArgs[0] as float)
 EndEvent
 
 Function HandleDigestedAmount(Actor akActor, float afAmount)
-	Trace("HandleDigestedAmount()", afAmount)
+	; Trace("HandleDigestedAmount()", afAmount)
 	; This only works for female actors.
 	If (akActor.GetLeveledActorBase().GetSex() == 0)
 		Return

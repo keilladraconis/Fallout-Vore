@@ -25,7 +25,7 @@ EndGroup
 ; Quest Script Setup Boilerplate
 int Version = 0
 Function Setup(int aiVersion = 3) ; Increment version as needed.
-    Trace("Setup()", Version)
+    ; Trace("Setup()", Version)
     Actor player = Game.GetPlayer()
     if Version < aiVersion
         RegisterForRemoteEvent(player, "OnPlayerLoadGame")
@@ -53,7 +53,7 @@ EndEvent
 Event FalloutVore:FV_StomachSimScript.OnStomachChange(FalloutVore:FV_StomachSimScript akSender, Var[] akArgs)
     GotoState("UpdatingMorphs")
     Actor pred = akArgs[0] as Actor
-    Trace("OnStomachChange()", pred)
+    ; Trace("OnStomachChange()", pred)
     EnqueueUpdateMorphs(pred)
     StartTimer(0.1)
 EndEvent
@@ -61,7 +61,7 @@ EndEvent
 Event FalloutVore:FV_ThiccVoreScript.OnThiccnessChange(FalloutVore:FV_ThiccVoreScript akSender, Var[] akArgs)
     GotoState("UpdatingMorphs")
     Actor pred = akArgs[0] as Actor
-    Trace("OnThiccnessChange()", pred)
+    ; Trace("OnThiccnessChange()", pred)
     EnqueueUpdateMorphs(pred)        
     StartTimer(0.1)
 EndEvent
@@ -73,13 +73,13 @@ EndEvent
 State UpdatingMorphs
     Event FalloutVore:FV_StomachSimScript.OnStomachChange(FalloutVore:FV_StomachSimScript akSender, Var[] akArgs)
         Actor pred = akArgs[0] as Actor
-        Trace("OnStomachChange() [UpdatingMorphs]", pred)
+        ; Trace("OnStomachChange() [UpdatingMorphs]", pred)
         EnqueueUpdateMorphs(pred)        
     EndEvent
     
     Event FalloutVore:FV_ThiccVoreScript.OnThiccnessChange(FalloutVore:FV_ThiccVoreScript akSender, Var[] akArgs)
         Actor pred = akArgs[0] as Actor
-        Trace("OnThiccnessChange() [UpdatingMorphs]", pred)
+        ; Trace("OnThiccnessChange() [UpdatingMorphs]", pred)
         EnqueueUpdateMorphs(pred)        
     EndEvent
 
@@ -88,7 +88,7 @@ State UpdatingMorphs
         If (UpdateMorphsQueue.Length == 0)
             UpdateMorphsLock = false
             GotoState("")
-            Trace("OnTimer()", "Queue is empty")
+            ; Trace("OnTimer()", "Queue is empty")
             Return None
         EndIf
         Actor pred = UpdateMorphsQueue[0]
@@ -106,7 +106,7 @@ bool UpdateMorphsLock = false
 Function GetUpdateMorphsLock()
     UpdateMorphsLockWait += 1
     While (UpdateMorphsLock)
-        Trace("GetUpdateMorphsLock()", "Lock Wait:" + UpdateMorphsLockWait)
+        ; Trace("GetUpdateMorphsLock()", "Lock Wait:" + UpdateMorphsLockWait)
         Utility.Wait(0.1 * UpdateMorphsLockWait)
     EndWhile
     UpdateMorphsLock = true
@@ -121,11 +121,11 @@ Function EnqueueUpdateMorphs(Actor akPred)
         UpdateMorphsQueue = new Actor[0]
     EndIf
     If (UpdateMorphsQueue.Find(akPred) >= 0)
-        Trace("EnqueueUpdateMorphs()", "Pred already queued:" + akPred)
+        ; Trace("EnqueueUpdateMorphs()", "Pred already queued:" + akPred)
         UpdateMorphsLock = false
         Return
     Else
-        Trace("EnqueueUpdateMorphs()", akPred)
+        ; Trace("EnqueueUpdateMorphs()", akPred)
         UpdateMorphsQueue.Add(akPred)
     EndIf
     UpdateMorphsLock = false
@@ -133,7 +133,7 @@ EndFunction
 
 ; Runs on a timer to ensure that only one is running at a time.
 Function UpdateMorphs_OnTimer(Actor akPred)
-    Trace("UpdateMorphs_1()", akPred)
+    ; Trace("UpdateMorphs_1()", akPred)
 
     float bigSoftBelly = FV_StomachSim.GetBellyVolume(akPred) ; External!
     float thiccness = akPred.GetValue(FV_Thiccness)
@@ -191,7 +191,7 @@ Function UpdateMorphs_OnTimer(Actor akPred)
         index += 1
     EndWhile
     BodyGen.UpdateMorphs(akPred)
-    Trace("UpdateMorphs_1() Finished", akPred)
+    ; Trace("UpdateMorphs_1() Finished", akPred)
 EndFunction
 
 PresetSlider[] ThiccPresets
@@ -319,5 +319,5 @@ Function LoadKeillaPreset()
     slider.Stage3 = 0.0
     slider.Stage4 = 2.0
     ThiccPresets.Add(slider)
-    Trace("LoadKeillaPreset()", ThiccPresets)
+    ; Trace("LoadKeillaPreset()", ThiccPresets)
 EndFunction

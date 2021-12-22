@@ -45,7 +45,7 @@ Function AddDigestible(Actor akPred, Float afVolume)
 EndFunction
 
 Function AddIndigestible(Actor akPred, Float afVolume)
-    Trace("AddIndigestible()")
+    ; Trace("AddIndigestible()")
     Stomach currentStomach = GetStomachFor(akPred, true)
     currentStomach.IndigestibleVolume += afVolume
     akPred.DamageValue(FV_BellyCapacity, afVolume)
@@ -118,7 +118,7 @@ Event OnInit()
 EndEvent
 
 Event FalloutVore:FV_FalloutVoreScript.VoreGameTick(FalloutVore:FV_FalloutVoreScript akSender, Var[] akArgs)
-    Trace("VoreGameTick()")
+    ; Trace("VoreGameTick()")
     float timeElapsed = akArgs[0] as float
     RunEachDigestion(timeElapsed)
 EndEvent
@@ -169,7 +169,7 @@ Function RunEachDigestion(float afTimeElapsed)
 EndFunction
 
 Function RunDigestion(float afTimeElapsed, Stomach stomach)
-    Trace("RunDigestion()", stomach)
+    ; Trace("RunDigestion()", stomach)
     float digestionSpeed = stomach.Pred.GetValue(FV_DigestionSpeed)
     If (digestionSpeed == 0.0)
         digestionSpeed = 1.0 ; Some actors have no digestion speed. Default to 1 unit per hour.
@@ -178,7 +178,7 @@ Function RunDigestion(float afTimeElapsed, Stomach stomach)
     float digestProportion = digestionAmount / (stomach.DigestibleVolume + stomach.DigestiblePreyVolume)
     float digestibleVolume = stomach.DigestibleVolume
     float digestiblePreyVolume = stomach.DigestiblePreyVolume
-    Trace("RunDigestion()", digestionAmount)
+    ; Trace("RunDigestion()", digestionAmount)
     digestibleVolume -= digestProportion * digestibleVolume
     digestiblePreyVolume -= digestProportion * digestiblePreyVolume
 
@@ -193,7 +193,7 @@ Function RunDigestion(float afTimeElapsed, Stomach stomach)
     EndIf
 
     stomach.Pred.RestoreValue(FV_BellyCapacity, digestionAmount)
-    Trace("RunDigestion()", "FV_BellyCapacity[" + stomach.Pred + "] += " + digestionAmount)
+    ; Trace("RunDigestion()", "FV_BellyCapacity[" + stomach.Pred + "] += " + digestionAmount)
     stomach.DigestibleVolume = digestibleVolume
     stomach.DigestiblePreyVolume = digestiblePreyVolume
     SendStomachChange(stomach.Pred)
@@ -213,7 +213,7 @@ Function RunDigestion(float afTimeElapsed, Stomach stomach)
 EndFunction
 
 Function SendStomachChange(Actor akActor)
-    Trace("SendStomachChange()", akActor)
+    ; Trace("SendStomachChange()", akActor)
     Var[] args = new Var[1]
     args[0] = akActor
     SendCustomEvent("OnStomachChange", args)

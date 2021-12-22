@@ -92,43 +92,38 @@ EndFunction
 Event OnEffectStart(actor akPrey, actor akPred)
 	int startVore = 0
 	If(akPred.GetValue(FV_BlockSwallowFlag) != 0)
-		Trace("Effect: BlockSwallowFlag")
-		Dispel()
+		; Trace("Effect: BlockSwallowFlag")
 		Return
 	EndIf
 
 	;GAZ: Remove this at some point, the coprophage crowd enjoyed when we did this for Devourment Refactor.
 	;Block preds from swallowing scat piles
 	If(akPrey.GetActorBase() == FV_ScatLootCorpse)
-		Trace("Effect: ScatLoot")
-		Dispel()
+		; Trace("Effect: ScatLoot")
 		Return
 	EndIf
 
 	If(akPrey.IsInFaction(CurrentCompanionFaction) && FV_SwallowCompanionProtection.GetValue() > 0 && akPred == PlayerRef)
-		Trace("Effect: CompanionProtection")
-		Dispel()
+		; Trace("Effect: CompanionProtection")
 		Return
 	EndIf
 
-	If(Math.Floor(akPred.GetValue(FV_BellyCapacity)) < FV_ActorData.EvaluateSlots(akPrey))
-		Trace("Effect: Belly Capacity", "[" + akPred + "]" +  akPred.GetValue(FV_BellyCapacity) + " < " + FV_ActorData.EvaluateSlots(akPrey))
-		Dispel()
-		Return
-	EndIf
+	; If(Math.Floor(akPred.GetValue(FV_BellyCapacity)) < FV_ActorData.EvaluateSlots(akPrey))
+	; 	Trace("Effect: Belly Capacity", "[" + akPred + "]" +  akPred.GetValue(FV_BellyCapacity) + " < " + FV_ActorData.EvaluateSlots(akPrey))
+	; 	Dispel()
+	; 	Return
+	; EndIf
 
 	If(akPrey.IsInPowerArmor() && !akPred.HasPerk(FV_HighIronDiet02))
 		If(akPred == PlayerRef)
 			FV_CannotSwallowPowerArmorMessage.Show()
 		EndIf
-		Trace("Effect: PowerArmor")
-		Dispel()
+		; Trace("Effect: PowerArmor")
 		Return
 	EndIf
 
 	If(!FV_ActorData.GetCanSwallow(akPred, akPrey))
-		Trace("Effect: Cannot Swallow")
-		Dispel()
+		; Trace("Effect: Cannot Swallow")
 		Return
 	EndIf
 
@@ -136,8 +131,7 @@ Event OnEffectStart(actor akPrey, actor akPred)
 	int i = 0
 	While(i < FV_RaceSwallowBlock.GetSize() && i <= 128)
 		If(akPrey.GetRace() == FV_RaceSwallowBlock.GetAt(i) as Race)
-			Trace("Effect: RaceSwallowBlock")
-			Dispel()
+			; Trace("Effect: RaceSwallowBlock")
 			Return
 		EndIf
 		i += 1
@@ -163,6 +157,5 @@ Event OnEffectStart(actor akPrey, actor akPred)
 	If(preyResist < predSwallow)			
 		int swallowedIndex = FV_ConsumptionRegistry.ProcessSingleSwallow(akPred, akPrey, !IsNonLethalVore)
 	EndIf
-	Trace("Effect: Swallow")
-	Dispel()
+	; Trace("Effect: Swallow")
 EndEvent

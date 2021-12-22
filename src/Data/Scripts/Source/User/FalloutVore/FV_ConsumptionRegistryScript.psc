@@ -197,14 +197,16 @@ CustomEvent VoreLevelUp
 CustomEvent OnSwallow
 CustomEvent OnVomit
 CustomEvent OnDigestProtection
-
-; Triggered whenever prey is added to the ConsumptionRegistry
-; args[0] = Actor akPred
+CustomEvent OnDigestionDamage
+; Triggered whenever prey is damaged by digestion. args[0] = Actor akPred, args[1] = Actor akPrey
+CustomEvent OnDigestionComplete
+; Triggered whenever prey is fully digested. args[0] = Actor akPred, args[1] = Actor akPrey
 CustomEvent OnAdd
-
-; Triggered whenever prey is removed from the ConsumptionRegistry
-; args[0] = Actor akPred
+; Triggered whenever prey is added to the ConsumptionRegistry. args[0] = Actor akPred, args[1] = Actor akPrey
 CustomEvent OnRemove
+; Triggered whenever prey is removed from the ConsumptionRegistry. args[0] = Actor akPred, args[1] = Actor akPrey
+
+
 
 ; constants
 int GhostTimerRemovalID				= 9999999 const	; used to remove Ghost invulnerability from player
@@ -236,7 +238,6 @@ EndStruct
 Event OnInit()
 	PlayerRef.AddPerk(FV_ContextVorePerk)
 	RegisterForRemoteEvent(PlayerRef, "OnPlayerLoadGame")
-	trace("OnInit()", "Fallout Vore v3.0 initialized")
 	RegisterForPlayerSleep()
 	RegisterForPlayerWait()
 	FV_VoreSurvival.RegisterForVoreSurvival(True)
@@ -244,7 +245,6 @@ Event OnInit()
 EndEvent
 
 Event Actor.OnPlayerLoadGame(Actor akSender)
-	trace("OnPlayerLoadGame()", "Fallout Vore v3.0 loaded")
 	FV_VoreSurvival.RegisterForVoreSurvival(True)
 	RunDLCPatches()
 EndEvent
@@ -406,7 +406,11 @@ int Function Add(Actor akPred, Actor akPrey, Bool abIsLethal = false)
 	data.BellyContainer = bellyContainer
 	data.IsLethal = abIsLethal
 	ConsumptionRegistry.Add(data)
-	StartTimer(1.0, DigestTimerID) ; Start the digestion timer.
+	Var[] args = new Var[2]
+	args[0] = akPred
+	args[1] = akPrey
+	SendCustomEvent("OnAdd", args)
+	StartTimer(DigestionSpeed, DigestTimerID) ; Start the digestion timer.
 	Return ConsumptionRegistry.Length - 1
 EndFunction
 
@@ -418,6 +422,10 @@ bool Function Remove(Actor akPrey)
 	else
 		Actor pred = GetPred(akPrey)
 		ConsumptionRegistry.Remove(i)
+		Var[] args = new Var[2]
+		args[0] = pred
+		args[1] = akPrey
+		SendCustomEvent("OnRemove", args)
 		Return true
 	Endif
 EndFunction
@@ -464,7 +472,7 @@ EndFunction
 
 ; Updates the AVs for current stomach contents, and also updates armor, heavy pred perks, and vore hud.
 Function UpdateCurrentInStomach(Actor akPred = None, bool updateFullness = false)
-	trace("UpdateCurrentInStomach()")
+	; trace("UpdateCurrentInStomach()")
 	Actor[] preys = GetAllPrey(akPred)
 	int alivePrey = 0
 	int humanPrey = 0
@@ -510,7 +518,7 @@ EndFunction
 ; Based on the CurrentPrey and DigestionStage AVs, decides how many child nodes to drop out of the buffer, and iterates through them.
 ; KEILLA: I am not sure how important this is or what it really does. Pretty much it looks cosmetic. Let's cut it for now.
 ; Function UpdateDigestionPreyCount(Actor akPred)
-; 	trace("UpdateDigestionPreyCount()", akPred)
+	; trace("UpdateDigestionPreyCount()", akPred)
 ; 	int currentSize = (((akPred.GetValue(FV_CurrentPrey)/2-1) * 3) + 6) as int
 ; 	int digestionStage = akPred.GetValue(FV_DigestionStage) as int
 ; 	If(currentSize > digestionStage)
@@ -558,7 +566,7 @@ float Function CalculateIndigestionChance(Actor akPred, Actor akPrey)
 		chance = chance * (1.0 - (akPred.GetValue(FV_IndigestionResistance) as float)/100)
 	EndIf
 	;Return calculated value
-	trace("CalculateIndigestionChance()", "Indigestion chance of " + chance + " has been calculated for prey " + akPrey)
+	; trace("CalculateIndigestionChance()", "Indigestion chance of " + chance + " has been calculated for prey " + akPrey)
 	return chance
 	
 EndFunction
@@ -594,7 +602,7 @@ EndFunction
 
 Function DropCombatOnPlayerPrey(Actor akPred, Actor akPrey)
 	; KEILLA: This is all RPG and game mechanical stuff related to being vored. Extract.
-	trace("DropCombatOnPlayerPrey()", "Player is prey.  Adding local combatants to faction list to end combat against player.")
+	; trace("DropCombatOnPlayerPrey()", "Player is prey.  Adding local combatants to faction list to end combat against player.")
 	Actor[] AllCombatNPC = akPrey.GetAllCombatTargets()
 	PlayerRef.AddToFaction(FV_PredPreyFaction)
 	PlayerRef.StopCombatAlarm()
@@ -616,10 +624,10 @@ EndFunction
 
 ; Does a lot of game mechanics stuff to handle a swallow. Everything from setting AVs, messing with the camera and belly, and manipulating player input. Way too much.
 int Function ProcessSingleSwallow(Actor akPred, Actor akPrey, bool abLethalFlag)
-	Trace("ProcessSingleSwallow()")
+	; Trace("ProcessSingleSwallow()")
 	int consumeIndex = Add(akPred, akPrey, abLethalFlag)
 	If(consumeIndex < 0)
-		Trace("ProcessSingleSwallow()", "Unable to Add")
+		; Trace("ProcessSingleSwallow()", "Unable to Add")
 		Return consumeIndex
 	EndIf
 	
@@ -647,11 +655,11 @@ int Function ProcessSingleSwallow(Actor akPred, Actor akPrey, bool abLethalFlag)
 		Utility.SetINIFloat("fVertibirdVanityModeMaxDist:Camera", fCameraDistanceSwallow)
 	Else
 		akPrey.MoveTo(FV_StomachCellMarker)
-		Trace("ProcessSingleSwallow()", "MoveTO")
+		; Trace("ProcessSingleSwallow()", "MoveTO")
 	EndIf
 
 	FV_StomachSim.AddIndigestible(akPred, FV_ActorData.EvaluateSlots(akPrey))
-	Trace("ProcessSingleSwallow()", "AddIndigestible")
+	; Trace("ProcessSingleSwallow()", "AddIndigestible")
 
 	Var[] akArgs = new Var[3]
 	akArgs[0] = akPred
@@ -661,7 +669,7 @@ int Function ProcessSingleSwallow(Actor akPred, Actor akPrey, bool abLethalFlag)
 	
 	; VORE SUCCESS
 	; PerformVoreEventAccept(akPred, akPrey, abLethalFlag)
-	Trace("ProcessSingleSwallow()", "Finished")
+	; Trace("ProcessSingleSwallow()", "Finished")
 	Return consumeIndex
 EndFunction
 
@@ -720,7 +728,7 @@ EndFunction
 ; 	ElseIf akPrey == PlayerRef && bLethalFlag
 ; 		FV_PlayerStruggle.BeginStruggleMechanic(akPred, preyIndex)
 ; 	Else
-; 		trace("PerformVoreEventAccept()", "Start vore timer: " + PreyIndex)
+		; trace("PerformVoreEventAccept()", "Start vore timer: " + PreyIndex)
 ; 		StartTimer(DigestionSpeed, DigestTimerID)
 ; 	EndIf
 ; 	ChangeFullnessArmor(akPred, akPred.GetValue(FV_CurrentPrey) as int)
@@ -739,7 +747,7 @@ Function PlayAcceptSounds(Actor akPred)
 	If(bPlayingAcceptSounds)
 		return
 	EndIf
-	trace("PlayAcceptSounds()", "Test point 1")
+	; trace("PlayAcceptSounds()", "Test point 1")
 	bPlayingAcceptSounds = true
 	If(akPred == PlayerRef)
 		Sound.StopInstance(iPlayerSoundID)
@@ -775,7 +783,7 @@ Function PerformVoreEventReject(Actor akPred, Actor akPrey)
 	Utility.Wait(2)
 	
 	If (akPrey == PlayerRef)	;If the prey is player
-		trace("PerformVoreEventReject()", "player failed to be swallowed.  Vore event rejection")
+		; trace("PerformVoreEventReject()", "player failed to be swallowed.  Vore event rejection")
 		akPrey.TranslateToRef(akPred, 25000)
 		akPrey.setAlpha(1 as float, False)	;Make player visible again
 		playerLayer.Reset()		;Enable player controls.  No need to list all trues.  All passes default to true
@@ -820,13 +828,13 @@ Event OnTimer(int aiTimerID)
 	GotoState("OnTimerState") ; Defer other timers.
 		
 	If (aiTimerID == GhostTimerRemovalID)
-		trace("OnTimer()", "aiTimerID: " + GhostTimerRemovalID + " player invulnerability remove.")
+		; trace("OnTimer()", "aiTimerID: " + GhostTimerRemovalID + " player invulnerability remove.")
 		PlayerRef.setGhost(False)
 	ElseIf (aiTimerID == ReformTimerID)
-		trace("OnTimer()", "aiTimerID: " + ReformTimerID + " player reformed.")
+		; trace("OnTimer()", "aiTimerID: " + ReformTimerID + " player reformed.")
 		OnTimerReformPlayerFinish()
 	ElseIf (aiTimerID == DigestTimerID)
-		trace("OnTimer()", "DigestTimer CR: " + ConsumptionRegistry)
+		; trace("OnTimer()", "DigestTimer CR: " + ConsumptionRegistry)
 		int i = 0
 		PreyData data
 		Actor pred
@@ -847,7 +855,7 @@ EndEvent
 ; prevent multiple call ( specially with Sound.PlayAndWait)
 state OnTimerState
 	Event OnTimer(int aiTimerID)
-		trace("OnTimer", "Deferred OnTimerState: " + aiTimerID)
+		; trace("OnTimer", "Deferred OnTimerState: " + aiTimerID)
 		StartTimer(0.25, aiTimerID)
 	EndEvent
 endState
@@ -860,7 +868,7 @@ EndFunction
 
 ; Tracks the mortality of prey by timer ID. Many triggers for the prey to be vomited for many reasons, protection against death, and eventually AV damage to prey and in the case of escape, the pred.
 function DigestionDamage(PreyData data)
-	trace("DigestionDamage()")
+	; trace("DigestionDamage()")
 	Actor prey = data.Prey
 	Actor pred = data.Pred
 
@@ -870,13 +878,15 @@ function DigestionDamage(PreyData data)
 		Return
 	EndIf
 	
+	; TODO: For some reason in the Museum of Freedom in Concord, all the raiders return TRUE for IsDead().
 	If(prey.IsDead())
-		FinalizeDigestion(prey)
+		Trace("DigestionDamage()", "Prey already dead!" + prey + " HP:" + prey.GetValue(HealthAV))
+		DigestionComplete(prey)
 		return
 	EndIf
 	
 	if(!data.IsLethal)
-		trace("DigestionDamage", "Not Lethal")
+		; trace("DigestionDamage", "Not Lethal")
 		; If you set manual regurgitation, do the vomit and reset.
 		If(pred.GetValue(FV_RegurgitateBool) == 1)
 		
@@ -899,10 +909,11 @@ function DigestionDamage(PreyData data)
 	
 	; Calculate the belly acid damage.
 	Float DamageDealt = (pred.GetValue(FV_AcidDamage)+pred.GetValue(EnduranceAV))*(1-(prey.GetValue(FV_AcidResistance)-pred.GetValue(FV_AcidStrengthValue))/100)
-	Trace("DigestionDamage()", "DamageDealt: " + DamageDealt)
+	DamageDealt = 1.0
+	Trace("DigestionDamage()", prey + " HP: " + prey.GetValue(HealthAV) + " DD: " + DamageDealt)
 	; If we might kill the prey
-	If((prey.GetValue(HealthAV) as float) - DamageDealt <= 0)										;Check if prey will die from damage.  If so, perform special handling
-		trace("DigestionDamage()", "damage greater than current health of enemny")
+	If(prey.GetValue(HealthAV) - DamageDealt <= 0)										;Check if prey will die from damage.  If so, perform special handling
+		; trace("DigestionDamage()", "damage greater than current health of enemny")
 		If(prey == PlayerRef) ; If player is the prey
 			;we kill the player but have to make sure the triggerdigestionsequence is passed early enough, to prevent regurgitation of half dead player
 			if(prey.GetValuePercentage(HealthAV) > 0.5)
@@ -932,26 +943,26 @@ function DigestionDamage(PreyData data)
 		ElseIf(FV_KillEssentialEnabled.GetValue() == 1 && prey.IsEssential())
 			prey.KillEssential(pred)
 		Else
+			Trace("DigestionDamage()", prey + " Lethal digestion damage")
 			prey.Kill(pred)
-			FinalizeDigestion(prey)
+			DigestionComplete(prey)
 			Return
 		EndIf
 	Else
 		prey.DamageValue(HealthAV, DamageDealt) ;if prey was not meant to die, deal damage to it now
+		Var[] args = new Var[2]
+		args[0] = pred
+		args[1] = prey
+		SendCustomEvent("OnDigestionDamage", args)
 	EndIf
 EndFunction
 
 ;End of lethal vore. Clears up variables and runs post vore actions TODO: Scat + other post vore options
 ; Does a lot, sounds, RPG stuff, Vore mechanics, move the inventories
-function FinalizeDigestion(Actor akPrey)
-	Trace("FinalizeDigestion()")
+function DigestionComplete(Actor akPrey)
+	Trace("DigestionComplete()", akPrey)
 	PreyData data = GetDataByPrey(akPrey)
 	Actor pred = data.Pred
-	
-	; BROKEN until prey can be passed to FV_VoreHud functions
-	; If(CurrentPred == PlayerRef)
-	; 	FV_VoreHud.RemoveHealthBar(aiTimerID)
-	; EndIf
 
 	int instanceID = FV_FXBurp.Play(pred) 	
 	Sound.SetInstanceVolume(instanceID, 0.5)					
@@ -996,17 +1007,20 @@ function FinalizeDigestion(Actor akPrey)
 	If(akPrey != PlayerRef)
 		akPrey.SetCriticalStage(4) ; The prey corpse is vaporized so it does not render.
 		akPrey.MoveToMyEditorLocation()
-		trace("FinalizeDigestion()", "Prey NPC has been moved back to original editor location")
+		; trace("DigestionComplete()", "Prey NPC has been moved back to original editor location")
 	EndIf
 	
 	Remove(akPrey)
 	FV_StomachSim.ShiftIndigestibleToDigestiblePrey(pred, FV_ActorData.EvaluateSlots(akPrey), akPrey)
-	trace("FinalizeDigestion()", "PerformDigestion - Done")
+	Var[] args = new Var[1]
+	args[0] = akPrey
+	SendCustomEvent("OnDigestionComplete", args)
+	; trace("DigestionComplete()", "PerformDigestion - Done")
 EndFunction
 	
 ; Reenable the player when the player's time as prey is up.
 Function OnTimerReformPlayerFinish()
-	trace("OnTimerReformPlayerFinish()")
+	; trace("OnTimerReformPlayerFinish()")
 	
 	PlayerRef.setAlpha(1, False)																			;Make player visible again
 	playerLayer.Reset()																		;Enable player controls
@@ -1037,7 +1051,7 @@ EndFunction
 ; 		i += 1
 ; 	EndWhile
 
-; 	trace("ChangeFullnessArmor()", ": " + ak + " From: " + oldValue + " To: " + newValue)
+	; trace("ChangeFullnessArmor()", ": " + ak + " From: " + oldValue + " To: " + newValue)
 
 ; 	If((FV_ColdSteelEnabled.GetValue() > 0 && (ak.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))) ;ak.HasKeyword(FV_ColdSteelBody))
 ; 		UseColdSteel = FV_ColdSteelBellyQuest.ChangeColdSteelFullness(ak, newValue)
@@ -1072,7 +1086,7 @@ EndFunction
 
 ; Change digest fullness armor
 function ChangeDigestFullnessArmor(Actor currentDigester, int item = -1) ; item 0 - 99 or -1 to remove laa
-	trace("ChangeDigestFullnessArmor()", ": " + currentDigester + ", " + item)
+	; trace("ChangeDigestFullnessArmor()", ": " + currentDigester + ", " + item)
 
 	if(item == -1)
 		int i = 1
@@ -1107,7 +1121,7 @@ EndFunction
 ; Attaches the camera to the predator when player is consumed.
 Function FixCamera(Actor akActor)
 	If(akActor != PlayerRef)
-		trace("FixCamer()", "Player swallowed.  Switching camera to NPC pred")
+		; trace("FixCamer()", "Player swallowed.  Switching camera to NPC pred")
 		If(PlayerRef.GetAnimationVariableBool("IsFirstPerson"))
 			PreviousPlayerPOV = 1
 		Else
@@ -1168,16 +1182,16 @@ Function ResetVoreMod(Bool abResetPlayer = False)
 	ModResetting = true
 	GotoState("OnTimerState")	
 		
-	trace("ResetVoreMod()")
+	; trace("ResetVoreMod()")
 	Utility.Wait(4 as float)																					
-	trace("ResetVoreMod()", "CancelTimer")
+	; trace("ResetVoreMod()", "CancelTimer")
 	CancelTimer(DigestTimerID)
 
 	PreyData data = GetDataByPrey(PlayerRef)
 	Actor pred = data.Pred
 	Actor prey = data.Prey
 	if(data != NONE || abResetPlayer)
-		trace("ResetVoreMod()", "Reset player")
+		; trace("ResetVoreMod()", "Reset player")
 		PlayerRef.setAlpha(1, False)
 		if(playerLayer)	
 			playerLayer.Reset()		
@@ -1218,7 +1232,7 @@ Function ResetVoreMod(Bool abResetPlayer = False)
 		PlayerRef.RemovePerk(FV_HeavyPredPlayer)
 	Endif
 	
-	trace("ResetVoreMod()", "Reset pred and prey")
+	; trace("ResetVoreMod()", "Reset pred and prey")
 	int i = 0
 	While (i < ConsumptionRegistry.Length && i < 128)
 		data = ConsumptionRegistry[i]
@@ -1282,7 +1296,7 @@ Function ResetVoreMod(Bool abResetPlayer = False)
 	
 	ConsumptionRegistry.Clear()
 	FV_ManualDigestionEnabled.SetValue(0)
-	trace("ResetVoreMod()", "Done !")
+	; trace("ResetVoreMod()", "Done !")
 	Debug.MessageBox("ResetVoreMod, Done !")
 	ModResetting = false
 	GotoState("")
@@ -1310,13 +1324,13 @@ EndEvent
 
 ; When player is done sleeping, handle it.
 Event OnPlayerSleepStop(bool abInterrupted, ObjectReference akBed)
-	trace("OnPlayerSleepStop()", " WakeDay: " + WakeDay)
+	; trace("OnPlayerSleepStop()", " WakeDay: " + WakeDay)
 	PlayerSleepWaitStop()
 EndEvent
 
 ; Records the sleep/wait start time.
 Function OnPlayerWaitSleepStart(float afSleepWaitStartTime, float afDesiredWaitSleepEndTime)
-	trace("OnPlayerWaitSleepStart()", "afSleepWaitStartTime: " + afSleepWaitStartTime + " afDesiredSleepEndTime: " + afDesiredWaitSleepEndTime + " WakeDay: " + WakeDay)
+	; trace("OnPlayerWaitSleepStart()", "afSleepWaitStartTime: " + afSleepWaitStartTime + " afDesiredSleepEndTime: " + afDesiredWaitSleepEndTime + " WakeDay: " + WakeDay)
 	SleepWaitStartDay = afSleepWaitStartTime
 	
 	if(PlayerRef.GetValue(FV_CurrentAlivePrey) > 0)
@@ -1345,18 +1359,18 @@ Function HandleDigestionStage(PreyData aData)
 	
 	If pred.GetValue(FV_CurrentAlivePrey) > 0 || !aData.IsLethal
 		;only handle preds that are in the digestin phase.  If they still have living prey, they can ride out the sleep cycle.
-		trace("HandleDigestionStage()", "Pred: " + pred + " FV_CurrentAlivePrey: " + pred.GetValue(FV_CurrentAlivePrey) + " IsLethal: " + aData.IsLethal)
+		; trace("HandleDigestionStage()", "Pred: " + pred + " FV_CurrentAlivePrey: " + pred.GetValue(FV_CurrentAlivePrey) + " IsLethal: " + aData.IsLethal)
 		return
 	Endif
 	WakeUpTick = math.floor(((WakeDay - SleepWaitStartDay)*1440)/(aData.Prey.GetValue(FV_DigestionSpeed)*TimeScale.GetValue()/60)) as int
 	
 	tempTimerState = pred.GetValue(FV_DigestionStage) as int
-	trace("HandleDigestionStage()", "Pred: " + pred + " WakeUpTick: " + WakeUpTick + " tempTimerState: " + tempTimerState)
+	; trace("HandleDigestionStage()", "Pred: " + pred + " WakeUpTick: " + WakeUpTick + " tempTimerState: " + tempTimerState)
 	If WakeUpTick >= tempTimerState
 		;code to finish digestion and reset pred
 		pred.SetValue(FV_DigestionStage, 0)
 		
-		FinalizeDigestion(aData.prey)
+		DigestionComplete(aData.prey)
 	Else
 		float nextTimerState = tempTimerState - WakeUpTick
 		aData.Prey.SetValue(FV_DigestionStage, nextTimerState)
@@ -1408,5 +1422,5 @@ Function PlayerDies(Actor akPrey)
 	EndIf
 	FV_FXBurp.Play(GetPred(akPrey))
 	
-	FinalizeDigestion(akPrey) ; You get digested if secondwind doesn't trigger.
+	DigestionComplete(akPrey) ; You get digested if secondwind doesn't trigger.
 EndFunction

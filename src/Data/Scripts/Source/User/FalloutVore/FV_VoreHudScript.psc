@@ -9,9 +9,10 @@ EndFunction
 
 String Property VoreHud = "FalloutVore_hud.swf" AutoReadOnly Hidden
 
-Group TrackerProperties
+Group ActorValues
 	; ActorValue Property FV_CurrentPrey Auto
 	ActorValue Property FV_BellyCapacity Auto
+	ActorValue Property HealthAV Auto Const
 EndGroup
 
 Group ExpProperties
@@ -25,6 +26,7 @@ EndGroup
 
 Group Scripts
 	FalloutVore:FV_StomachSimScript Property FV_StomachSim Auto Const Mandatory
+	FalloutVore:FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto Const Mandatory
 EndGroup
 
 Int Property Command_ThiccUpdateStats	 			= 100 AutoReadOnly Hidden
@@ -51,7 +53,7 @@ bool EditLock = false
 
 ; Quest Script Setup Boilerplate
 int Version = 0
-Function Setup(int aiVersion = 1) ; Increment version as needed.
+Function Setup(int aiVersion = 2) ; Increment version as needed.
     if Version < aiVersion
         Actor player = Game.GetPlayer()
 		RegisterForRemoteEvent(Game.GetPlayer(), "OnPlayerLoadGame")
@@ -59,6 +61,9 @@ Function Setup(int aiVersion = 1) ; Increment version as needed.
 			InitializeHUD()
 		endif
 		RegisterForCustomEvent(FV_StomachSim, "OnStomachChange")
+		RegisterForCustomEvent(FV_ConsumptionRegistry, "OnAdd")
+		RegisterForCustomEvent(FV_ConsumptionRegistry, "OnDigestionDamage")
+		RegisterForCustomEvent(FV_ConsumptionRegistry, "OnRemove")
         Version = aiVersion
     EndIf
 EndFunction
@@ -72,10 +77,32 @@ Event Actor.OnPlayerLoadGame(Actor akSender)
 EndEvent
 
 Event FalloutVore:FV_StomachSimScript.OnStomachChange(FalloutVore:FV_StomachSimScript akSender, Var[] akArgs)
-	Actor pred = akArgs[0] as Actor
-	if pred == PlayerRef
+	if akArgs[0] as Actor == PlayerRef
 		SendTrackerUpdate()	
 	endif
+EndEvent
+
+Event FalloutVore:FV_ConsumptionRegistryScript.OnAdd(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
+	If (PlayerRef != akArgs[0] as Actor)
+		Return
+	EndIf
+	
+	UpdateHealthBar(akArgs[1] as Actor)
+EndEvent
+
+Event FalloutVore:FV_ConsumptionRegistryScript.OnRemove(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
+	If (PlayerRef != akArgs[0] as Actor)
+		Return
+	EndIf
+	
+	RemoveHealthBar(akArgs[1] as Actor)
+EndEvent
+
+Event FalloutVore:FV_ConsumptionRegistryScript.OnDigestionDamage(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
+	If (PlayerRef != akArgs[0] as Actor)
+		Return
+	EndIf
+	UpdateHealthBar(akArgs[1] as Actor)
 EndEvent
 
 Function InitializeHUD()
@@ -211,31 +238,63 @@ Function UpdateStruggleControlType(Int aiUseAlternate = 0)
 	EditLock = False
 EndFunction
 
-Function UpdateHealthBar(Int aiIndex, Actor akPrey)
-	
+; Tracks actors whose health bars we are displaying.
+Actor[] PreyHealthBars
+
+; Updates the Health Bar of a prey in the hud.
+; VoreHudScript keeps track of prey actors in its own storage.
+Function UpdateHealthBar(Actor akPrey)
 	GetEditLock()
+	If (!PreyHealthBars)
+		PreyHealthBars = new Actor[0]
+	EndIf
+	int index = PreyHealthBars.Find(akPrey)
+	If (index < 0 && PreyHealthBars.Length < 128)
+		PreyHealthBars.Add(akPrey)
+		index = PreyHealthBars.Length - 1
+	EndIf
+
 	String PreyName = akPrey.GetLeveledActorBase().GetName()
-	Float healthPercentage = akPrey.GetValue(Game.GetHealthAV())/akPrey.GetBaseValue(Game.GetHealthAV())
-	String SendMessage = aiIndex + "?" + PreyName + "?" + healthPercentage
-	Trace("UpdateHealthBar()", "FalloutVore:FV_VoreHudScript UpdateHealthBar() SendMessage: " + SendMessage)
+	Float healthPercentage = akPrey.GetValuePercentage(HealthAV) ;akPrey.GetValue(Game.GetHealthAV())/akPrey.GetBaseValue(Game.GetHealthAV())
+	String SendMessage = index + "?" + PreyName + "?" + healthPercentage
+	Trace("UpdateHealthBar()", akPrey + " SendMessage: " + SendMessage)
 	hud.SendMessageString(VoreHud, Command_UpdateHealthBar as string, SendMessage)
 	
 	EditLock = False
 EndFunction
 
-; TODO: This is going to be broken until this script can keep its own mapping of prey to indices.
-Function RemoveHealthBar(Int aiIndex)
+; Remove prey's health bar and replace its value in the PreyHealthBars[] with None. 
+Function RemoveHealthBar(Actor akPrey)
 	GetEditLock()
-	
-	hud.SendMessage(VoreHud, Command_RemoveHealthBar, aiIndex)
+	int index = PreyHealthBars.Find(akPrey)
+	Trace("RemoveHealthBar()", akPrey + " " + index)
+	If (index >= 0)
+		hud.SendMessage(VoreHud, Command_RemoveHealthBar, index)
+		PreyHealthBars[index] = None
+	EndIf	
 	EditLock = false
+	CallFunctionNoWait("CleanupHealthBars", new Var[0])
 EndFunction
 
-Function ClearHealthBars()
+; Scans the PreyHealth array for any Actors. If one is found, exit. Otherwise clear the array.
+Function CleanupHealthBars()
 	GetEditLock()
 	
+	int index = 0
+	While (index < PreyHealthBars.Length)
+		Actor item = PreyHealthBars[index]
+		If (item != None)
+			Trace("CleanupHealthBars()", "Still Tracking...")
+			EditLock = false
+			Return
+		EndIf
+		index += 1
+	EndWhile
+
 	hud.SendMessage(VoreHud, Command_ClearHealthBars)
+	PreyHealthBars.Clear()
 	EditLock = false
+	Trace("CleanupHealthBars()", "Cleaned!")
 EndFunction
 
 Function HudDebugToggle(Int aiEnabled)

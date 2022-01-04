@@ -38,6 +38,11 @@ Group Scripts
 	FalloutVore:FV_FalloutVoreScript Property FV_FalloutVore Auto Const Mandatory
 EndGroup
 
+Group MCMProperties
+	bool Property EnablePlayerWeightChange Auto
+	bool Property EnableCompanionWeightChange Auto
+EndGroup
+
 ; Quest Script Setup Boilerplate
 int Version = 0
 Function Setup(int aiVersion = 2) ; Increment version as needed.

@@ -232,12 +232,6 @@ Function StrugglePushMessage(String asMessage, int FastFadeOut = 0)
 	EditLock = False
 EndFunction
 
-Function UpdateStruggleControlType(Int aiUseAlternate = 0)
-	GetEditLock()
-	hud.SendMessage(VoreHud, Command_UpdateControlType, aiUseAlternate)
-	EditLock = False
-EndFunction
-
 ; Tracks actors whose health bars we are displaying.
 Actor[] PreyHealthBars
 

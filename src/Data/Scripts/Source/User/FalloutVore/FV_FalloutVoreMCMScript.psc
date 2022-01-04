@@ -1,6 +1,10 @@
 Scriptname FalloutVore:FV_FalloutVoreMCMScript extends Quest
 
-import FalloutVore:FV_VoreUtilityScript
+Function Trace(string asFunction, string asMessage = "") Global debugOnly
+	string logName = "FalloutVore"
+	Debug.OpenUserLog(logName)
+    Debug.TraceUser(logName, "[FalloutVore:FV_FalloutVoreMCMScript] " + asFunction + " - " + asMessage)	
+EndFunction
 
 ReferenceAlias Property CurrentCompanion Auto Const
 
@@ -22,7 +26,6 @@ EndGroup
 Group Globals
 	GlobalVariable Property FV_PlayerNeedsNuka Auto
 	GlobalVariable Property FV_ClothesripChance Auto
-	GlobalVariable Property FV_ColdSteelEnabled Auto
 	GlobalVariable Property FV_HudDebugEnabled Auto
 	GlobalVariable Property FV_ManualDigestBool Auto
 	GlobalVariable Property FV_ManualPreyContext Auto
@@ -31,8 +34,6 @@ Group Globals
 	GlobalVariable Property FV_ScatBool Auto
 	GlobalVariable Property FV_GrowlBool Auto
 	GlobalVariable Property FV_ScatEnabled Auto
-	GlobalVariable Property FV_StruggleControlType Auto
-	;GlobalVariable Property FV_StatBool Auto
 	GlobalVariable Property FV_TwoPreyEnabled Auto
 	GlobalVariable Property FV_VomitBool Auto
 	GlobalVariable Property FV_VoreCoreToggle Auto
@@ -59,7 +60,6 @@ EndGroup
 
 Group Scripts
 	FalloutVore:FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto
-	FalloutVore:FV_LevelUpManagerScript Property FV_LevelUpManager Auto
 	FalloutVore:FV_VoreHudScript Property FV_VoreHud Auto
 EndGroup
 
@@ -78,7 +78,6 @@ Bool Property bCrouchToShit Auto Hidden
 Int Property iScatType = 0 Auto Hidden
 
 Actor PlayerRef
-Bool Update301 = false
 
 Event OnInit()
 	PlayerRef = Game.GetPlayer()
@@ -87,18 +86,11 @@ Event OnInit()
 	SyncProperties()
 	EnableOnStart()
 	RestoreCameraProperties()
-	Update301 = true
 EndEvent
 
 Event Actor.OnPlayerLoadGame(Actor akSender)
 	EventRegistration()
 	SyncProperties()
-	If(!Update301)
-		If(FV_LevelUpManager == NONE)
-			FV_LevelUpManager = Game.GetFormFromFile(0x0001101A, "FalloutVore.esp") as FalloutVore:FV_LevelUpManagerScript
-		EndIf
-		Update301 = true
-	EndIf
 	;RestoreCameraProperties()
 EndEvent
 
@@ -114,7 +106,6 @@ Function EnableOnStart()
 	FV_ScatEnabled.SetValue(MCM.GetModSettingBool(sModName, "bScatEnabledOnStart:FalloutVoreMain") as float)
 	FV_FemaleVoreEnabled.SetValue(MCM.GetModSettingBool(sModName, "bFemaleVoreEnabledOnStart:FalloutVoreMain") as float)
 	FV_MaleVoreEnabled.SetValue(MCM.GetModSettingBool(sModName, "bMaleVoreEnabledOnStart:FalloutVoreMain") as float)
-	FV_ColdSteelEnabled.SetValue(MCM.GetModSettingBool(sModName, "bColdsteelEnabledOnStart:FalloutVoreMain") as float)
 	FV_VoreRaiderEnabled.SetValue(MCM.GetModSettingBool(sModName, "bVoreRaiderEnabledOnStart:FalloutVoreMain") as float)
 	FV_VoreRoyaltyEnabled.SetValue(MCM.GetModSettingBool(sModName, "bVoreRoyaltyEnabledOnStart:FalloutVoreMain") as float)
 EndFunction
@@ -138,23 +129,8 @@ Function EventRegistration()
 	debug.trace("MCM for FOVore settings registered")
 EndFunction
 
-Function LevelUpPlayer()
-	FV_LevelUpManager.LevelUpPlayer_int()
-	debug.messagebox("One level has been added to your vore level.")
-EndFunction
-
-Function LevelUpCompanion()
-	If(currentCompanion != NONE && Game.GetPlayer().GetValue(FV_HasHadNukaAcid) == 0)
-		FV_LevelUpManager.LevelUpNPC(currentCompanion.GetActorRef(), 1)
-		debug.messagebox("One level has been added to your companion's vore level.")
-	ElseIf(Game.GetPlayer().GetValue(FV_HasHadNukaAcid) == 1)
-		debug.messagebox("You are a pred.  Level up yourself to level up your companions.")
-	ElseIf(currentCompanion == NONE)
-		debug.messagebox("You do not have an active companion.")
-	EndIf
-EndFunction
-
 Event Actor.OnEnterSneaking(Actor akSender)
+	Trace("OnEnterSneaking()", akSender)
 	If(bCrouchToShit)
 		PlayerRef.EquipItem(FV_ScatPotion, true, true)
 	EndIf
@@ -205,7 +181,7 @@ EndFunction
 
 Function OnMCMSettingChange(string modName, string id)
 	If(modName == sModName)
-		Trace(self, "FOVore MCM received update setting")
+		Trace("OnMCMSettingChange()")
 		;If(id == "FOVoreEnable" && FV_PlayerNeedsNuka.GetValue() == 1)
 		;	debug.messagebox("Experiment Activated")
 		;	FV_PlayerNeedsNuka.SetValue(0)
@@ -217,10 +193,10 @@ Function OnMCMSettingChange(string modName, string id)
 		If(id == "ClothingToggle")
 			If(bClothesripChance)
 				FV_ClothesripChance.SetValue(50)
-				Trace(self, "Clothes ripping turned on")
+				Trace("OnMCMSettingChange()", "Clothes ripping turned on")
 			Else
 				FV_ClothesripChance.SetValue(0)
-				Trace(self, "Clothes ripping turned off")
+				Trace("OnMCMSettingChange()", "Clothes ripping turned off")
 			EndIf
 		ElseIf(id == "ContextVore")
 			;If(bContextVore)
@@ -230,6 +206,7 @@ Function OnMCMSettingChange(string modName, string id)
 		ElseIf(id == "ActivatePlayerPred")
 			;GAZ: I found this line like this. I wonder if at some point someone tried to make Context ran through MCM Hotkey. Investigate.
 		ElseIf(id=="CrouchScatToggle")
+			Trace("OnMCMSettingChange()", "CrouchScatToggle: " + bCrouchToShit)
 			If(bCrouchToShit)
 				RegisterForRemoteEvent(PlayerRef, "OnEnterSneaking")
 			ElseIf(!bCrouchToShit)
@@ -246,8 +223,6 @@ Function OnMCMSettingChange(string modName, string id)
 			EndIf
 		ElseIf(id == "HudDebugToggle")
 			FV_VoreHud.HudDebugToggle(FV_HudDebugEnabled.GetValue() as int)
-		ElseIf(id == "UpdateStruggleType")
-			FV_VoreHud.UpdateStruggleControlType(FV_StruggleControlType.GetValue() as int)
 		EndIf
 	EndIf
 EndFunction

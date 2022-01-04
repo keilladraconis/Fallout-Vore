@@ -70,7 +70,6 @@ EndGroup
 Group Globals
 	GlobalVariable Property FV_NPCScatEnabled Auto
 	GlobalVariable Property FV_ClothesRipChance Auto
-	GlobalVariable Property FV_ColdSteelEnabled Auto
 	GlobalVariable Property FV_DigestCompanionProtection Auto
 	GlobalVariable Property FV_HasItemsInBellyBool Auto
 	GlobalVariable Property FV_IndigestionChanceBase Auto
@@ -82,7 +81,6 @@ Group Globals
 	GlobalVariable Property TimeScale Auto
 	GlobalVariable Property FV_AllowHeavyPred Auto
 	GlobalVariable Property FV_CompanionScat Auto
-	GlobalVariable Property FV_MaleColdSteelToggle Auto
 	GlobalVariable Property FV_PlayerAsPreyContext Auto ; Magic Number. 2 = lethal, 1 = non-lethal
 	GlobalVariable Property FV_ManualDigestionEnabled Auto
 	GlobalVariable Property FV_VoreLevelPoints Auto
@@ -1031,59 +1029,6 @@ Function OnTimerReformPlayerFinish()
 	StartTimer(4, GhostTimerRemovalID)	
 EndFunction
 
-;************************************************************************************
-;************************************************************************************
-; Others
-
-; Update Fullness Armor
-; Function ChangeFullnessArmor(actor ak, Int newValue)
-; 	Bool UseColdSteel = false
-; 	Bool[] RemoveHumanArmor = new Bool[VoreBellyArray.Length]
-; 	Bool[] RemoveNonHumanArmor = new Bool[VoreBellyArray.Length]
-; 	int i = 0
-; 	Int oldValue = 0
-; 	While(i < VoreBellyArray.Length && i < 128)
-; 		RemoveHumanArmor[i] = ak.GetItemCount(VoreBellyArray[i].HumanVoreBelly) > 0
-; 		RemoveNonHumanArmor[i] = ak.GetItemCount(VoreBellyArray[i].NonHumanVoreBelly) > 0
-; 		If(RemoveHumanArmor[i] || RemoveNonHumanArmor[i])
-; 			oldValue = VoreBellyArray[i].PreyCount
-; 		EndIf
-; 		i += 1
-; 	EndWhile
-
-	; trace("ChangeFullnessArmor()", ": " + ak + " From: " + oldValue + " To: " + newValue)
-
-; 	If((FV_ColdSteelEnabled.GetValue() > 0 && (ak.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))) ;ak.HasKeyword(FV_ColdSteelBody))
-; 		UseColdSteel = FV_ColdSteelBellyQuest.ChangeColdSteelFullness(ak, newValue)
-; 	EndIf
-	
-; 	If(!UseColdSteel && newValue > 0)
-; 		If(ak.GetValue(FV_HumanPreyCount) >= ak.GetValue(FV_CurrentPrey)/2)
-; 			If(!RemoveHumanArmor[newValue - 1])
-; 				ak.EquipItem(VoreBellyArray[newValue - 1].HumanVoreBelly, true, true)
-; 			EndIf
-; 			RemoveHumanArmor[newValue - 1] = false
-; 		Else
-; 			If(!RemoveNonHumanArmor[newValue - 1])
-; 				ak.EquipItem(VoreBellyArray[newValue - 1].NonHumanVoreBelly, true, true)
-; 			EndIf
-; 			RemoveNonHumanArmor[newValue - 1] = false
-; 		EndIf
-; 	EndIf
-; 	i = 0
-; 	While(i < VoreBellyArray.Length && i < 128)
-; 		If(RemoveHumanArmor[i])
-; 			ak.UnEquipItem(VoreBellyArray[i].HumanVoreBelly, true, true)
-; 			ak.RemoveItem(VoreBellyArray[i].HumanVoreBelly, 1, true, NONE)
-; 		EndIf
-; 		If(RemoveNonHumanArmor[i])
-; 			ak.UnEquipItem(VoreBellyArray[i].NonHumanVoreBelly, true, true)
-; 			ak.RemoveItem(VoreBellyArray[i].NonHumanVoreBelly, 1, true, NONE)
-; 		EndIf
-; 		i += 1
-; 	EndWhile
-; EndFunction
-
 ; Change digest fullness armor
 function ChangeDigestFullnessArmor(Actor currentDigester, int item = -1) ; item 0 - 99 or -1 to remove laa
 	; trace("ChangeDigestFullnessArmor()", ": " + currentDigester + ", " + item)
@@ -1207,9 +1152,6 @@ Function ResetVoreMod(Bool abResetPlayer = False)
 		Remove(PlayerRef)
 		Utility.Wait(4 as float)
 	EndIf
-	If((FV_ColdSteelEnabled.GetValue() > 0 && (PlayerRef.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1)))
-		FV_ColdSteelBellyQuest.ResetMorphs(PlayerRef)
-	EndIf
 	; ChangeFullnessArmor(PlayerRef,0)
 	ChangeDigestFullnessArmor(PlayerRef)
 	
@@ -1241,9 +1183,6 @@ Function ResetVoreMod(Bool abResetPlayer = False)
 	
 		; ChangeFullnessArmor(pred, 0)
 		ChangeDigestFullnessArmor(pred)
-		If((FV_ColdSteelEnabled.GetValue() > 0 && (pred.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))) ;pred.HasKeyword(FV_ColdSteelBody))
-			FV_ColdSteelBellyQuest.ResetMorphs(pred)
-		EndIf
 		; pred.SetValue(FV_CurrentPrey, 0)
 		pred.SetValue(FV_CurrentAlivePrey, 0)
 		pred.SetValue(FV_TicksTillEscape, 0)
@@ -1268,9 +1207,6 @@ Function ResetVoreMod(Bool abResetPlayer = False)
 		prey.setPosition(pred.getPositionX(), pred.getPositionY(), pred.getPositionZ())	
 		; ChangeFullnessArmor(prey,0)
 		ChangeDigestFullnessArmor(prey)
-		If((FV_ColdSteelEnabled.GetValue() > 0 && (prey.GetLeveledActorBase().GetSex() == 1 || FV_MaleColdSteelToggle.GetValue() == 1))) ;prey.HasKeyword(FV_ColdSteelBody))
-			FV_ColdSteelBellyQuest.ResetMorphs(prey)
-		EndIf
 		; prey.SetValue(FV_CurrentPrey, 0)
 		prey.SetValue(FV_CurrentAlivePrey, 0)
 		prey.SetValue(FV_TicksTillEscape, 0)

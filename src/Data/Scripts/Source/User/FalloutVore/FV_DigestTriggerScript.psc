@@ -15,7 +15,7 @@ Event OnEffectStart(Actor akTarget, Actor akCaster)
 
 	If(akCaster.GetValue(FV_ReadyToDigest) == 1)
 		Actor prey = FV_ConsumptionRegistry.GetPrey(akCaster)
-		FV_ConsumptionRegistry.FinalizeDigestion(prey)
+		FV_ConsumptionRegistry.DigestionComplete(prey)
 	ElseIf(FV_ConsumptionRegistry.GetPrey(akCaster) != None)
 		FV_HaventFinishedDigestionMessage.Show()
 	Else

@@ -30,7 +30,6 @@ Group ActorValues
 	ActorValue Property FV_IndigestionSeverityFlag Auto Const Mandatory
 	ActorValue Property FV_ReadyToDigest Auto Const Mandatory
 	ActorValue Property FV_ReformChance Auto Const Mandatory
-	ActorValue Property FV_Scatready Auto Const Mandatory
 	ActorValue Property FV_BellyCapacity Auto Const Mandatory
 	ActorValue Property FV_StomachStrength Auto Const Mandatory
 	ActorValue Property FV_TicksTillEscape Auto Const Mandatory
@@ -49,9 +48,6 @@ Group Armor
 EndGroup
 
 Group Cells
-	ObjectReference Property FV_BellyContainer  Auto
-	ObjectReference Property FV_CompanionBellyContainer Auto
-	Container Property FV_NPCBellyContainer Auto Const Mandatory
 	ObjectReference Property FV_StomachCellMarker Auto Const Mandatory
 EndGroup
 
@@ -68,19 +64,16 @@ Group Formlists
 EndGroup
 
 Group Globals
-	GlobalVariable Property FV_NPCScatEnabled Auto
 	GlobalVariable Property FV_ClothesRipChance Auto
 	GlobalVariable Property FV_DigestCompanionProtection Auto
 	GlobalVariable Property FV_HasItemsInBellyBool Auto
 	GlobalVariable Property FV_IndigestionChanceBase Auto
 	GlobalVariable Property FV_KillEssentialEnabled Auto
 	GlobalVariable Property FV_PerkPoints Auto
-	GlobalVariable Property FV_ScatEnabled Auto
 	GlobalVariable Property FV_SwallowCommentChance Auto
 	GlobalVariable Property FV_DigestionSpeedBase Auto
 	GlobalVariable Property TimeScale Auto
 	GlobalVariable Property FV_AllowHeavyPred Auto
-	GlobalVariable Property FV_CompanionScat Auto
 	GlobalVariable Property FV_PlayerAsPreyContext Auto ; Magic Number. 2 = lethal, 1 = non-lethal
 	GlobalVariable Property FV_ManualDigestionEnabled Auto
 	GlobalVariable Property FV_VoreLevelPoints Auto
@@ -105,7 +98,6 @@ Group Messages
 	Message Property FV_IndigestionSevereMessage Auto Const Mandatory
 	Message Property FV_LevelUpMessage Auto Const Mandatory
 	Message Property FV_ReadyToDigestMessage Auto Const Mandatory
-	Message Property FV_ReadyToScatMessage Auto Const Mandatory
 	Message Property FV_SleepWaitDisruptMessage Auto Const Mandatory
 	Message Property FV_TooFullMessage Auto Const Mandatory
 	Message Property FV_TheHungerMessage Auto Const Mandatory
@@ -137,7 +129,6 @@ EndGroup
 Group Potions
 	Potion Property FV_RegurgitatePotion Auto Const Mandatory
 	Potion Property FV_DigestPotion Auto Const Mandatory
-	Potion Property FV_ScatPotion Auto Const Mandatory
 	Potion Property FV_ContextPreyPotion Auto Const Mandatory
 	Potion Property FV_IndigestionEffect Auto Const Mandatory
 	Potion Property FV_RemoveSwallowProtection Auto Const Mandatory
@@ -147,7 +138,6 @@ Group Scripts
 	FalloutVore:FV_ActorDataScript Property FV_ActorData Auto Const Mandatory
 	FalloutVore:FV_ColdSteelBellyScript Property FV_ColdSteelBellyQuest Auto Const Mandatory
 	FalloutVore:FV_PlayerStruggleScript Property FV_PlayerStruggle Auto Const Mandatory
-	FalloutVore:FV_ScatManagerScript Property FV_ScatManager Auto Const Mandatory
 	FalloutVore:FV_VoreSurvivalScript Property FV_VoreSurvival Auto Const Mandatory
 	FalloutVore:FV_StomachSimScript Property FV_StomachSim Auto Const Mandatory
 EndGroup
@@ -356,7 +346,6 @@ Function MakePlayerPred()
 	PlayerRef.AddItem(FV_RegurgitatePotion, 1, true)
 	PlayerRef.AddItem(FV_SwallowNonLethal, 1, true)
 	PlayerRef.AddItem(FV_DigestPotion,1,true)
-	PlayerRef.AddItem(FV_ScatPotion,1,true)
 	PlayerRef.AddItem(FV_ContextPreyPotion, 1, true)
 	FV_TheHungerMessage.Show()
 EndFunction
@@ -369,7 +358,6 @@ Struct PreyData
 	Actor Pred
 	Actor Prey
 	Int Tick	; To create a delay between 'transfer' 'swallow' 'vomit'
-	ObjectReference BellyContainer
 	Bool IsLethal
 EndStruct
 PreyData[] ConsumptionRegistry
@@ -389,19 +377,11 @@ int Function Add(Actor akPred, Actor akPrey, Bool abIsLethal = false)
 		Return -1
 	endif
 
-	ObjectReference bellyContainer
-	If(akPred == PlayerRef)
-		bellyContainer = FV_BellyContainer
-	ElseIf(akPred.IsInFaction(CurrentCompanionFaction))
-		bellyContainer = FV_CompanionBellyContainer
-	EndIf
-
 	akPrey.SetValue(FV_DigestionStage, 100) ; Set prey digestion stage to 100.
 
 	PreyData data = new PreyData
 	data.Pred = akPred
 	data.Prey = akPrey
-	data.BellyContainer = bellyContainer
 	data.IsLethal = abIsLethal
 	ConsumptionRegistry.Add(data)
 	Var[] args = new Var[2]
@@ -962,6 +942,7 @@ function DigestionComplete(Actor akPrey)
 	PreyData data = GetDataByPrey(akPrey)
 	Actor pred = data.Pred
 
+	; TODO Move sounds to VoreAV
 	int instanceID = FV_FXBurp.Play(pred) 	
 	Sound.SetInstanceVolume(instanceID, 0.5)					
 	
@@ -977,29 +958,9 @@ function DigestionComplete(Actor akPrey)
 	If(akPrey.HasKeyword(ActorTypeRobot) && pred.HasPerk(FV_HighIronDiet03))		
 		pred.Additem(AmmoFusionCell, akPrey.GetLevel()/2 as int, false)		
 	EndIf
-	
-	If(akPrey != PlayerRef)
-		FV_ScatManager.ProcessPreyItems(akPrey, pred)
-	EndIf
-	akPrey.AddItem(LLD_VEV_Crystals_Prey_FV_, 1, true)
-	akPrey.RemoveAllItems(data.BellyContainer)
-		
-	; Handle scat availability.
-	If(pred == PlayerRef)
-		If(FV_ScatEnabled.GetValue() == 1)
-			If(pred.getValue(FV_Scatready) == 0)
-				pred.SetValue(FV_Scatready, 1)
-				FV_ReadyToScatMessage.show()
-			EndIf
-		EndIf
-	;Activate belly container for player if they are not a pred and an ally has finished digestion
-	ElseIf(pred.IsInFaction(CurrentCompanionFaction) && FV_CompanionScat.GetValue() == 1)
-		pred.SetValue(FV_Scatready, 1)
-	ElseIf(FV_ScatEnabled.GetValue() == 1 && FV_NPCScatEnabled.GetValue() == 1 && !pred.IsInFaction(CurrentCompanionFaction))
-		FV_ScatManager.NPCScat(pred) ; NPCs autoscat
-	ElseIf(PlayerRef.GetValue(FV_HasHadNukaAcid) == 0 && (pred.IsInFaction(WorkshopNPCFaction) || pred.IsInFaction(WorkshopDialogueFaction) || pred.IsInFaction(CurrentCompanionFaction)))
-		FV_BellyContainer.Activate(PlayerRef, false) ; Auto-open belly container if you don't have nukaacid and you're in some workshop faction thing
-	EndIf
+
+	pred.AddItem(LLD_VEV_Crystals_Prey_FV_, 1, true)
+	akPrey.RemoveAllItems(pred)
 
 	;eliminate corpse and move back to original spawn location for cell reset
 	If(akPrey != PlayerRef)
@@ -1011,7 +972,8 @@ function DigestionComplete(Actor akPrey)
 	Remove(akPrey)
 	FV_StomachSim.ShiftIndigestibleToDigestiblePrey(pred, FV_ActorData.EvaluateSlots(akPrey), akPrey)
 	Var[] args = new Var[1]
-	args[0] = akPrey
+	args[0] = pred
+	args[1] = akPrey
 	SendCustomEvent("OnDigestionComplete", args)
 	; trace("DigestionComplete()", "PerformDigestion - Done")
 EndFunction
@@ -1314,7 +1276,7 @@ Function HandleDigestionStage(PreyData aData)
 
 EndFunction
 
-; Reforms the player post-digestion.
+; Reforms the player post-digestion. TODO: Actually test this, does this work? What how?
 Function ReformPlayer(Actor akPred)
 	Actor InvisActor = akPred.PlaceActorAtMe(FV_ScatLootCorpse)
 	InvisActor.killsilent()										;kill so it will be cleaned up

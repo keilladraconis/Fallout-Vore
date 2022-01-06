@@ -1,4 +1,5 @@
 Scriptname FalloutVore:FV_ScatScript extends activemagiceffect
+{ This script is disconnected. TODO: Rework scats.}
 
 ;ConsumptionRegistryScript Property Manager Auto
 FalloutVore:FV_ScatManagerScript Property FV_ScatManager Auto
@@ -22,18 +23,18 @@ GlobalVariable Property FV_ScatBool Auto
 ;GlobalVariable Property VM_ScatType Auto
 Faction Property CurrentCompanionFaction Auto
 
-Event OnEffectStart(Actor akTarget, Actor akCaster)
-	If(akCaster == Game.GetPlayer() && FV_ScatEnabled.GetValue() == 1 && akcaster.getValue(FV_Scatready) >= 1)
-		FV_ScatManager.PlayerScat(akCaster)
-	ElseIf(akCaster == Game.GetPlayer() && FV_ScatEnabled.GetValue() == 0)
-		FV_BellyContainer.Activate(Game.GetPlayer(), false)
-	ElseIf(akCaster.IsInFaction(CurrentCompanionFaction) && akcaster.getValue(FV_Scatready) >= 1)
-		FV_ScatManager.CompanionScat(akCaster)
-	EndIf	
-	If(akCaster == Game.GetPlayer() && akCaster.GetItemCount(FV_Scatpotion) == 0 && FV_ScatBool.GetValue() == 0)
-		akCaster.AddItem(FV_Scatpotion, 1, true) 
-	EndIf
-	If(akCaster == Game.GetPlayer() && FV_ScatBool.GetValue() == 1)
-		FV_ScatBool.SetValue(0)
-	EndIf
-EndEvent
+; Event OnEffectStart(Actor akTarget, Actor akCaster)
+; 	If(akCaster == Game.GetPlayer() && FV_ScatEnabled.GetValue() == 1 && akcaster.getValue(FV_Scatready) >= 1)
+; 		FV_ScatManager.PlayerScat(akCaster)
+; 	ElseIf(akCaster == Game.GetPlayer() && FV_ScatEnabled.GetValue() == 0)
+; 		FV_BellyContainer.Activate(Game.GetPlayer(), false)
+; 	ElseIf(akCaster.IsInFaction(CurrentCompanionFaction) && akcaster.getValue(FV_Scatready) >= 1)
+; 		FV_ScatManager.CompanionScat(akCaster)
+; 	EndIf	
+; 	If(akCaster == Game.GetPlayer() && akCaster.GetItemCount(FV_Scatpotion) == 0 && FV_ScatBool.GetValue() == 0)
+; 		akCaster.AddItem(FV_Scatpotion, 1, true) 
+; 	EndIf
+; 	If(akCaster == Game.GetPlayer() && FV_ScatBool.GetValue() == 1)
+; 		FV_ScatBool.SetValue(0)
+; 	EndIf
+; EndEvent

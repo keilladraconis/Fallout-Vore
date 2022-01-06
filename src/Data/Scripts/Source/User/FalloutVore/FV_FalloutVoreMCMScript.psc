@@ -31,9 +31,7 @@ Group Globals
 	GlobalVariable Property FV_ManualPreyContext Auto
 	GlobalVariable Property FV_MaxCapacity Auto
 	GlobalVariable Property FV_PerkPoints Auto
-	GlobalVariable Property FV_ScatBool Auto
 	GlobalVariable Property FV_GrowlBool Auto
-	GlobalVariable Property FV_ScatEnabled Auto
 	GlobalVariable Property FV_TwoPreyEnabled Auto
 	GlobalVariable Property FV_VomitBool Auto
 	GlobalVariable Property FV_VoreCoreToggle Auto
@@ -48,10 +46,8 @@ Group Perks
 EndGroup
 
 Group Potions
-	;Potion Property CompanionScatPotion Auto
 	Potion Property FV_DigestPotion Auto
 	Potion Property FV_RegurgitatePotion Auto
-	Potion Property FV_ScatPotion Auto
 	;Potion Property FV_VoreStatPotion Auto
 	Potion Property FV_ContextPreyPotion Auto
 	Potion Property FV_EvoPredatorBasicInjector Auto
@@ -73,9 +69,6 @@ Bool Property bFOVoreEnabled Auto Hidden
 Bool Property bContextVore Auto Hidden
 ;Bool Property bControlGroup5 Auto Hidden
 Bool Property bControlGroup6 Auto Hidden
-Bool Property bCrouchToShit Auto Hidden
-
-Int Property iScatType = 0 Auto Hidden
 
 Actor PlayerRef
 
@@ -103,7 +96,6 @@ Function EnableOnStart()
 		FV_ClothesripChance.SetValue(0)
 		Trace(self, "Clothes ripping turned off")
 	EndIf
-	FV_ScatEnabled.SetValue(MCM.GetModSettingBool(sModName, "bScatEnabledOnStart:FalloutVoreMain") as float)
 	FV_FemaleVoreEnabled.SetValue(MCM.GetModSettingBool(sModName, "bFemaleVoreEnabledOnStart:FalloutVoreMain") as float)
 	FV_MaleVoreEnabled.SetValue(MCM.GetModSettingBool(sModName, "bMaleVoreEnabledOnStart:FalloutVoreMain") as float)
 	FV_VoreRaiderEnabled.SetValue(MCM.GetModSettingBool(sModName, "bVoreRaiderEnabledOnStart:FalloutVoreMain") as float)
@@ -129,13 +121,6 @@ Function EventRegistration()
 	debug.trace("MCM for FOVore settings registered")
 EndFunction
 
-Event Actor.OnEnterSneaking(Actor akSender)
-	Trace("OnEnterSneaking()", akSender)
-	If(bCrouchToShit)
-		PlayerRef.EquipItem(FV_ScatPotion, true, true)
-	EndIf
-EndEvent
-
 Function SyncProperties()
 	
 	If(FV_ClothesripChance.GetValue() == 50)
@@ -152,11 +137,6 @@ EndFunction
 Function OnMCMOpen()
  	SyncProperties()
     MCM.RefreshMenu()
-EndFunction
-
-Function CallScat()
-	FV_ScatBool.SetValue(1)
-	PlayerRef.EquipItem(FV_ScatPotion, true, true)
 EndFunction
 
 Function Regurgitate()
@@ -205,13 +185,6 @@ Function OnMCMSettingChange(string modName, string id)
 				EndIf
 		ElseIf(id == "ActivatePlayerPred")
 			;GAZ: I found this line like this. I wonder if at some point someone tried to make Context ran through MCM Hotkey. Investigate.
-		ElseIf(id=="CrouchScatToggle")
-			Trace("OnMCMSettingChange()", "CrouchScatToggle: " + bCrouchToShit)
-			If(bCrouchToShit)
-				RegisterForRemoteEvent(PlayerRef, "OnEnterSneaking")
-			ElseIf(!bCrouchToShit)
-				UnregisterForRemoteEvent(PlayerRef, "OnEnterSneaking")
-			EndIf
 		ElseIf(id == "CameraSettingChange")
 			If FV_ConsumptionRegistry.fCameraDistanceSwallow < fCameraSwallowMin
 				; FV_ConsumptionRegistry.UpdateCameraSwallowDistance(fCameraSwallowMin) KEILLA TODO: Who is responsible for camera shit?

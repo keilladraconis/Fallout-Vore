@@ -127,58 +127,6 @@
 					}
 				},
 				{
-					"text": "$FVSE_MCM_SCAT_HEADER",
-					"type": "section"
-				},
-				{
-					"text": "$FVSE_MCM_SCAT_TOG",
-					"type": "switcher",
-					"help": "$FVSE_MCM_SCAT_TOG_HELP",
-					"groupControl": 10,
-					"valueOptions": {
-						"sourceType": "GlobalValue",
-						"sourceForm": "FalloutVore.esm|F99E"
-					}
-				},
-				{
-					"id": "ScatType",
-					"text": "$FVSE_MCM_SCAT_TYPE",
-					"type": "dropdown",
-					"groupCondition": 10,
-					"help": "$FVSE_MCM_SCAT_TYPE_HELP",
-					"valueOptions": {
-						"options": [
-							"$FVSE_MCM_SCAT_CLASSIC",
-							"$FVSE_MCM_SCAT_CLASSIC_BONES",
-							"$FVSE_MCM_SCAT_BONES"
-						],
-						"sourceType": "GlobalValue",
-						"sourceForm": "FalloutVore.esm|B541"
-					}
-				},
-				{
-					"id": "CrouchScatToggle",
-					"text": "$FVSE_MCM_SCAT_CROUCH",
-					"type": "switcher",
-					"groupCondition": 10,
-					"help": "$FVSE_MCM_SCAT_CROUCH_HELP",
-					"valueOptions": {
-						"sourceType": "PropertyValueBool",
-						"sourceForm": "FalloutVore.esm|DAB6",
-						"propertyName": "bCrouchToShit"
-					}
-				},
-				{
-					"text": "$FVSE_MCM_SCAT_NPC_TOG",
-					"type": "switcher",
-					"help": "$FVSE_MCM_SCAT_NPC_TOG_HELP",
-					"groupCondition": 10,
-					"valueOptions": {
-						"sourceType": "GlobalValue",
-						"sourceForm": "FalloutVore.esm|6C6B"
-					}
-				},
-				{
 					"text": "$FVSE_MCM_GENDER_SET",
 					"type": "section"
 				},
@@ -249,17 +197,6 @@
 					"valueOptions": {
 						"sourceType": "GlobalValue",
 						"sourceForm": "FalloutVore.esm|F99A"
-					}
-				},
-				{
-					"id": "CompanionScatToggle",
-					"text": "$FVSE_MCM_NPC_COMP_SCAT_TOG",
-					"type": "switcher",
-					"help": "$FVSE_MCM_NPC_COMP_SCAT_TOG_HELP",
-					"groupCondition": 10,
-					"valueOptions": {
-						"sourceType": "GlobalValue",
-						"sourceForm": "FalloutVore.esm|C851"
 					}
 				},
 				{
@@ -345,12 +282,6 @@
 				{
 					"text": "$FVSE_MCM_HOTKEY_SET",
 					"type": "section"
-				},
-				{
-					"id": "scatHotkey",
-					"text": "$FVSE_MCM_HOTKEY_SCAT",
-					"type": "hotkey",
-					"help": "$FVSE_MCM_HOTKEY_SCAT_HELP"
 				},
 				{
 					"id": "regurgitateHotkey",

@@ -1,42 +1,61 @@
 Scriptname FalloutVore:FV_ScatManagerScript Extends Quest
+{ This is disconnected. TODO: Rework Scat.
+Responsible for enabling player to access the belly container, either directly or by creating a lootable scat pile. }
 
-Activator Property FV_ScatPile Auto
-Activator[] Property FV_HumanBones Auto
-Activator[] Property FV_Deadclaw Auto
-Activator[] Property FV_BrahminBones Auto
-Activator[] Property FV_HumanBonesClean Auto
-Activator[] Property FV_DeadclawClean Auto
-Activator[] Property FV_BrahminBonesClean Auto
-ActorBase Property FV_ScatLootCorpse Auto
-ActorValue Property FV_CurrentPrey Auto
-ActorValue Property FV_ScatReady Auto
-FalloutVore:FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto
-Faction Property CurrentCompanionFaction Auto
-GlobalVariable Property FV_ScatEnabled Auto
-GlobalVariable Property FV_CompanionScat Auto
-GlobalVariable Property FV_NPCScatEnabled Auto
-GlobalVariable Property FV_ScatType Auto
-Keyword Property ActorTypeDeathclaw Auto
-Keyword Property ActorTypeGhoul Auto
-Keyword Property ActorTypeHuman Auto
-Keyword Property ActorTypeSuperMutant Auto
-ObjectReference Property FV_BellyContainer Auto
 ;ObjectReference Property VM_CompanionBellyContainer Auto
-Potion Property FV_ScatPotion Auto
-Race Property BrahminRace Auto
-Sound Property FV_Scatsound Auto
-ReferenceAlias Property DogmeatCompanion Auto
-RefCollectionAlias Property ActiveCompanions Auto
-MiscObject Property FV_JunkWeapon Auto
-MiscObject Property FV_JunkLeatherArmor Auto
-MiscObject Property FV_JunkMetalArmor Auto
-Perk Property FV_SelectiveAcids01 Auto
-Perk Property FV_SelectiveAcids02 Auto
-Keyword Property ObjectTypeChem Auto
-Keyword Property ObjectTypeStimpak Auto
-Formlist Property lootItemsUnique Auto
-Message Property FV_PlayerObjectScatReady Auto
-MiscObject Property Caps001 Auto
+
+Group Activators Collapsed
+	Activator Property FV_ScatPile Auto Const Mandatory
+	Activator[] Property FV_HumanBones Auto Const Mandatory
+	Activator[] Property FV_Deadclaw Auto Const Mandatory
+	Activator[] Property FV_BrahminBones Auto Const Mandatory
+	Activator[] Property FV_HumanBonesClean Auto Const Mandatory
+	Activator[] Property FV_DeadclawClean Auto Const Mandatory
+	Activator[] Property FV_BrahminBonesClean Auto Const Mandatory
+EndGroup
+
+Group Misc
+	ActorBase Property FV_ScatLootCorpse Auto Const Mandatory
+	Actor Property PlayerRef Auto Const Mandatory
+	FalloutVore:FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto Const Mandatory
+	ActorValue Property FV_CurrentPrey Auto Mandatory
+	ActorValue Property FV_ScatReady Auto Mandatory
+	Faction Property CurrentCompanionFaction Auto Const Mandatory
+	ObjectReference Property FV_BellyContainer Auto Const Mandatory
+	ObjectReference Property FV_CompanionBellyContainer Auto Const Mandatory
+	Potion Property FV_ScatPotion Auto Const Mandatory
+	Race Property BrahminRace Auto Const Mandatory
+	Sound Property FV_Scatsound Auto Const Mandatory
+	ReferenceAlias Property DogmeatCompanion Auto Const Mandatory
+	RefCollectionAlias Property ActiveCompanions Auto Const Mandatory
+	Perk Property FV_SelectiveAcids01 Auto Const Mandatory
+	Perk Property FV_SelectiveAcids02 Auto Const Mandatory
+	Keyword Property ObjectTypeChem Auto Const Mandatory
+	Keyword Property ObjectTypeStimpak Auto Const Mandatory
+	Formlist Property lootItemsUnique Auto Const Mandatory
+	Message Property FV_PlayerObjectScatReady Auto Const Mandatory
+	MiscObject Property Caps001 Auto Const Mandatory
+EndGroup
+
+Group GlobalVariables Collapsed
+	GlobalVariable Property FV_ScatEnabled Auto Mandatory
+	GlobalVariable Property FV_CompanionScat Auto Mandatory
+	GlobalVariable Property FV_NPCScatEnabled Auto Mandatory
+	GlobalVariable Property FV_ScatType Auto Mandatory	
+EndGroup
+
+Group Keywords
+	Keyword Property ActorTypeDeathclaw Auto Const Mandatory
+	Keyword Property ActorTypeGhoul Auto Const Mandatory
+	Keyword Property ActorTypeHuman Auto Const Mandatory
+	Keyword Property ActorTypeSuperMutant Auto Const Mandatory
+EndGroup
+
+Group MiscObjects
+	MiscObject Property FV_JunkWeapon Auto Const Mandatory
+	MiscObject Property FV_JunkLeatherArmor Auto Const Mandatory
+	MiscObject Property FV_JunkMetalArmor Auto Const Mandatory	
+EndGroup
 
 Struct ScatData
 	Actor Pred
@@ -44,10 +63,43 @@ Struct ScatData
 	Int DeathclawPrey
 	Int HumanoidPrey
 	Int TotalPrey
-	ObjectReference InstancedBellyContainer
+	ObjectReference BellyContainer
 EndStruct
 
 ScatData[] ScatArray
+
+; The point of all this is to be able to produce a scat lootable or otherwise access the belly container of an actor. 
+; So given a predator digesting a prey, we add the belly container here.
+; This means that ConsumptionRegistry will no longer care or manage the Belly container.
+
+int Function Add(Actor akPred, Actor akPrey, Bool abIsLethal = false)
+	if ScatArray == None
+		ScatArray = new ScatData[0]
+	EndIf
+
+	int i = ScatArray.FindStruct("Pred", akPred)
+	If  i > 0
+		Return i ; Pred already in registry.
+	EndIf
+
+	if ScatArray.Length >= 128
+		Return -1
+	endif
+
+	ObjectReference bellyContainer
+	If(akPred == PlayerRef)
+		bellyContainer = FV_BellyContainer
+	ElseIf(akPred.IsInFaction(CurrentCompanionFaction))
+		bellyContainer = FV_CompanionBellyContainer
+	EndIf
+
+	ScatData data = new ScatData
+	data.Pred = akPred
+	data.BellyContainer = bellyContainer
+	ScatArray.Add(data)
+	Return ScatArray.Length - 1
+EndFunction
+
 
 Event OnInit()
 	EventRegister()
@@ -69,6 +121,11 @@ EndFunction
 ; 	EndIf
 ; EndEvent
 
+Event FalloutVore:FV_ConsumptionRegistryScript.OnDigestionComplete(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
+	ProcessPred(akArgs[0] as Actor, akArgs[1] as Actor, akArgs[3] as ObjectReference)
+EndEvent
+
+
 Event FalloutVore:FV_ConsumptionRegistryScript.OnVomit(FalloutVore:FV_ConsumptionRegistryScript akSender, Var[] akArgs)
 	;Remove pred from array if no prey are present
 	Actor akPred = akArgs[0] as Actor
@@ -78,7 +135,6 @@ Event FalloutVore:FV_ConsumptionRegistryScript.OnVomit(FalloutVore:FV_Consumptio
 EndEvent
 
 Event ObjectReference.OnItemRemoved(ObjectReference akSender, Form akBaseItem, int aiItemCount, ObjectReference akItemReference, ObjectReference akSourceContainer)
-	Actor PlayerRef = Game.GetPlayer()
 	debug.trace("FV_Scatmanager OnItemRemoved() akItemReference: " + akItemReference + " akBaseItem: " + akBaseItem)
 	If(itemForm == NONE)
 		itemForm = new ObjectReference[0]
@@ -114,7 +170,7 @@ Scatdata Function AddPred(Actor akPred, ObjectReference akContainer = NONE)
 		data.DeathclawPrey = 0
 		data.BrahminPrey = 0
 		data.TotalPrey = 0
-		data.InstancedBellyContainer = akContainer
+		data.BellyContainer = akContainer
 		
 		ScatArray.add(data)
 		
@@ -183,90 +239,78 @@ Function ProcessPreyItems(Actor akPrey, Actor akPred)
 EndFunction
 
 ;Private functions
-Function ProcessPred(Actor akPred, Actor akPrey, ObjectReference akContainer, Int aiDigestionEvent)
+Function ProcessPred(Actor akPred, Actor akPrey, ObjectReference akContainer)
 	ScatData data = RetrieveFromArray(akPred)
 	
-		If(akPred == Game.GetPlayer() || (akPred.IsInFaction(CurrentCompanionFaction) && FV_CompanionScat.GetValue() == 1) || (!akPred.IsInFaction(CurrentCompanionFaction) && FV_NPCScatEnabled.GetValue() == 1))
-			If(aiDigestionEvent == 0)
-				If(data == None)
-					data = AddPred(akPred, akContainer)
-				EndIf
-				data.TotalPrey += 1
-				If(akPrey != NONE)
-					If(akPrey.HasKeyword(ActorTypeHuman) || akPrey.hasKeyword(ActorTypeGhoul) || akPrey.HasKeyword(ActorTypeSuperMutant))
-						data.HumanoidPrey += 1
-					ElseIf(akPrey.HasKeyword(ActorTypeDeathclaw))
-						data.DeathclawPrey += 1
-					ElseIf(akPrey.GetRace() == BrahminRace)
-						data.BrahminPrey += 1
-					EndIf
-				EndIf
+	If(akPred == Game.GetPlayer() || (akPred.IsInFaction(CurrentCompanionFaction) && FV_CompanionScat.GetValue() == 1) || (!akPred.IsInFaction(CurrentCompanionFaction) && FV_NPCScatEnabled.GetValue() == 1))
+		If(data == None)
+			data = AddPred(akPred, akContainer)
+		EndIf
+		data.TotalPrey += 1
+		If(akPrey != NONE)
+			If(akPrey.HasKeyword(ActorTypeHuman) || akPrey.hasKeyword(ActorTypeGhoul) || akPrey.HasKeyword(ActorTypeSuperMutant))
+				data.HumanoidPrey += 1
+			ElseIf(akPrey.HasKeyword(ActorTypeDeathclaw))
+				data.DeathclawPrey += 1
+			ElseIf(akPrey.GetRace() == BrahminRace)
+				data.BrahminPrey += 1
 			EndIf
 		EndIf
+	EndIf
 	
 EndFunction
 
 Function PerformScat(Actor akPred)
 	ScatData data = RetrieveFromArray(akPred)
 
-	actor victim = data.Pred.placeactoratme(FV_ScatLootCorpse)
+	actor scatPile = data.Pred.placeactoratme(FV_ScatLootCorpse)
 	float fAngle
 	float fSin
 	float fCos
-	float fHeight
 	fAngle = data.Pred.GetAngleZ() + 180.0
 	fSin = Math.sin(fAngle)
 	fCos = Math.cos(fAngle)
-	fHeight = data.Pred.GetPositionZ()
 		
-	data.InstancedBellyContainer.removeallitems(victim)
-	victim.moveto(data.Pred, 60.0 * fSin, 60.0 * fCos, 0.0, False)
+	data.BellyContainer.removeallitems(scatPile)
+	scatPile.moveto(data.Pred, 60.0 * fSin, 60.0 * fCos, 0.0, False)
 	FV_Scatsound.Play(data.Pred)
 	
-	;If(FV_ScatType.GetValue() == 0)
 	bool placeHuman = data.HumanoidPrey > 0
 	bool placeBrahmin = data.BrahminPrey > 0
 	bool placeDeathclaw = data.DeathclawPrey > 0
 	Int RandomBones
 	
 	If(FV_ScatType.GetValue() == 0 || FV_ScatType.GetValue() == 1)
-		victim.AttachAshPile(FV_ScatPile)
+		scatPile.AttachAshPile(FV_ScatPile)
 	EndIf
 	If(FV_ScatType.GetValue() == 1)
 		If(placeDeathclaw)
 			RandomBones = Utility.RandomInt(0, FV_Deadclaw.Length-1)
-			victim.AttachAshPile(FV_Deadclaw[RandomBones])
+			scatPile.AttachAshPile(FV_Deadclaw[RandomBones])
 		ElseIf(placeBrahmin && FV_BrahminBones.Length > 0)
 			RandomBones = Utility.RandomInt(0, FV_BrahminBones.Length-1)
-			victim.AttachAshPile(FV_BrahminBones[RandomBones])
+			scatPile.AttachAshPile(FV_BrahminBones[RandomBones])
 		ElseIf(placeHuman && FV_HumanBones.Length > 0)
 			RandomBones = Utility.RandomInt(0, FV_HumanBones.Length-1)
-			victim.AttachAshPile(FV_HumanBones[RandomBones])
+			scatPile.AttachAshPile(FV_HumanBones[RandomBones])
 		EndIf
 	EndIf
 	If(FV_ScatType.GetValue() == 2)
 		If(placeDeathclaw)
 			RandomBones = Utility.RandomInt(0, FV_DeadclawClean.Length-1)
-			victim.AttachAshPile(FV_DeadclawClean[RandomBones])
+			scatPile.AttachAshPile(FV_DeadclawClean[RandomBones])
 		ElseIf(placeBrahmin && FV_BrahminBonesClean.Length > 0)
 			RandomBones = Utility.RandomInt(0, FV_BrahminBonesClean.Length-1)
-			victim.AttachAshPile(FV_BrahminBonesClean[RandomBones])
+			scatPile.AttachAshPile(FV_BrahminBonesClean[RandomBones])
 		ElseIf(placeHuman && FV_HumanBones.Length > 0)
 			RandomBones = Utility.RandomInt(0, FV_HumanBonesClean.Length-1)
-			victim.AttachAshPile(FV_HumanBonesClean[RandomBones])
+			scatPile.AttachAshPile(FV_HumanBonesClean[RandomBones])
 		Else
-			victim.AttachAshPile(FV_ScatPile)
+			scatPile.AttachAshPile(FV_ScatPile)
 		EndIf
 	EndIf
-	;ElseIf(FV_ScatType.GetValue() == 2)
-	;	Int randomScat = Utility.RandomInt(1, 2)
-	;	If(randomScat == 1)
-	;		victim.AttachAshPile(FV_ScatPile)
-	;	ElseIf(randomScat == 2)
-	;		victim.AttachAshPile(VM_ScatBones)
-	;	EndIf
-	victim.killsilent()
-	;victim.setAlpha(0, false)
+
+	scatPile.killsilent()
 EndFunction
 
 struct ItemParse
@@ -288,7 +332,6 @@ EndFunction
 Function PlayerSwallowItem_int()
 	ItemParse[] finalItem = new ItemParse[0]
 	finalItem.clear()
-	Actor PlayerRef = Game.GetPlayer()
 	If bProcessingFood
 		return
 	EndIf
@@ -310,7 +353,7 @@ Function PlayerSwallowItem_int()
 					FV_PlayerObjectScatReady.Show()
 					PlayerRef.SetValue(FV_ScatReady, 1)
 				EndIf
-				ProcessPred(PlayerRef, NONE, FV_BellyContainer, 0)
+				ProcessPred(PlayerRef, NONE, FV_BellyContainer)
 			EndIf
 		Else
 			debug.trace("PlayerSwallowItem_int received invalid formID: " + itemForm[0])

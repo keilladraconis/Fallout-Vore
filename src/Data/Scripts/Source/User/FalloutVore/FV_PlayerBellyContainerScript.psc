@@ -1,4 +1,5 @@
 Scriptname FalloutVore:FV_PlayerBellyContainerScript extends ObjectReference
+{ This is disconnected. TODO: Reconsider why this is necessary to track the weight of vored items and do... what exactly, and why? }
 
 GlobalVariable Property FV_PlayerBellyWeightPerks Auto
 GlobalVariable Property FV_PlayerBellyWeight Auto

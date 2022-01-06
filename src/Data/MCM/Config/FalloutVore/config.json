@@ -116,17 +116,6 @@
 					}
 				},
 				{
-					"text": "$FVSE_MCM_PLAYER_PRED_BUTTON",
-					"type": "button",
-					"help": "$FVSE_MCM_PLAYER_PRED_HELP",
-					"groupCondition": 5,
-					"action": {
-						"type": "CallFunction",
-						"form": "FalloutVore.esm|DAB6",
-						"function": "MakePlayerPred"
-					}
-				},
-				{
 					"text": "$FVSE_MCM_GENDER_SET",
 					"type": "section"
 				},
@@ -240,32 +229,6 @@
 					}
 				},
 				{
-					"text": "$FVSE_MCM_CAM_SET",
-					"type": "section"
-				},
-				{
-					"id": "CameraSettingChange",
-					"text": "$FVSE_MCM_CAM_DIST_POST_SWAL",
-					"type": "textinputFloat",
-					"help": "$FVSE_MCM_CAM_DIST_POST_SWAL_HELP",
-					"valueOptions": {
-						"sourceType": "PropertyValueFloat",
-						"sourceForm": "FalloutVore.esm|F902",
-						"propertyName": "fCameraDistanceSwallow"
-					}
-				},
-				{
-					"id": "CameraSettingChange",
-					"text": "$FVSE_MCM_CAM_DIST_POST_ESC",
-					"type": "textinputFloat",
-					"help": "$FVSE_MCM_CAM_DIST_POST_ESC_HELP",
-					"valueOptions": {
-						"sourceType": "PropertyValueFloat",
-						"sourceForm": "FalloutVore.esm|F902",
-						"propertyName": "fCameraDistanceVomit"
-					}
-				},
-				{
 					"text": "$FVSE_MCM_SURV_SET",
 					"type": "section"
 				},
@@ -321,20 +284,6 @@
 					"valueOptions": {
 						"sourceType": "GlobalValue",
 						"sourceForm": "FalloutVore.esm|50C7"
-					}
-				},
-				{
-					"text": "$FVSE_MCM_DEBUG_RESET_CORE",
-					"type": "button",
-					"help": "$FVSE_MCM_DEBUG_RESET_CORE_HELP",
-					"groupCondition": 8,
-					"action": {
-						"type": "CallFunction",
-						"form": "FalloutVore.esm|F902",
-						"function": "ResetVoreMod",
-						"params": [
-							"{b}false"
-						]
 					}
 				},
 				{

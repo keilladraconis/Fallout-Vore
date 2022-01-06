@@ -8,21 +8,6 @@ EndFunction
 
 ReferenceAlias Property CurrentCompanion Auto Const
 
-Group ActorValues
-	;ActorValue Property FV_BellyCapacity Auto
-	ActorValue Property FV_VoreLevel Auto
-	ActorValue Property Strength Auto
-	ActorValue Property Perception Auto
-	ActorValue Property Endurance Auto
-	ActorValue Property Charisma Auto
-	ActorValue Property Intelligence Auto
-	ActorValue Property Agility Auto
-	ActorValue Property Luck Auto
-	ActorValue Property FV_HasHadNukaAcid Auto
-	ActorValue Property FV_PredLevel Auto
-	ActorValue Property FV_SwallowStrength Auto
-EndGroup
-
 Group Globals
 	GlobalVariable Property FV_PlayerNeedsNuka Auto
 	GlobalVariable Property FV_ClothesripChance Auto
@@ -48,27 +33,19 @@ EndGroup
 Group Potions
 	Potion Property FV_DigestPotion Auto
 	Potion Property FV_RegurgitatePotion Auto
-	;Potion Property FV_VoreStatPotion Auto
 	Potion Property FV_ContextPreyPotion Auto
-	Potion Property FV_EvoPredatorBasicInjector Auto
 	Potion Property FV_PrimeGrowl Auto
 EndGroup
 
 Group Scripts
-	FalloutVore:FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto
 	FalloutVore:FV_VoreHudScript Property FV_VoreHud Auto
 EndGroup
-
-Float fCameraVomitMin = 100.0
-Float fCameraSwallowMin = 10.0
 
 String sModName = "FalloutVore"
 
 Bool Property bClothesripChance Auto Hidden
 Bool Property bFOVoreEnabled Auto Hidden
 Bool Property bContextVore Auto Hidden
-;Bool Property bControlGroup5 Auto Hidden
-Bool Property bControlGroup6 Auto Hidden
 
 Actor PlayerRef
 
@@ -78,13 +55,11 @@ Event OnInit()
 	EventRegistration()
 	SyncProperties()
 	EnableOnStart()
-	RestoreCameraProperties()
 EndEvent
 
 Event Actor.OnPlayerLoadGame(Actor akSender)
 	EventRegistration()
 	SyncProperties()
-	;RestoreCameraProperties()
 EndEvent
 
 Function EnableOnStart()
@@ -102,19 +77,6 @@ Function EnableOnStart()
 	FV_VoreRoyaltyEnabled.SetValue(MCM.GetModSettingBool(sModName, "bVoreRoyaltyEnabledOnStart:FalloutVoreMain") as float)
 EndFunction
 
-Function ResetCamera()
-	RestoreCameraProperties()
-	MCM.RefreshMenu()
-EndFunction
-
-Function RestoreCameraProperties()
-	Float CameraDistanceSwallow = MCM.GetModSettingFloat(sModName, "fCameraDistanceSwallow:FalloutVoreMain")
-	Float CameraDistanceVomit = MCM.GetModSettingFloat(sModName, "fCameraDistanceVomit:FalloutVoreMain")
-	
-	; FV_ConsumptionRegistry.UpdateCameraSwallowDistance(CameraDistanceSwallow) ; KEILLA TODO: Who is responsible for doign camera crap?
-	; FV_ConsumptionRegistry.UpdateCameraVomitDistance(CameraDistanceVomit)
-EndFunction
-
 Function EventRegistration()
 	RegisterForExternalEvent("OnMCMSettingChange|FalloutVore", "OnMCMSettingChange")
 	RegisterForExternalEvent("OnMCMOpen", "OnMCMOpen")
@@ -122,7 +84,6 @@ Function EventRegistration()
 EndFunction
 
 Function SyncProperties()
-	
 	If(FV_ClothesripChance.GetValue() == 50)
 		bClothesripChance = true
 	EndIf
@@ -131,7 +92,6 @@ Function SyncProperties()
 	Else
 		bFOVoreEnabled = false
 	EndIf
-	
 EndFunction
 
 Function OnMCMOpen()
@@ -162,14 +122,6 @@ EndFunction
 Function OnMCMSettingChange(string modName, string id)
 	If(modName == sModName)
 		Trace("OnMCMSettingChange()")
-		;If(id == "FOVoreEnable" && FV_PlayerNeedsNuka.GetValue() == 1)
-		;	debug.messagebox("Experiment Activated")
-		;	FV_PlayerNeedsNuka.SetValue(0)
-		;	StartModSpell.Cast(Game.GetPlayer())
-			;bControlGroup5 = false
-			;bControlGroup6 = true
-		;	MCM.RefreshMenu()
-		;EndIf
 		If(id == "ClothingToggle")
 			If(bClothesripChance)
 				FV_ClothesripChance.SetValue(50)
@@ -183,31 +135,8 @@ Function OnMCMSettingChange(string modName, string id)
 				If(!Game.GetPlayer().HasPerk(FV_ContextVorePerk))
 					Game.GetPlayer().Addperk(FV_ContextVorePerk)
 				EndIf
-		ElseIf(id == "ActivatePlayerPred")
-			;GAZ: I found this line like this. I wonder if at some point someone tried to make Context ran through MCM Hotkey. Investigate.
-		ElseIf(id == "CameraSettingChange")
-			If FV_ConsumptionRegistry.fCameraDistanceSwallow < fCameraSwallowMin
-				; FV_ConsumptionRegistry.UpdateCameraSwallowDistance(fCameraSwallowMin) KEILLA TODO: Who is responsible for camera shit?
-				MCM.RefreshMenu()
-			EndIf
-			If FV_ConsumptionRegistry.fCameraDistanceVomit < fCameraVomitMin
-				; FV_ConsumptionRegistry.UpdateCameraVomitDistance(fCameraVomitMin) KEILLA TODO: Who is responsible for camera shit?
-				MCM.RefreshMenu()
-			EndIf
 		ElseIf(id == "HudDebugToggle")
 			FV_VoreHud.HudDebugToggle(FV_HudDebugEnabled.GetValue() as int)
 		EndIf
-	EndIf
-EndFunction
-
-Function MakePlayerPred()
-	If(PlayerRef.GetValue(FV_HasHadNukaAcid) == 0)
-		PlayerRef.SetValue(FV_HasHadNukaAcid, 1)
-		PlayerRef.SetValue(FV_SwallowStrength, 25)
-		PlayerRef.ModValue(FV_PredLevel, 1)
-		PlayerRef.EquipItem(FV_EvoPredatorBasicInjector, abSilent = true)
-		FV_PlayerNeedsNuka.SetValue(0)
-		MCM.RefreshMenu()
-		FV_ConsumptionRegistry.MakePlayerPred()
 	EndIf
 EndFunction

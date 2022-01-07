@@ -84,7 +84,7 @@
 					}
 				},
 				{
-					"id": "ColdSteelMaxSize",
+					"id": "MaxSize",
 					"text": "$FVSE_MCM_BELLY_MAX",
 					"type": "textinputFloat",
 					"groupControl": 11,

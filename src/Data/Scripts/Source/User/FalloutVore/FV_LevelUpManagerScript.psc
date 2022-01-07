@@ -47,7 +47,6 @@ EndGroup
 
 Group Quests
 	FalloutVore:FV_ConsumptionRegistryScript Property FV_ConsumptionRegistry Auto
-	FalloutVore:FV_VoreHudScript Property FV_VoreHud Auto
 	FollowersScript Property Followers Auto
 EndGroup
 
@@ -189,9 +188,7 @@ Function CheckLevelUp(Float afXPGain, Actor akActorToLevel, float akVoreLevel)
 			LevelUpNPC(ActorToLevel)
 		EndIf
 	EndWhile
-	If(ActorToLevel == PlayerRef)
-		FV_VoreHud.UpdatePlayerXP((OldXP/OldLevelReq * 100) as int, (ActorToLevel.GetValue(FV_VoreXP)/LevelReq * 100) as int, newXPGain as int, levelUp as int)
-	Endif
+
 	Trace(self, "Actor " + ActorToLevel + "Previous XP: " + OldXP + " newXPGain: " + newXPGain + " New XP: " + ActorToLevel.GetValue(FV_VoreXP) + " Old Level: " + OldLevel + " NewLevel: " + akVoreLevel)
 	
 EndFunction

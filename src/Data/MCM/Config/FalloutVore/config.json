@@ -276,17 +276,6 @@
 					"groupCondition": 8
 				},
 				{
-					"id": "HudDebugToggle",
-					"text": "$FVSE_MCM_DEBUG_HUD",
-					"type": "switcher",
-					"help": "$FVSE_MCM_DEBUG_HUD_HELP",
-					"groupCondition": 8,
-					"valueOptions": {
-						"sourceType": "GlobalValue",
-						"sourceForm": "FalloutVore.esm|50C7"
-					}
-				},
-				{
 					"text": "$FVSE_MCM_DEBUG_RESET_CAM",
 					"type": "button",
 					"help": "$FVSE_MCM_DEBUG_RESET_CAM_HELP",

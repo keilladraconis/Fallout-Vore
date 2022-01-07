@@ -33,7 +33,6 @@ Group Messages
 EndGroup
 
 Group Scripts
- 	FalloutVore:FV_VoreHudScript Property FV_VoreHud Auto Const Mandatory
 	FalloutVore:FV_StomachSimScript Property FV_StomachSim Auto Const Mandatory
 	FalloutVore:FV_FalloutVoreScript Property FV_FalloutVore Auto Const Mandatory
 EndGroup

@@ -11,7 +11,6 @@ ReferenceAlias Property CurrentCompanion Auto Const
 Group Globals
 	GlobalVariable Property FV_PlayerNeedsNuka Auto
 	GlobalVariable Property FV_ClothesripChance Auto
-	GlobalVariable Property FV_HudDebugEnabled Auto
 	GlobalVariable Property FV_ManualDigestBool Auto
 	GlobalVariable Property FV_ManualPreyContext Auto
 	GlobalVariable Property FV_MaxCapacity Auto
@@ -35,10 +34,6 @@ Group Potions
 	Potion Property FV_RegurgitatePotion Auto
 	Potion Property FV_ContextPreyPotion Auto
 	Potion Property FV_PrimeGrowl Auto
-EndGroup
-
-Group Scripts
-	FalloutVore:FV_VoreHudScript Property FV_VoreHud Auto
 EndGroup
 
 String sModName = "FalloutVore"
@@ -131,12 +126,9 @@ Function OnMCMSettingChange(string modName, string id)
 				Trace("OnMCMSettingChange()", "Clothes ripping turned off")
 			EndIf
 		ElseIf(id == "ContextVore")
-			;If(bContextVore)
-				If(!Game.GetPlayer().HasPerk(FV_ContextVorePerk))
-					Game.GetPlayer().Addperk(FV_ContextVorePerk)
-				EndIf
-		ElseIf(id == "HudDebugToggle")
-			FV_VoreHud.HudDebugToggle(FV_HudDebugEnabled.GetValue() as int)
+			If(!Game.GetPlayer().HasPerk(FV_ContextVorePerk))
+				Game.GetPlayer().Addperk(FV_ContextVorePerk)
+			EndIf
 		EndIf
 	EndIf
 EndFunction

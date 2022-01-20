@@ -349,11 +349,9 @@ function DigestionComplete(Actor akPrey)
 	akPrey.RemoveAllItems(pred)
 
 	;eliminate corpse and move back to original spawn location for cell reset
-	If(akPrey != PlayerRef)
-		akPrey.SetCriticalStage(4) ; The prey corpse is vaporized so it does not render.
-		akPrey.MoveToMyEditorLocation()
-		; trace("DigestionComplete()", "Prey NPC has been moved back to original editor location")
-	EndIf
+	akPrey.SetCriticalStage(4) ; The prey corpse is vaporized so it does not render.
+	akPrey.MoveToMyEditorLocation()
+	; trace("DigestionComplete()", "Prey NPC has been moved back to original editor location")
 	
 	Remove(akPrey)
 	FV_StomachSim.ShiftIndigestibleToDigestiblePrey(pred, FV_ActorData.EvaluateSlots(akPrey), akPrey)

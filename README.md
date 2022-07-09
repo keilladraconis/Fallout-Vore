@@ -20,7 +20,6 @@ This mod has several dependencies.
 - [True Wasteland Body](https://www.nexusmods.com/fallout4/mods/51071)
 - [Under Armor Scaling Removed](https://www.nexusmods.com/fallout4/mods/25078)
 - [Mod Configuration Menu](https://www.nexusmods.com/fallout4/mods/21497)
-- [Hud Framework](https://www.nexusmods.com/fallout4/mods/20309)
 
 And if you want physics:
 - [OCBP](https://www.loverslab.com/files/file/18604-ocbp-for-fallout-4/)
@@ -28,7 +27,7 @@ And if you want physics:
 
 Install everything in the order listed. Then open BodySlide.
 1. Use the 'looking glass' on the 'Group Filter' box to 'Choose Groups'.
-2. Select the 'TWB Vanilla' group.
+2. Select the 'TWB Vanilla' group, plus any other TWB expansions if they are installed.
 3. At the bottom of the screen check the 'Build Morphs' box and 'Batch Build...' If you want to be nude, find and Un-Check the 'NeverNude TWB' at the bottom of the list.
 4. If you accidentally built the NeverNude, clear Group Filter...
   4.1 If you are not using 3BBB, search 'Outfit Filter' for 'CBBE Body' and build that one body with the big 'Build' button.

@@ -314,136 +314,6 @@
 			]
 		},
 		{
-			"pageDisplayName": "$FVSE_MCM_THICC_HEADER",
-			"content": [
-				{
-					"text": "$FVSE_MCM_GEN_SET",
-					"type": "section"
-				},
-				{
-					"type": "hiddenSwitcher",
-					"groupControl": 7,
-					"valueOptions": {
-						"sourceType": "GlobalValue",
-						"sourceForm": "FalloutVore.esm|D30E"
-					}
-				},
-				{
-					"id": "EnableMod",
-					"text": "$FVSE_MCM_THICC_ENABLED",
-					"type": "switcher",
-					"help": "$FVSE_MCM_THICC_ENABLED_HELP",
-					"valueOptions": {
-						"sourceType": "PropertyValueBool",
-						"sourceForm": "FalloutVore.esm|CB69",
-						"propertyName": "WeightModEnabled"
-					}
-				},
-				{
-					"text": "$FVSE_MCM_THICC_MUSCLE_TO_FAT",
-					"type": "slider",
-					"help": "$FVSE_MCM_THICC_MUSCLE_TO_FAT_HELP",
-					"valueOptions": {
-						"min": 0,
-						"max": 100,
-						"step": 1,
-						"sourceType": "PropertyValueInt",
-						"sourceForm": "FalloutVore.esm|CB69",
-						"propertyName": "MFRatio"
-					}
-				},
-				{
-					"id": "sMeterRate",
-					"text": "$FVSE_MCM_THICC_SATED_REFRESH",
-					"type": "slider",
-					"help": "$FVSE_MCM_THICC_SATED_REFRESH_HELP",
-					"valueOptions": {
-						"min": 0.25,
-						"max": 4,
-						"step": 0.25,
-						"sourceType": "PropertyValueFloat",
-						"sourceForm": "FalloutVore.esm|CB69",
-						"propertyName": "MeterRate"
-					}
-				},
-				{
-					"id": "sMeterMod",
-					"text": "$FVSE_MCM_THICC_HUNGER_REFRESH",
-					"type": "slider",
-					"help": "$FVSE_MCM_THICC_HUNGER_REFRESH_HELP",
-					"valueOptions": {
-						"min": 0.25,
-						"max": 6,
-						"step": 0.25,
-						"sourceType": "PropertyValueFloat",
-						"sourceForm": "FalloutVore.esm|CB69",
-						"propertyName": "MeterModRate"
-					}
-				},
-				{
-					"id": "sBodyRate",
-					"text": "$FVSE_MCM_THICC_BODY_REFRESH",
-					"type": "slider",
-					"help": "$FVSE_MCM_THICC_BODY_REFRESH_HELP",
-					"valueOptions": {
-						"min": 0.25,
-						"max": 10,
-						"step": 0.25,
-						"sourceType": "PropertyValueFloat",
-						"sourceForm": "FalloutVore.esm|CB69",
-						"propertyName": "BodyUpdateRate"
-					}
-				},
-				{
-					"id": "MaxHungerLoss",
-					"text": "$FVSE_MCM_THICC_MAX_HUNGER",
-					"type": "stepper",
-					"help": "$FVSE_MCM_THICC_MAX_HUNGER_HELP",
-					"valueOptions": {
-						"options": [
-							-7,
-							-6,
-							-5,
-							-4,
-							-3,
-							-2,
-							-1,
-							0
-						],
-						"sourceType": "PropertyValueInt",
-						"sourceForm": "FalloutVore.esm|CB69",
-						"propertyName": "tempMinMeterDownCounter"
-					}
-				},
-				{
-					"text": "$FVSE_MCM_PLAYER_SET",
-					"type": "section"
-				},
-				{
-					"id": "SwitchPlayerWeightChange",
-					"text": "$FVSE_MCM_THICC_PLAYER_ENABLE",
-					"type": "switcher",
-					"help": "$FVSE_MCM_THICC_PLAYER_ENABLE_HELP",
-					"valueOptions": {
-						"sourceType": "PropertyValueBool",
-						"sourceForm": "FalloutVore.esm|CB69",
-						"propertyName": "EnablePlayerWeightChange"
-					}
-				},
-				{
-					"id": "SwitchCompanionWeightChange",
-					"text": "$FVSE_MCM_THICC_COMP_ENABLE",
-					"type": "switcher",
-					"help": "$FVSE_MCM_THICC_COMP_ENABLE_HELP",
-					"valueOptions": {
-						"sourceType": "PropertyValueBool",
-						"sourceForm": "FalloutVore.esm|CB69",
-						"propertyName": "EnableCompanionWeightChange"
-					}
-				}
-			]
-		},
-		{
 			"pageDisplayName": "$FVSE_MCM_SAV_HEADER",
 			"content": [
 				{
@@ -560,6 +430,12 @@
 						"function": "ResetSAVSystem"
 					}
 				}
+			]
+		},
+		{
+			"pageDisplayName": "THICC Vore",
+			"content":[
+				
 			]
 		}
 	]

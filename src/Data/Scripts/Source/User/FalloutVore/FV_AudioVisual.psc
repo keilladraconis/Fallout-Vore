@@ -1,7 +1,8 @@
 Scriptname FalloutVore:FV_AudioVisual Extends Quest
 {Implements Audio and Visual effects immediately related to Vore. This includes:
 - Gut sounds and related timers
-- Gut morphs}
+- Gut morphs
+- Activating/Deactivating jiggle bones}
 
 Function Trace(string asFunction, string asMessage = "") Global debugOnly
 	string logName = "FalloutVore"
@@ -24,8 +25,8 @@ EndGroup
 
 ; Quest Script Setup Boilerplate
 int Version = 0
-Function Setup(int aiVersion = 3) ; Increment version as needed.
-    ; Trace("Setup()", Version)
+Function Setup(int aiVersion = 4) ; Increment version as needed.
+;    Trace("Setup()", Version)
     Actor player = Game.GetPlayer()
     if Version < aiVersion
         RegisterForRemoteEvent(player, "OnPlayerLoadGame")
@@ -37,7 +38,9 @@ Function Setup(int aiVersion = 3) ; Increment version as needed.
         LoadKeillaPreset()
         Version = aiVersion
     EndIf
+    GotoState("UpdatingMorphs")
     EnqueueUpdateMorphs(player)
+    StartTimer(0.1)
 EndFunction
 
 Event OnInit()

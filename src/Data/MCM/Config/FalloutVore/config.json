@@ -1,455 +1,1719 @@
 {
-	"modName": "FalloutVore",
-	"displayName": "Fallout Vore",
-	"minMcmVersion": 2,
-	"pluginRequirements": [
-		"FalloutVore.esm"
-	],
-	"content": [
-		{
-			"text": "$FVSE_MCM_Welcome",
-			"html": true,
-			"align": "center",
-			"type": "text"
-		},
-		{
-			"text": "Version 3.0",
-			"align": "center",
-			"type": "text"
-		},
-		{
-			"type": "spacer"
-		},
-		{
-			"type": "image",
-			"libName": "FalloutVore",
-			"className": "FalloutVoreLogo"
-		}
-	],
-	"pages": [
-		{
-			"pageDisplayName": "$FVSE_MCM_MAIN_SET",
-			"content": [
-				{
-					"text": "Debug Mode",
-					"type": "switcher",
-					"groupControl": 8,
-					"valueOptions": {
-						"sourceType": "GlobalValue",
-						"sourceForm": "FalloutVore.esm|D30E"
-					}
-				},
-				{
-					"text": "$FVSE_MCM_GEN_SET",
-					"type": "section"
-				},
-				{
-					"text": "$FVSE_MCM_MAN_DIG_TOG",
-					"type": "switcher",
-					"help": "$FVSE_MCM_MAN_DIG_TOG_HELP",
-					"valueOptions": {
-						"sourceType": "GlobalValue",
-						"sourceForm": "FalloutVore.esm|F9A6"
-					}
-				},
-				{
-					"id": "ClothingToggle",
-					"text": "$FVSE_MCM_CLOTH_RIP_TOG",
-					"type": "switcher",
-					"help": "$FVSE_MCM_CLOTH_RIP_TOG_HELP",
-					"valueOptions": {
-						"sourceType": "PropertyValueBool",
-						"sourceForm": "FalloutVore.esm|DAB6",
-						"propertyName": "bClothesripChance"
-					}
-				},
-				{
-					"id": "HeavyPredToggle",
-					"text": "$FVSE_MCM_HVY_PRED_TOG",
-					"type": "switcher",
-					"help": "$FVSE_MCM_HVY_PRED_TOG_HELP",
-					"valueOptions": {
-						"sourceType": "GlobalValue",
-						"sourceForm": "FalloutVore.esm|2211"
-					}
-				},
-				{
-					"id": "SwallowPerksToggle",
-					"text": "$FVSE_MCM_SWLW_PRKS_REQ",
-					"type": "switcher",
-					"help": "$FVSE_MCM_SWLW_PRKS_REQ_HELP",
-					"valueOptions": {
-						"sourceType": "GlobalValue",
-						"sourceForm": "FalloutVore.esm|C387"
-					}
-				},
-				{
-					"id": "MaxSize",
-					"text": "$FVSE_MCM_BELLY_MAX",
-					"type": "textinputFloat",
-					"groupControl": 11,
-					"help": "$FVSE_MCM_BELLY_MAX_HELP",
-					"valueOptions": {
-						"sourceType": "GlobalValue",
-						"sourceForm": "FalloutVore.esm|50C0"
-					}
-				},
-				{
-					"text": "$FVSE_MCM_TICK_RATE",
-					"type": "slider",
-					"help": "$FVSE_MCM_TICK_RATE_HELP",
-					"valueOptions": {
-						"min": 7,
-						"max": 24,
-						"step": 1,
-						"sourceType": "GlobalValue",
-						"sourceForm": "FalloutVore.esm|F9A3"
-					}
-				},
-				{
-					"text": "Player Needs Nuka",
-					"type": "hiddenSwitcher",
-					"groupControl": 5,
-					"valueOptions": {
-						"sourceType": "GlobalValue",
-						"sourceForm": "FalloutVore.esm|F9A5"
-					}
-				},
-				{
-					"text": "$FVSE_MCM_GENDER_SET",
-					"type": "section"
-				},
-				{
-					"text": "$FVSE_MCM_FEMALE_PRED",
-					"type": "switcher",
-					"help": "$FVSE_MCM_FEMALE_PRED_HELP",
-					"valueOptions": {
-						"sourceType": "GlobalValue",
-						"sourceForm": "FalloutVore.esm|F995"
-					}
-				},
-				{
-					"text": "$FVSE_MCM_MALE_PRED",
-					"type": "switcher",
-					"help": "$FVSE_MCM_MALE_PRED_HELP",
-					"valueOptions": {
-						"sourceType": "GlobalValue",
-						"sourceForm": "FalloutVore.esm|F99B"
-					}
-				},
-				{
-					"id": "VrenzyGenderToggle",
-					"text": "$FVSE_MCM_FENZY_TOG",
-					"type": "switcher",
-					"help": "$FVSE_MCM_FENZY_TOG_HELP",
-					"valueOptions": {
-						"sourceType": "GlobalValue",
-						"sourceForm": "FalloutVore.esm|1840"
-					}
-				},
-				{
-					"text": "$FVSE_MCM_CONTEXT_SET",
-					"type": "section"
-				},
-				{
-					"id": "ContextVore",
-					"text": "$FVSE_MCM_CONTEXT_TOG",
-					"type": "switcher",
-					"groupControl": 12,
-					"help": "$FVSE_MCM_CONTEXT_TOG_HELP",
-					"valueOptions": {
-						"sourceType": "GlobalValue",
-						"sourceForm": "FalloutVore.esm|1A82"
-					}
-				},
-				{
-					"text": "$FVSE_MCM_CONTEXT_AUTO_DIALOGUE",
-					"type": "slider",
-					"help": "$FVSE_MCM_CONTEXT_AUTO_DIALOGUE_HELP",
-					"groupCondition": 12,
-					"valueOptions": {
-						"min": 0.1,
-						"max": 24,
-						"step": 0.1,
-						"sourceType": "GlobalValue",
-						"sourceForm": "FalloutVore.esm|596B"
-					}
-				},
-				{
-					"text": "$FVSE_MCM_NPC_SET",
-					"type": "section"
-				},
-				{
-					"text": "$FVSE_MCM_NPC_VIP_TOG",
-					"type": "switcher",
-					"help": "$FVSE_MCM_NPC_VIP_TOG_HELP",
-					"valueOptions": {
-						"sourceType": "GlobalValue",
-						"sourceForm": "FalloutVore.esm|F99A"
-					}
-				},
-				{
-					"id": "CompanionSwallowToggle",
-					"text": "$$FVSE_MCM_NPC_COMP_SWAL_PROT_TOG",
-					"type": "switcher",
-					"help": "$$FVSE_MCM_NPC_COMP_SWAL_PROT_TOG_HELP",
-					"valueOptions": {
-						"sourceType": "GlobalValue",
-						"sourceForm": "FalloutVore.esm|48EE"
-					}
-				},
-				{
-					"id": "CompanionDigestToggle",
-					"text": "$FVSE_MCM_NPC_COMP_DIG_PROT_TOG",
-					"type": "switcher",
-					"help": "$FVSE_MCM_NPC_COMP_DIG_PROT_TOG_HELP",
-					"valueOptions": {
-						"sourceType": "GlobalValue",
-						"sourceForm": "FalloutVore.esm|48EF"
-					}
-				},
-				{
-					"id": "VoreRaidersToggle",
-					"text": "$FVSE_MCM_NPC_RAIDER_TOG",
-					"type": "switcher",
-					"help": "$FVSE_MCM_NPC_RAIDER_TOG_HELP",
-					"valueOptions": {
-						"sourceType": "GlobalValue",
-						"sourceForm": "FalloutVore.esm|F991"
-					}
-				},
-				{
-					"id": "VoreRoyaltyToggle",
-					"text": "$FVSE_MCM_NPC_ROYALTY_TOG",
-					"type": "switcher",
-					"help": "$FVSE_MCM_NPC_ROYALTY_TOG_HELP",
-					"valueOptions": {
-						"sourceType": "GlobalValue",
-						"sourceForm": "FalloutVore.esm|27DC"
-					}
-				},
-				{
-					"text": "$FVSE_MCM_SURV_SET",
-					"type": "section"
-				},
-				{
-					"id": "VoreSurvival",
-					"text": "$FVSE_MCM_SURV_MODE_TOG",
-					"type": "switcher",
-					"help": "$FVSE_MCM_SURV_MODE_TOG_HELP",
-					"valueOptions": {
-						"sourceType": "GlobalValue",
-						"sourceForm": "FalloutVore.esm|382E"
-					}
-				},
-				{
-					"text": "$FVSE_MCM_HOTKEY_SET",
-					"type": "section"
-				},
-				{
-					"id": "regurgitateHotkey",
-					"text": "$FVSE_MCM_HOTKEY_REGURG",
-					"type": "hotkey",
-					"help": "$FVSE_MCM_HOTKEY_REGURG_HELP"
-				},
-				{
-					"id": "manualDigestHotkey",
-					"text": "$FVSE_MCM_HOTKEY_DIGEST",
-					"type": "hotkey",
-					"help": "$FVSE_MCM_HOTKEY_DIGEST_HELP"
-				},
-				{
-					"id": "manualPreyContext",
-					"text": "$FVSE_MCM_HOTKEY_CONTEXT",
-					"type": "hotkey",
-					"help": "$FVSE_MCM_HOTKEY_CONTEXT_HELP"
-				},
-				{
-					"id": "primeGrowlHotkey",
-					"text": "$FVSE_MCM_HOTKEY_GROWL",
-					"type": "hotkey",
-					"help": "$FVSE_MCM_HOTKEY_GROWL_HELP"
-				},
-				{
-					"text": "$FVSE_MCM_DEBUG_SET",
-					"type": "section",
-					"groupCondition": 8
-				}
-			]
-		},
-		{
-			"pageDisplayName": "$FVSE_MCM_SAV_HEADER",
-			"content": [
-				{
-					"text": "$FVSE_MCM_SAV_INFO1",
-					"align": "left",
-					"type": "text"
-				},
-				{
-					"type": "hiddenSwitcher",
-					"groupControl": 9,
-					"valueOptions": {
-						"sourceType": "GlobalValue",
-						"sourceForm": "FalloutVore.esm|D30E"
-					}
-				},
-				{
-					"text": "$FVSE_MCM_SAV_INFO2",
-					"align": "left",
-					"type": "text"
-				},
-				{
-					"text": "$FVSE_MCM_SAV_INFO3",
-					"align": "left",
-					"type": "text"
-				},
-				{
-					"text": "$FVSE_MCM_TIMER_SET",
-					"type": "section"
-				},
-				{
-					"text": "$FVSE_MCM_SAV_TIMER_PLAY_SWAL",
-					"type": "slider",
-					"help": "$FVSE_MCM_SAV_TIMER_PLAY_SWAL_HELP",
-					"valueOptions": {
-						"min": 0.1,
-						"max": 10,
-						"step": 0.1,
-						"sourceType": "GlobalValue",
-						"sourceForm": "FalloutVore.esm|2930"
-					}
-				},
-				{
-					"text": "$FVSE_MCM_SAV_TIMER_PLAY_DIG",
-					"type": "slider",
-					"help": "$FVSE_MCM_SAV_TIMER_PLAY_DIG_HELP",
-					"valueOptions": {
-						"min": 0.1,
-						"max": 10,
-						"step": 0.1,
-						"sourceType": "GlobalValue",
-						"sourceForm": "FalloutVore.esm|B2B7"
-					}
-				},
-				{
-					"text": "$FVSE_MCM_SAV_TIMER_COMP_SWAL",
-					"type": "slider",
-					"help": "$FVSE_MCM_SAV_TIMER_COMP_SWAL_HELP",
-					"valueOptions": {
-						"min": 0.1,
-						"max": 10,
-						"step": 0.1,
-						"sourceType": "GlobalValue",
-						"sourceForm": "FalloutVore.esm|B2B8"
-					}
-				},
-				{
-					"text": "$FVSE_MCM_SAV_TIMER_COMP_DIG",
-					"type": "slider",
-					"help": "$FVSE_MCM_SAV_TIMER_COMP_DIG_HELP",
-					"valueOptions": {
-						"min": 0.1,
-						"max": 10,
-						"step": 0.1,
-						"sourceType": "GlobalValue",
-						"sourceForm": "FalloutVore.esm|B2B9"
-					}
-				},
-				{
-					"text": "$FVSE_MCM_EXTRA_SET",
-					"type": "section"
-				},
-				{
-					"text": "$FVSE_MCM_SAV_PREY_DIA",
-					"type": "slider",
-					"help": "$FVSE_MCM_SAV_PREY_DIA_HELP",
-					"valueOptions": {
-						"min": 0,
-						"max": 100,
-						"step": 1,
-						"sourceType": "GlobalValue",
-						"sourceForm": "FalloutVore.esm|3D41"
-					}
-				},
-				{
-					"text": "$FVSE_MCM_SAV_SKIP_DIA",
-					"type": "slider",
-					"help": "$FVSE_MCM_SAV_SKIP_DIA_HELP",
-					"valueOptions": {
-						"min": 0,
-						"max": 100,
-						"step": 1,
-						"sourceType": "GlobalValue",
-						"sourceForm": "FalloutVore.esm|BAA5"
-					}
-				},
-				{
-					"text": "$FVSE_MCM_SAV_RESET",
-					"type": "button",
-					"help": "$FVSE_MCM_SAV_RESET_HELP",
-					"action": {
-						"type": "CallFunction",
-						"form": "FalloutVore.esm|2928",
-						"function": "ResetSAVSystem"
-					}
-				}
-			]
-		},
-		{
-			"pageDisplayName": "THICC Vore",
-			"content":[
-				{
-					"id": "UpdateSliders",
-					"text": "Update Sliders",
-					"type": "button",
-					"action": {
-						"type": "CallFunction",
-						"form": "FalloutVore.esm|D36D",
-						"function": "CompileThiccSliders"
-					}
-				},
-				{
-					"id": "sSlider1Name:ThiccVore",
-					"text": "Slider 1 Name",
-					"type": "textinput",
-					"valueOptions": {
-						"sourceType": "ModSettingString"
-					}
-				},
-				{
-					"id": "fSlider1Stage1:ThiccVore",
-					"text": "Slider 1 Stage 1 Value",
-					"type": "textinputFloat",
-					"valueOptions":{
-						"sourceType": "ModSettingFloat"
-					}
-				}
-			]
-		},
-		{
-			"pageDisplayName": "Debug Tools",
-			"content": [
-				{
-					"id": "AddThiccness",
-					"text": "Add Thiccness",
-					"type": "button",
-					"action":{
-						"type":"CallFunction",
-						"form":"FalloutVore.esm|CB69",
-						"function":"AddThiccness"
-					}
-				},
-				{
-					"id": "ReduceThiccness",
-					"text": "Reduce Thiccness",
-					"type": "button",
-					"action":{
-						"type":"CallFunction",
-						"form":"FalloutVore.esm|CB69",
-						"function":"ReduceThiccness"
-					}
-				}
-			]
-		}
-	]
+  "modName": "FalloutVore",
+  "displayName": "Fallout Vore",
+  "minMcmVersion": 2,
+  "pluginRequirements": [
+    "FalloutVore.esm"
+  ],
+  "content": [
+    {
+      "text": "$FVSE_MCM_Welcome",
+      "html": true,
+      "align": "center",
+      "type": "text"
+    },
+    {
+      "text": "Version 3.0",
+      "align": "center",
+      "type": "text"
+    },
+    {
+      "type": "spacer"
+    },
+    {
+      "type": "image",
+      "libName": "FalloutVore",
+      "className": "FalloutVoreLogo"
+    }
+  ],
+  "pages": [
+    {
+      "pageDisplayName": "$FVSE_MCM_MAIN_SET",
+      "content": [
+        {
+          "text": "Debug Mode",
+          "type": "switcher",
+          "groupControl": 8,
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "FalloutVore.esm|D30E"
+          }
+        },
+        {
+          "text": "$FVSE_MCM_GEN_SET",
+          "type": "section"
+        },
+        {
+          "text": "$FVSE_MCM_MAN_DIG_TOG",
+          "type": "switcher",
+          "help": "$FVSE_MCM_MAN_DIG_TOG_HELP",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "FalloutVore.esm|F9A6"
+          }
+        },
+        {
+          "id": "ClothingToggle",
+          "text": "$FVSE_MCM_CLOTH_RIP_TOG",
+          "type": "switcher",
+          "help": "$FVSE_MCM_CLOTH_RIP_TOG_HELP",
+          "valueOptions": {
+            "sourceType": "PropertyValueBool",
+            "sourceForm": "FalloutVore.esm|DAB6",
+            "propertyName": "bClothesripChance"
+          }
+        },
+        {
+          "id": "HeavyPredToggle",
+          "text": "$FVSE_MCM_HVY_PRED_TOG",
+          "type": "switcher",
+          "help": "$FVSE_MCM_HVY_PRED_TOG_HELP",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "FalloutVore.esm|2211"
+          }
+        },
+        {
+          "id": "SwallowPerksToggle",
+          "text": "$FVSE_MCM_SWLW_PRKS_REQ",
+          "type": "switcher",
+          "help": "$FVSE_MCM_SWLW_PRKS_REQ_HELP",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "FalloutVore.esm|C387"
+          }
+        },
+        {
+          "id": "MaxSize",
+          "text": "$FVSE_MCM_BELLY_MAX",
+          "type": "textinputFloat",
+          "groupControl": 11,
+          "help": "$FVSE_MCM_BELLY_MAX_HELP",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "FalloutVore.esm|50C0"
+          }
+        },
+        {
+          "text": "$FVSE_MCM_TICK_RATE",
+          "type": "slider",
+          "help": "$FVSE_MCM_TICK_RATE_HELP",
+          "valueOptions": {
+            "min": 7,
+            "max": 24,
+            "step": 1,
+            "sourceType": "GlobalValue",
+            "sourceForm": "FalloutVore.esm|F9A3"
+          }
+        },
+        {
+          "text": "Player Needs Nuka",
+          "type": "hiddenSwitcher",
+          "groupControl": 5,
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "FalloutVore.esm|F9A5"
+          }
+        },
+        {
+          "text": "$FVSE_MCM_GENDER_SET",
+          "type": "section"
+        },
+        {
+          "text": "$FVSE_MCM_FEMALE_PRED",
+          "type": "switcher",
+          "help": "$FVSE_MCM_FEMALE_PRED_HELP",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "FalloutVore.esm|F995"
+          }
+        },
+        {
+          "text": "$FVSE_MCM_MALE_PRED",
+          "type": "switcher",
+          "help": "$FVSE_MCM_MALE_PRED_HELP",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "FalloutVore.esm|F99B"
+          }
+        },
+        {
+          "id": "VrenzyGenderToggle",
+          "text": "$FVSE_MCM_FENZY_TOG",
+          "type": "switcher",
+          "help": "$FVSE_MCM_FENZY_TOG_HELP",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "FalloutVore.esm|1840"
+          }
+        },
+        {
+          "text": "$FVSE_MCM_CONTEXT_SET",
+          "type": "section"
+        },
+        {
+          "id": "ContextVore",
+          "text": "$FVSE_MCM_CONTEXT_TOG",
+          "type": "switcher",
+          "groupControl": 12,
+          "help": "$FVSE_MCM_CONTEXT_TOG_HELP",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "FalloutVore.esm|1A82"
+          }
+        },
+        {
+          "text": "$FVSE_MCM_CONTEXT_AUTO_DIALOGUE",
+          "type": "slider",
+          "help": "$FVSE_MCM_CONTEXT_AUTO_DIALOGUE_HELP",
+          "groupCondition": 12,
+          "valueOptions": {
+            "min": 0.1,
+            "max": 24,
+            "step": 0.1,
+            "sourceType": "GlobalValue",
+            "sourceForm": "FalloutVore.esm|596B"
+          }
+        },
+        {
+          "text": "$FVSE_MCM_NPC_SET",
+          "type": "section"
+        },
+        {
+          "text": "$FVSE_MCM_NPC_VIP_TOG",
+          "type": "switcher",
+          "help": "$FVSE_MCM_NPC_VIP_TOG_HELP",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "FalloutVore.esm|F99A"
+          }
+        },
+        {
+          "id": "CompanionSwallowToggle",
+          "text": "$$FVSE_MCM_NPC_COMP_SWAL_PROT_TOG",
+          "type": "switcher",
+          "help": "$$FVSE_MCM_NPC_COMP_SWAL_PROT_TOG_HELP",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "FalloutVore.esm|48EE"
+          }
+        },
+        {
+          "id": "CompanionDigestToggle",
+          "text": "$FVSE_MCM_NPC_COMP_DIG_PROT_TOG",
+          "type": "switcher",
+          "help": "$FVSE_MCM_NPC_COMP_DIG_PROT_TOG_HELP",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "FalloutVore.esm|48EF"
+          }
+        },
+        {
+          "id": "VoreRaidersToggle",
+          "text": "$FVSE_MCM_NPC_RAIDER_TOG",
+          "type": "switcher",
+          "help": "$FVSE_MCM_NPC_RAIDER_TOG_HELP",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "FalloutVore.esm|F991"
+          }
+        },
+        {
+          "id": "VoreRoyaltyToggle",
+          "text": "$FVSE_MCM_NPC_ROYALTY_TOG",
+          "type": "switcher",
+          "help": "$FVSE_MCM_NPC_ROYALTY_TOG_HELP",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "FalloutVore.esm|27DC"
+          }
+        },
+        {
+          "text": "$FVSE_MCM_SURV_SET",
+          "type": "section"
+        },
+        {
+          "id": "VoreSurvival",
+          "text": "$FVSE_MCM_SURV_MODE_TOG",
+          "type": "switcher",
+          "help": "$FVSE_MCM_SURV_MODE_TOG_HELP",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "FalloutVore.esm|382E"
+          }
+        },
+        {
+          "text": "$FVSE_MCM_HOTKEY_SET",
+          "type": "section"
+        },
+        {
+          "id": "regurgitateHotkey",
+          "text": "$FVSE_MCM_HOTKEY_REGURG",
+          "type": "hotkey",
+          "help": "$FVSE_MCM_HOTKEY_REGURG_HELP"
+        },
+        {
+          "id": "manualDigestHotkey",
+          "text": "$FVSE_MCM_HOTKEY_DIGEST",
+          "type": "hotkey",
+          "help": "$FVSE_MCM_HOTKEY_DIGEST_HELP"
+        },
+        {
+          "id": "manualPreyContext",
+          "text": "$FVSE_MCM_HOTKEY_CONTEXT",
+          "type": "hotkey",
+          "help": "$FVSE_MCM_HOTKEY_CONTEXT_HELP"
+        },
+        {
+          "id": "primeGrowlHotkey",
+          "text": "$FVSE_MCM_HOTKEY_GROWL",
+          "type": "hotkey",
+          "help": "$FVSE_MCM_HOTKEY_GROWL_HELP"
+        },
+        {
+          "text": "$FVSE_MCM_DEBUG_SET",
+          "type": "section",
+          "groupCondition": 8
+        }
+      ]
+    },
+    {
+      "pageDisplayName": "$FVSE_MCM_SAV_HEADER",
+      "content": [
+        {
+          "text": "$FVSE_MCM_SAV_INFO1",
+          "align": "left",
+          "type": "text"
+        },
+        {
+          "type": "hiddenSwitcher",
+          "groupControl": 9,
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "FalloutVore.esm|D30E"
+          }
+        },
+        {
+          "text": "$FVSE_MCM_SAV_INFO2",
+          "align": "left",
+          "type": "text"
+        },
+        {
+          "text": "$FVSE_MCM_SAV_INFO3",
+          "align": "left",
+          "type": "text"
+        },
+        {
+          "text": "$FVSE_MCM_TIMER_SET",
+          "type": "section"
+        },
+        {
+          "text": "$FVSE_MCM_SAV_TIMER_PLAY_SWAL",
+          "type": "slider",
+          "help": "$FVSE_MCM_SAV_TIMER_PLAY_SWAL_HELP",
+          "valueOptions": {
+            "min": 0.1,
+            "max": 10,
+            "step": 0.1,
+            "sourceType": "GlobalValue",
+            "sourceForm": "FalloutVore.esm|2930"
+          }
+        },
+        {
+          "text": "$FVSE_MCM_SAV_TIMER_PLAY_DIG",
+          "type": "slider",
+          "help": "$FVSE_MCM_SAV_TIMER_PLAY_DIG_HELP",
+          "valueOptions": {
+            "min": 0.1,
+            "max": 10,
+            "step": 0.1,
+            "sourceType": "GlobalValue",
+            "sourceForm": "FalloutVore.esm|B2B7"
+          }
+        },
+        {
+          "text": "$FVSE_MCM_SAV_TIMER_COMP_SWAL",
+          "type": "slider",
+          "help": "$FVSE_MCM_SAV_TIMER_COMP_SWAL_HELP",
+          "valueOptions": {
+            "min": 0.1,
+            "max": 10,
+            "step": 0.1,
+            "sourceType": "GlobalValue",
+            "sourceForm": "FalloutVore.esm|B2B8"
+          }
+        },
+        {
+          "text": "$FVSE_MCM_SAV_TIMER_COMP_DIG",
+          "type": "slider",
+          "help": "$FVSE_MCM_SAV_TIMER_COMP_DIG_HELP",
+          "valueOptions": {
+            "min": 0.1,
+            "max": 10,
+            "step": 0.1,
+            "sourceType": "GlobalValue",
+            "sourceForm": "FalloutVore.esm|B2B9"
+          }
+        },
+        {
+          "text": "$FVSE_MCM_EXTRA_SET",
+          "type": "section"
+        },
+        {
+          "text": "$FVSE_MCM_SAV_PREY_DIA",
+          "type": "slider",
+          "help": "$FVSE_MCM_SAV_PREY_DIA_HELP",
+          "valueOptions": {
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "sourceType": "GlobalValue",
+            "sourceForm": "FalloutVore.esm|3D41"
+          }
+        },
+        {
+          "text": "$FVSE_MCM_SAV_SKIP_DIA",
+          "type": "slider",
+          "help": "$FVSE_MCM_SAV_SKIP_DIA_HELP",
+          "valueOptions": {
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "sourceType": "GlobalValue",
+            "sourceForm": "FalloutVore.esm|BAA5"
+          }
+        },
+        {
+          "text": "$FVSE_MCM_SAV_RESET",
+          "type": "button",
+          "help": "$FVSE_MCM_SAV_RESET_HELP",
+          "action": {
+            "type": "CallFunction",
+            "form": "FalloutVore.esm|2928",
+            "function": "ResetSAVSystem"
+          }
+        }
+      ]
+    },
+    {
+      "pageDisplayName": "THICC Vore",
+      "content": [
+        {
+          "id": "UpdateSliders",
+          "text": "Update Sliders",
+          "type": "button",
+          "action": {
+            "type": "CallFunction",
+            "form": "FalloutVore.esm|D36D",
+            "function": "CompileThiccSliders"
+          }
+        },
+        {
+          "id": "sSlider1Name:ThiccVore",
+          "text": "Slider 1 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider1Stage1:ThiccVore",
+          "text": "Slider 1 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider1Stage2:ThiccVore",
+          "text": "Slider 1 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider1Stage3:ThiccVore",
+          "text": "Slider 1 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider1Stage4:ThiccVore",
+          "text": "Slider 1 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "sSlider2Name:ThiccVore",
+          "text": "Slider 2 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider2Stage1:ThiccVore",
+          "text": "Slider 2 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider2Stage2:ThiccVore",
+          "text": "Slider 2 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider2Stage3:ThiccVore",
+          "text": "Slider 2 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider2Stage4:ThiccVore",
+          "text": "Slider 2 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "sSlider3Name:ThiccVore",
+          "text": "Slider 3 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider3Stage1:ThiccVore",
+          "text": "Slider 3 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider3Stage2:ThiccVore",
+          "text": "Slider 3 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider3Stage3:ThiccVore",
+          "text": "Slider 3 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider3Stage4:ThiccVore",
+          "text": "Slider 3 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "sSlider4Name:ThiccVore",
+          "text": "Slider 4 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider4Stage1:ThiccVore",
+          "text": "Slider 4 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider4Stage2:ThiccVore",
+          "text": "Slider 4 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider4Stage3:ThiccVore",
+          "text": "Slider 4 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider4Stage4:ThiccVore",
+          "text": "Slider 4 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "sSlider5Name:ThiccVore",
+          "text": "Slider 5 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider5Stage1:ThiccVore",
+          "text": "Slider 5 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider5Stage2:ThiccVore",
+          "text": "Slider 5 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider5Stage3:ThiccVore",
+          "text": "Slider 5 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider5Stage4:ThiccVore",
+          "text": "Slider 5 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "sSlider6Name:ThiccVore",
+          "text": "Slider 6 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider6Stage1:ThiccVore",
+          "text": "Slider 6 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider6Stage2:ThiccVore",
+          "text": "Slider 6 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider6Stage3:ThiccVore",
+          "text": "Slider 6 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider6Stage4:ThiccVore",
+          "text": "Slider 6 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "sSlider7Name:ThiccVore",
+          "text": "Slider 7 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider7Stage1:ThiccVore",
+          "text": "Slider 7 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider7Stage2:ThiccVore",
+          "text": "Slider 7 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider7Stage3:ThiccVore",
+          "text": "Slider 7 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider7Stage4:ThiccVore",
+          "text": "Slider 7 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "sSlider8Name:ThiccVore",
+          "text": "Slider 8 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider8Stage1:ThiccVore",
+          "text": "Slider 8 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider8Stage2:ThiccVore",
+          "text": "Slider 8 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider8Stage3:ThiccVore",
+          "text": "Slider 8 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider8Stage4:ThiccVore",
+          "text": "Slider 8 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "sSlider9Name:ThiccVore",
+          "text": "Slider 9 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider9Stage1:ThiccVore",
+          "text": "Slider 9 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider9Stage2:ThiccVore",
+          "text": "Slider 9 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider9Stage3:ThiccVore",
+          "text": "Slider 9 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider9Stage4:ThiccVore",
+          "text": "Slider 9 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "sSlider10Name:ThiccVore",
+          "text": "Slider 10 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider10Stage1:ThiccVore",
+          "text": "Slider 10 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider10Stage2:ThiccVore",
+          "text": "Slider 10 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider10Stage3:ThiccVore",
+          "text": "Slider 10 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider10Stage4:ThiccVore",
+          "text": "Slider 10 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "sSlider11Name:ThiccVore",
+          "text": "Slider 11 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider11Stage1:ThiccVore",
+          "text": "Slider 11 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider11Stage2:ThiccVore",
+          "text": "Slider 11 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider11Stage3:ThiccVore",
+          "text": "Slider 11 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider11Stage4:ThiccVore",
+          "text": "Slider 11 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "sSlider12Name:ThiccVore",
+          "text": "Slider 12 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider12Stage1:ThiccVore",
+          "text": "Slider 12 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider12Stage2:ThiccVore",
+          "text": "Slider 12 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider12Stage3:ThiccVore",
+          "text": "Slider 12 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider12Stage4:ThiccVore",
+          "text": "Slider 12 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "sSlider13Name:ThiccVore",
+          "text": "Slider 13 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider13Stage1:ThiccVore",
+          "text": "Slider 13 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider13Stage2:ThiccVore",
+          "text": "Slider 13 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider13Stage3:ThiccVore",
+          "text": "Slider 13 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider13Stage4:ThiccVore",
+          "text": "Slider 13 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "sSlider14Name:ThiccVore",
+          "text": "Slider 14 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider14Stage1:ThiccVore",
+          "text": "Slider 14 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider14Stage2:ThiccVore",
+          "text": "Slider 14 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider14Stage3:ThiccVore",
+          "text": "Slider 14 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider14Stage4:ThiccVore",
+          "text": "Slider 14 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "sSlider15Name:ThiccVore",
+          "text": "Slider 15 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider15Stage1:ThiccVore",
+          "text": "Slider 15 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider15Stage2:ThiccVore",
+          "text": "Slider 15 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider15Stage3:ThiccVore",
+          "text": "Slider 15 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider15Stage4:ThiccVore",
+          "text": "Slider 15 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "sSlider16Name:ThiccVore",
+          "text": "Slider 16 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider16Stage1:ThiccVore",
+          "text": "Slider 16 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider16Stage2:ThiccVore",
+          "text": "Slider 16 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider16Stage3:ThiccVore",
+          "text": "Slider 16 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider16Stage4:ThiccVore",
+          "text": "Slider 16 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "sSlider17Name:ThiccVore",
+          "text": "Slider 17 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider17Stage1:ThiccVore",
+          "text": "Slider 17 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider17Stage2:ThiccVore",
+          "text": "Slider 17 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider17Stage3:ThiccVore",
+          "text": "Slider 17 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider17Stage4:ThiccVore",
+          "text": "Slider 17 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "sSlider18Name:ThiccVore",
+          "text": "Slider 18 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider18Stage1:ThiccVore",
+          "text": "Slider 18 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider18Stage2:ThiccVore",
+          "text": "Slider 18 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider18Stage3:ThiccVore",
+          "text": "Slider 18 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider18Stage4:ThiccVore",
+          "text": "Slider 18 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "sSlider19Name:ThiccVore",
+          "text": "Slider 19 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider19Stage1:ThiccVore",
+          "text": "Slider 19 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider19Stage2:ThiccVore",
+          "text": "Slider 19 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider19Stage3:ThiccVore",
+          "text": "Slider 19 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider19Stage4:ThiccVore",
+          "text": "Slider 19 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "sSlider20Name:ThiccVore",
+          "text": "Slider 20 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider20Stage1:ThiccVore",
+          "text": "Slider 20 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider20Stage2:ThiccVore",
+          "text": "Slider 20 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider20Stage3:ThiccVore",
+          "text": "Slider 20 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider20Stage4:ThiccVore",
+          "text": "Slider 20 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "sSlider21Name:ThiccVore",
+          "text": "Slider 21 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider21Stage1:ThiccVore",
+          "text": "Slider 21 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider21Stage2:ThiccVore",
+          "text": "Slider 21 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider21Stage3:ThiccVore",
+          "text": "Slider 21 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider21Stage4:ThiccVore",
+          "text": "Slider 21 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "sSlider22Name:ThiccVore",
+          "text": "Slider 22 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider22Stage1:ThiccVore",
+          "text": "Slider 22 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider22Stage2:ThiccVore",
+          "text": "Slider 22 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider22Stage3:ThiccVore",
+          "text": "Slider 22 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider22Stage4:ThiccVore",
+          "text": "Slider 22 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "sSlider23Name:ThiccVore",
+          "text": "Slider 23 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider23Stage1:ThiccVore",
+          "text": "Slider 23 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider23Stage2:ThiccVore",
+          "text": "Slider 23 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider23Stage3:ThiccVore",
+          "text": "Slider 23 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider23Stage4:ThiccVore",
+          "text": "Slider 23 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "sSlider24Name:ThiccVore",
+          "text": "Slider 24 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider24Stage1:ThiccVore",
+          "text": "Slider 24 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider24Stage2:ThiccVore",
+          "text": "Slider 24 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider24Stage3:ThiccVore",
+          "text": "Slider 24 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider24Stage4:ThiccVore",
+          "text": "Slider 24 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "sSlider25Name:ThiccVore",
+          "text": "Slider 25 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider25Stage1:ThiccVore",
+          "text": "Slider 25 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider25Stage2:ThiccVore",
+          "text": "Slider 25 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider25Stage3:ThiccVore",
+          "text": "Slider 25 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider25Stage4:ThiccVore",
+          "text": "Slider 25 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "sSlider26Name:ThiccVore",
+          "text": "Slider 26 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider26Stage1:ThiccVore",
+          "text": "Slider 26 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider26Stage2:ThiccVore",
+          "text": "Slider 26 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider26Stage3:ThiccVore",
+          "text": "Slider 26 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider26Stage4:ThiccVore",
+          "text": "Slider 26 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "sSlider27Name:ThiccVore",
+          "text": "Slider 27 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider27Stage1:ThiccVore",
+          "text": "Slider 27 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider27Stage2:ThiccVore",
+          "text": "Slider 27 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider27Stage3:ThiccVore",
+          "text": "Slider 27 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider27Stage4:ThiccVore",
+          "text": "Slider 27 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "sSlider28Name:ThiccVore",
+          "text": "Slider 28 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider28Stage1:ThiccVore",
+          "text": "Slider 28 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider28Stage2:ThiccVore",
+          "text": "Slider 28 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider28Stage3:ThiccVore",
+          "text": "Slider 28 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider28Stage4:ThiccVore",
+          "text": "Slider 28 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "sSlider29Name:ThiccVore",
+          "text": "Slider 29 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider29Stage1:ThiccVore",
+          "text": "Slider 29 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider29Stage2:ThiccVore",
+          "text": "Slider 29 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider29Stage3:ThiccVore",
+          "text": "Slider 29 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider29Stage4:ThiccVore",
+          "text": "Slider 29 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "sSlider30Name:ThiccVore",
+          "text": "Slider 30 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider30Stage1:ThiccVore",
+          "text": "Slider 30 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider30Stage2:ThiccVore",
+          "text": "Slider 30 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider30Stage3:ThiccVore",
+          "text": "Slider 30 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider30Stage4:ThiccVore",
+          "text": "Slider 30 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "sSlider31Name:ThiccVore",
+          "text": "Slider 31 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider31Stage1:ThiccVore",
+          "text": "Slider 31 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider31Stage2:ThiccVore",
+          "text": "Slider 31 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider31Stage3:ThiccVore",
+          "text": "Slider 31 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider31Stage4:ThiccVore",
+          "text": "Slider 31 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "sSlider32Name:ThiccVore",
+          "text": "Slider 32 Name",
+          "type": "textinput",
+          "valueOptions": {
+            "sourceType": "ModSettingString"
+          }
+        },
+        {
+          "id": "fSlider32Stage1:ThiccVore",
+          "text": "Slider 32 Stage 1 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider32Stage2:ThiccVore",
+          "text": "Slider 32 Stage 2 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider32Stage3:ThiccVore",
+          "text": "Slider 32 Stage 3 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        },
+        {
+          "id": "fSlider32Stage4:ThiccVore",
+          "text": "Slider 32 Stage 4 Value",
+          "type": "textinputFloat",
+          "valueOptions": {
+            "sourceType": "ModSettingFloat"
+          }
+        }
+      ]
+    },
+    {
+      "pageDisplayName": "Debug Tools",
+      "content": [
+        {
+          "id": "AddThiccness",
+          "text": "Add Thiccness",
+          "type": "button",
+          "action": {
+            "type": "CallFunction",
+            "form": "FalloutVore.esm|CB69",
+            "function": "AddThiccness"
+          }
+        },
+        {
+          "id": "ReduceThiccness",
+          "text": "Reduce Thiccness",
+          "type": "button",
+          "action": {
+            "type": "CallFunction",
+            "form": "FalloutVore.esm|CB69",
+            "function": "ReduceThiccness"
+          }
+        }
+      ]
+    }
+  ]
 }

@@ -34,8 +34,8 @@ Function Setup(int aiVersion = 4) ; Increment version as needed.
         RegisterForCustomEvent(FV_ThiccVore, "OnThiccnessChange")
         If (ThiccPresets == None)
             ThiccPresets = new PresetSlider[0]
+            CompileThiccSliders()
         EndIf
-        LoadKeillaPreset()
         Version = aiVersion
     EndIf
     GotoState("UpdatingMorphs")
@@ -54,16 +54,715 @@ EndEvent
 ; Processes MCM-configured Thicc sliders and applies them.
 Function CompileThiccSliders()
     ; Trace("CompileThiccSliders")
-    PresetSlider slider = new PresetSlider
+    PresetSlider slider
+
     ThiccPresets.Clear()
+
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider1Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider1Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider1Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider1Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider1Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider1Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider1Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider1Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
     
-    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider1Name:ThiccVore") as string
-    slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider1Stage1:ThiccVore") as float
-    slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider1Stage1:ThiccVore") as float
-    slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider1Stage1:ThiccVore") as float
-    slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider1Stage1:ThiccVore") as float
-    Trace("CompileThiccSliders", "Slider: " + slider)
-    ThiccPresets.Add(slider)
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider2Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider2Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider2Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider2Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider2Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider2Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider2Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider2Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
+    
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider3Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider3Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider3Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider3Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider3Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider3Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider3Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider3Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
+    
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider4Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider4Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider4Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider4Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider4Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider4Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider4Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider4Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
+    
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider5Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider5Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider5Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider5Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider5Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider5Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider5Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider5Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
+    
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider6Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider6Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider6Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider6Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider6Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider6Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider6Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider6Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
+    
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider7Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider7Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider7Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider7Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider7Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider7Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider7Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider7Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
+    
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider8Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider8Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider8Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider8Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider8Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider8Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider8Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider8Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
+    
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider9Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider9Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider9Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider9Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider9Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider9Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider9Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider9Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
+    
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider10Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider10Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider10Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider10Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider10Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider10Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider10Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider10Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
+    
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider11Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider11Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider11Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider11Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider11Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider11Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider11Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider11Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
+    
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider12Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider12Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider12Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider12Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider12Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider12Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider12Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider12Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
+    
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider13Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider13Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider13Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider13Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider13Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider13Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider13Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider13Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
+    
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider14Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider14Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider14Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider14Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider14Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider14Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider14Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider14Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
+    
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider15Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider15Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider15Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider15Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider15Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider15Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider15Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider15Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
+    
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider16Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider16Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider16Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider16Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider16Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider16Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider16Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider16Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
+    
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider17Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider17Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider17Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider17Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider17Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider17Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider17Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider17Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
+    
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider18Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider18Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider18Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider18Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider18Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider18Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider18Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider18Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
+    
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider19Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider19Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider19Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider19Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider19Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider19Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider19Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider19Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
+    
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider20Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider20Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider20Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider20Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider20Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider20Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider20Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider20Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
+    
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider21Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider21Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider21Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider21Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider21Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider21Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider21Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider21Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
+    
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider22Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider22Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider22Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider22Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider22Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider22Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider22Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider22Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
+    
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider23Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider23Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider23Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider23Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider23Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider23Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider23Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider23Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
+    
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider24Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider24Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider24Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider24Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider24Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider24Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider24Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider24Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
+    
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider25Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider25Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider25Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider25Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider25Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider25Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider25Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider25Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
+    
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider26Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider26Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider26Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider26Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider26Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider26Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider26Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider26Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
+    
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider27Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider27Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider27Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider27Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider27Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider27Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider27Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider27Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
+    
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider28Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider28Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider28Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider28Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider28Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider28Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider28Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider28Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
+    
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider29Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider29Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider29Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider29Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider29Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider29Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider29Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider29Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
+    
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider30Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider30Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider30Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider30Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider30Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider30Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider30Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider30Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
+    
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider31Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider31Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider31Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider31Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider31Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider31Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider31Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider31Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
+    
+    slider = new PresetSlider
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider32Name:ThiccVore")
+    If (slider.Name != "")
+        slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider32Stage1:ThiccVore")
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider32Stage2:ThiccVore")) > Math.abs(slider.Stage1))
+            slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider32Stage2:ThiccVore")
+        Else
+            slider.Stage2 = slider.Stage1
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider32Stage3:ThiccVore")) > Math.abs(slider.Stage2))
+            slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider32Stage3:ThiccVore")
+        Else
+            slider.Stage3 = slider.Stage2
+        EndIf
+        If (Math.abs(MCM.GetModSettingFloat("FalloutVore", "fSlider32Stage4:ThiccVore")) > Math.abs(slider.Stage3))
+            slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider32Stage4:ThiccVore")
+        Else
+            slider.Stage4 = slider.Stage3
+        EndIf
+        ThiccPresets.Add(slider)
+    EndIf
+
+    ; Trace("CompileThiccSliders", ThiccPresets)
 EndFunction
 
 ; Private
@@ -190,8 +889,8 @@ Function UpdateMorphs_OnTimer(Actor akPred)
     BodyGen.SetMorph(akPred, true, "Big Soft Belly", FV_VoreMorphKeyword, bigSoftBelly)
 
     int thiccStage = Math.Floor(thiccness)
-    int index = 0 ; Doesn't seem to work... did the presets not get loaded, or else does the morph setting not work?
-    Trace("UpdateMorphs", "Thicc Presets: " + ThiccPresets + " thiccStage: " + thiccStage)
+    int index = 0
+    ; Trace("UpdateMorphs", "Thicc Presets: " + ThiccPresets + " thiccStage: " + thiccStage)
     While (index < ThiccPresets.Length && index <= 128)
         PresetSlider slider = ThiccPresets[index]
 
@@ -222,123 +921,3 @@ Struct PresetSlider
     float Stage3
     float Stage4
 EndStruct
-
-Function LoadKeillaPreset()
-    PresetSlider slider
-    ThiccPresets.Clear()
-    ; THICC settings
-    slider = new PresetSlider
-    slider.Name = "Breasts"
-    slider.Stage1 = 1.0
-    slider.Stage2 = 1.0
-    slider.Stage3 = 1.0
-    slider.Stage4 = 1.0
-    ThiccPresets.Add(slider)
-
-    slider = new PresetSlider
-    slider.Name = "Butt"
-    slider.Stage1 = 1.0
-    slider.Stage2 = 1.0
-    slider.Stage3 = 1.0
-    slider.Stage4 = 1.0
-    ThiccPresets.Add(slider)
-
-    slider = new PresetSlider
-    slider.Name = "RoundAss"
-    slider.Stage1 = 1.0
-    slider.Stage2 = 1.0
-    slider.Stage3 = 1.0
-    slider.Stage4 = 1.0
-    ThiccPresets.Add(slider)
-
-    slider = new PresetSlider
-    slider.Name = "Thighs"
-    slider.Stage1 = 1.0
-    slider.Stage2 = 1.0
-    slider.Stage3 = 1.0
-    slider.Stage4 = 1.0
-    ThiccPresets.Add(slider)
-
-    slider = new PresetSlider
-    slider.Name = "Belly Thicc"
-    slider.Stage1 = 1.0
-    slider.Stage2 = 1.0
-    slider.Stage3 = 1.0
-    slider.Stage4 = 1.0
-    ThiccPresets.Add(slider)
-
-    slider = new PresetSlider
-    slider.Name = "Thicc Knees"
-    slider.Stage1 = 1.0
-    slider.Stage2 = 1.0
-    slider.Stage3 = 1.0
-    slider.Stage4 = 1.0
-    ThiccPresets.Add(slider)
-
-    slider = new PresetSlider
-    slider.Name = "ChubbyArms"
-    slider.Stage1 = 1.0
-    slider.Stage2 = 1.0
-    slider.Stage3 = 1.0
-    slider.Stage4 = 1.0
-    ThiccPresets.Add(slider)
-    
-    ; BBW
-    slider = new PresetSlider
-    slider.Name = "BBW"
-    slider.Stage1 = 0.0
-    slider.Stage2 = 0.5
-    slider.Stage3 = 1.0
-    slider.Stage4 = 2.0
-    ThiccPresets.Add(slider)
-
-    slider = new PresetSlider
-    slider.Name = "BreastsNewSH"
-    slider.Stage1 = 0.0
-    slider.Stage2 = -1.0
-    slider.Stage3 = -2.0
-    slider.Stage4 = -2.0
-    ThiccPresets.Add(slider)
-
-    slider = new PresetSlider
-    slider.Name = "BreastTopSlope"
-    slider.Stage1 = 0.0
-    slider.Stage2 = 1.0
-    slider.Stage3 = 2.0
-    slider.Stage4 = 2.0
-    ThiccPresets.Add(slider)
-
-    slider = new PresetSlider
-    slider.Name = "BreastGravity2"
-    slider.Stage1 = 0.0
-    slider.Stage2 = 0.0
-    slider.Stage3 = 1.0
-    slider.Stage4 = 1.0
-    ThiccPresets.Add(slider)
-
-    slider = new PresetSlider
-    slider.Name = "NipBGone"
-    slider.Stage1 = 0.0
-    slider.Stage2 = 1.0
-    slider.Stage3 = 2.0
-    slider.Stage4 = 2.0
-    ThiccPresets.Add(slider)
-
-    slider = new PresetSlider
-    slider.Name = "BreastsSmall"
-    slider.Stage1 = 0.0
-    slider.Stage2 = 0.0
-    slider.Stage3 = 0.0
-    slider.Stage4 = 2.0
-    ThiccPresets.Add(slider)
-
-    slider = new PresetSlider
-    slider.Name = "BreastsSmall2"
-    slider.Stage1 = 0.0
-    slider.Stage2 = 0.0
-    slider.Stage3 = 0.0
-    slider.Stage4 = 2.0
-    ThiccPresets.Add(slider)
-    ; Trace("LoadKeillaPreset()", ThiccPresets)
-EndFunction
-

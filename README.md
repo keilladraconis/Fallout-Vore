@@ -34,6 +34,16 @@ Install everything in the order listed. Then open BodySlide.
   4.1 If you are not using 3BBB, search 'Outfit Filter' for 'CBBE Body' and build that one body with the big 'Build' button.
   4.2 If you are using 3BBB, search 'Outfit Filter' for 'TWB 3BBB Body' and build that one body with the big 'Build' button.
 
+## Thicc Vore Slider Configuration
+There's a whole new and highly flexible slider configuration allowing 4 'stages' of thiccness for up to 32 different sliders. It may be configured through MCM and updated with the "Update Sliders" button found in the MCM 'THICC Vore' menu. Thiccness proceeds from 0-4, and at each stage that stage's value is used to transition the slider.
+
+**Slider Values are Cascading by magnitude**
+This means that if "Slider 1 Stage 1" is `1.0` and "Slider 1 Stage 2" is `0.5`, the greater magnitude `1.0` will override the lower magnitude `0.5`. This means that you may *reduce the necessary inputs* by leaving blank stages for which there is no change. It also works as expected for negative values, with `-1.0` overriding `-0.5`.
+
+The package includes my preferred slider configuration as an example in `Data/MCM/Config/FalloutVore/config.json`. When you customize sliders, your overrides will be written to `Data/MCM/Settings/FalloutVore.ini`. You may wish to save a copy or share your `FalloutVore.ini` file with others when you have a nice set of slider settings.
+
+An empty file is provided in `example/FalloutVore.ini` if you don't like the built-in settings. Copying this file to `Data/MCM/Settings/FalloutVore.ini` is the most efficient way to rewrite settings in bulk for your preference. Take care to **not wrap slider names in quotes** on the `sSliderXName` field because it won't work.
+
 ## Developing
 This mod uses an `ESM` master file and Creation Kit version control. Please [Follow The Instructions](https://www.creationkit.com/fallout4/index.php?title=Version_Control) to configure your system.
 

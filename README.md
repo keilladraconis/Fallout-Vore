@@ -12,6 +12,7 @@ I'm working on this mod as a service to the community, and to myself. After a lo
 
 ## Installation
 This mod has several dependencies.
+- [F4SE](http://f4se.silverlock.org)
 - [LooksMenu](https://www.nexusmods.com/fallout4/mods/12631)
 - [BodySlide](https://www.nexusmods.com/fallout4/mods/25)
 - [CBBE](https://www.nexusmods.com/fallout4/mods/15)

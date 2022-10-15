@@ -274,42 +274,6 @@
 					"text": "$FVSE_MCM_DEBUG_SET",
 					"type": "section",
 					"groupCondition": 8
-				},
-				{
-					"text": "$FVSE_MCM_DEBUG_RESET_CAM",
-					"type": "button",
-					"help": "$FVSE_MCM_DEBUG_RESET_CAM_HELP",
-					"groupCondition": 8,
-					"action": {
-						"type": "CallFunction",
-						"form": "FalloutVore.esm|DAB6",
-						"function": "ResetCamera",
-						"params": [
-							"{b}true"
-						]
-					}
-				},
-				{
-					"text": "$FVSE_MCM_DEBUG_RESET_SURV",
-					"type": "button",
-					"help": "$FVSE_MCM_DEBUG_RESET_SURV_HELP",
-					"groupCondition": 8,
-					"action": {
-						"type": "CallFunction",
-						"form": "FalloutVore.esm|382C",
-						"function": "ResetVoreSurvival"
-					}
-				},
-				{
-					"text": "$FVSE_MCM_DEBUG_RESET_CONTEXT",
-					"type": "button",
-					"help": "$FVSE_MCM_DEBUG_RESET_CONTEXT_HELP",
-					"groupCondition": 8,
-					"action": {
-						"type": "CallFunction",
-						"form": "FalloutVore.esm|222A",
-						"function": "DebugReset"
-					}
 				}
 			]
 		},
@@ -423,7 +387,6 @@
 					"text": "$FVSE_MCM_SAV_RESET",
 					"type": "button",
 					"help": "$FVSE_MCM_SAV_RESET_HELP",
-					"groupCondition": 9,
 					"action": {
 						"type": "CallFunction",
 						"form": "FalloutVore.esm|2928",
@@ -435,7 +398,57 @@
 		{
 			"pageDisplayName": "THICC Vore",
 			"content":[
-				
+				{
+					"id": "UpdateSliders",
+					"text": "Update Sliders",
+					"type": "button",
+					"action": {
+						"type": "CallFunction",
+						"form": "FalloutVore.esm|D36D",
+						"function": "CompileThiccSliders"
+					}
+				},
+				{
+					"id": "sSlider1Name:ThiccVore",
+					"text": "Slider 1 Name",
+					"type": "textinput",
+					"valueOptions": {
+						"sourceType": "ModSettingString"
+					}
+				},
+				{
+					"id": "fSlider1Stage1:ThiccVore",
+					"text": "Slider 1 Stage 1 Value",
+					"type": "textinputFloat",
+					"valueOptions":{
+						"sourceType": "ModSettingFloat"
+					}
+				}
+			]
+		},
+		{
+			"pageDisplayName": "Debug Tools",
+			"content": [
+				{
+					"id": "AddThiccness",
+					"text": "Add Thiccness",
+					"type": "button",
+					"action":{
+						"type":"CallFunction",
+						"form":"FalloutVore.esm|CB69",
+						"function":"AddThiccness"
+					}
+				},
+				{
+					"id": "ReduceThiccness",
+					"text": "Reduce Thiccness",
+					"type": "button",
+					"action":{
+						"type":"CallFunction",
+						"form":"FalloutVore.esm|CB69",
+						"function":"ReduceThiccness"
+					}
+				}
 			]
 		}
 	]

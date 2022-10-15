@@ -51,6 +51,21 @@ Event Actor.OnPlayerLoadGame(Actor akSender)
     Setup()
 EndEvent
 
+; Processes MCM-configured Thicc sliders and applies them.
+Function CompileThiccSliders()
+    ; Trace("CompileThiccSliders")
+    PresetSlider slider = new PresetSlider
+    ThiccPresets.Clear()
+    
+    slider.Name = MCM.GetModSettingString("FalloutVore", "sSlider1Name:ThiccVore") as string
+    slider.Stage1 = MCM.GetModSettingFloat("FalloutVore", "fSlider1Stage1:ThiccVore") as float
+    slider.Stage2 = MCM.GetModSettingFloat("FalloutVore", "fSlider1Stage1:ThiccVore") as float
+    slider.Stage3 = MCM.GetModSettingFloat("FalloutVore", "fSlider1Stage1:ThiccVore") as float
+    slider.Stage4 = MCM.GetModSettingFloat("FalloutVore", "fSlider1Stage1:ThiccVore") as float
+    Trace("CompileThiccSliders", "Slider: " + slider)
+    ThiccPresets.Add(slider)
+EndFunction
+
 ; Private
 
 Event FalloutVore:FV_StomachSimScript.OnStomachChange(FalloutVore:FV_StomachSimScript akSender, Var[] akArgs)
@@ -64,7 +79,7 @@ EndEvent
 Event FalloutVore:FV_ThiccVoreScript.OnThiccnessChange(FalloutVore:FV_ThiccVoreScript akSender, Var[] akArgs)
     GotoState("UpdatingMorphs")
     Actor pred = akArgs[0] as Actor
-    ; Trace("OnThiccnessChange()", pred)
+    Trace("OnThiccnessChange()", pred)
     EnqueueUpdateMorphs(pred)        
     StartTimer(0.1)
 EndEvent
@@ -136,7 +151,7 @@ EndFunction
 
 ; Runs on a timer to ensure that only one is running at a time.
 Function UpdateMorphs_OnTimer(Actor akPred)
-    ; Trace("UpdateMorphs_1()", akPred)
+    Trace("UpdateMorphs_OnTimer()", akPred)
 
     float bigSoftBelly = FV_StomachSim.GetBellyVolume(akPred) ; External!
     float thiccness = akPred.GetValue(FV_Thiccness)
@@ -176,6 +191,7 @@ Function UpdateMorphs_OnTimer(Actor akPred)
 
     int thiccStage = Math.Floor(thiccness)
     int index = 0 ; Doesn't seem to work... did the presets not get loaded, or else does the morph setting not work?
+    Trace("UpdateMorphs", "Thicc Presets: " + ThiccPresets + " thiccStage: " + thiccStage)
     While (index < ThiccPresets.Length && index <= 128)
         PresetSlider slider = ThiccPresets[index]
 
@@ -194,7 +210,7 @@ Function UpdateMorphs_OnTimer(Actor akPred)
         index += 1
     EndWhile
     BodyGen.UpdateMorphs(akPred)
-    ; Trace("UpdateMorphs_1() Finished", akPred)
+    Trace("UpdateMorphs_1() Finished", akPred)
 EndFunction
 
 PresetSlider[] ThiccPresets
@@ -209,6 +225,7 @@ EndStruct
 
 Function LoadKeillaPreset()
     PresetSlider slider
+    ThiccPresets.Clear()
     ; THICC settings
     slider = new PresetSlider
     slider.Name = "Breasts"
@@ -324,3 +341,4 @@ Function LoadKeillaPreset()
     ThiccPresets.Add(slider)
     ; Trace("LoadKeillaPreset()", ThiccPresets)
 EndFunction
+

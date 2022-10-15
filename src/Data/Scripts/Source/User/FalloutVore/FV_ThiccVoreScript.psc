@@ -14,6 +14,14 @@ EndFunction
 
 CustomEvent OnThiccnessChange
 
+Function AddThiccness()
+	HandleDigestedAmount(Game.GetPlayer(), 1.0)
+EndFunction
+
+Function ReduceThiccness()
+	LoseWeight(Game.GetPlayer(), 3600.0 * 8.0)
+EndFunction 
+
 ; Private
 
 Group ActorValues
@@ -82,7 +90,7 @@ Event FalloutVore:FV_FalloutVoreScript.VoreGameTick(FalloutVore:FV_FalloutVoreSc
 EndEvent
 
 Function HandleDigestedAmount(Actor akActor, float afAmount)
-	; Trace("HandleDigestedAmount()", afAmount)
+	Trace("HandleDigestedAmount()", afAmount)
 	; This only works for female actors.
 	If (akActor.GetLeveledActorBase().GetSex() == 0)
 		Return
